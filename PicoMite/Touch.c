@@ -4,22 +4,22 @@ PicoMite MMBasic
 Touch.c
 
 <COPYRIGHT HOLDERS>  Geoff Graham, Peter Mather
-Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved. 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 
-1.	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-2.	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
+Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+1.        Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2.        Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
     in the documentation and/or other materials provided with the distribution.
-3.	The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed 
+3.        The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed
     on the console at startup (additional copyright messages may be added).
-4.	All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed 
+4.        All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed
     by the <copyright holder>.
-5.	Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software 
+5.        Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software
     without specific prior written permission.
 THIS SOFTWARE IS PROVIDED BY <COPYRIGHT HOLDERS> AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ************************************************************************************************************************/
 
@@ -47,15 +47,15 @@ void ConfigTouch(unsigned char *p) {
     int pin1, pin2, pin3=0;
     getargs(&p, 5, ",");
     if(!(argc == 3 || argc == 5)) error("Argument count");
-	unsigned char code;
-	if(!(code=codecheck(argv[0])))argv[0]+=2;
-	pin1 = getinteger(argv[0]);
-	if(!code)pin1=codemap(pin1);
-	if(IsInvalidPin(pin1)) error("Invalid pin");
-	if(!(code=codecheck(argv[2])))argv[2]+=2;
-	pin2 = getinteger(argv[2]);
-	if(!code)pin2=codemap(pin2);
-	if(IsInvalidPin(pin2)) error("Invalid pin");
+        unsigned char code;
+        if(!(code=codecheck(argv[0])))argv[0]+=2;
+        pin1 = getinteger(argv[0]);
+        if(!code)pin1=codemap(pin1);
+        if(IsInvalidPin(pin1)) error("Invalid pin");
+        if(!(code=codecheck(argv[2])))argv[2]+=2;
+        pin2 = getinteger(argv[2]);
+        if(!code)pin2=codemap(pin2);
+        if(IsInvalidPin(pin2)) error("Invalid pin");
 
     if(argc == 5) {
         if(!(code=codecheck(argv[4])))argv[4]+=2;
@@ -188,12 +188,12 @@ int GetTouchAxis(int cmd) {
 int GetTouchValue(int cmd) {
     int val;
     unsigned int lb, hb;
-	SPISpeedSet(TOUCH);
+        SPISpeedSet(TOUCH);
     gpio_put(TOUCH_CS_PIN,GPIO_PIN_RESET);  // set CS low
     TDelay();
     val=xchg_byte(cmd);    //    SpiChnPutC(TOUCH_SPI_CHANNEL, cmd);
     hb=xchg_byte(0);                             // send the read command (also selects the axis)
-	val = (hb & 0b1111111) << 5;         // the top 7 bits
+        val = (hb & 0b1111111) << 5;         // the top 7 bits
     lb=xchg_byte(0);                             // send the read command (also selects the axis)
     val |= (lb >> 3) & 0b11111;          // the bottom 5 bits
     ClearCS(Option.TOUCH_CS);
@@ -204,7 +204,7 @@ int GetTouchValue(int cmd) {
 void TDelay(void)     // provides a small (~200ns) delay for the touch screen controller.
 {
     int ticks_per_millisecond=ticks_per_second/1000;
-   	int T=16777215 + setuptime-((4*ticks_per_millisecond)/20000) ;
+           int T=16777215 + setuptime-((4*ticks_per_millisecond)/20000) ;
     shortpause(T);
 }
 

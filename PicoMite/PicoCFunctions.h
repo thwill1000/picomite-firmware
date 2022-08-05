@@ -5,9 +5,9 @@
  *
  *  This file is public domain and may be used without license.
  *
- *	V1.5
- *	V1.6  Added parenthesis around (BaseAddress+0xx) expressions to force correct evaluation
- *	      Option Macro now -->  #define Option (*(struct option_s *)(unsigned int)Vector_Option)
+ *        V1.5
+ *        V1.6  Added parenthesis around (BaseAddress+0xx) expressions to force correct evaluation
+ *              Option Macro now -->  #define Option (*(struct option_s *)(unsigned int)Vector_Option)
  *        Use Option.DISPLAY_TYPE as syntax in lieu of Option->DISPLAY_TYPE
  *        Added #define NOP()  __asm volatile ("nop")
  *        USERLCDPANEL    16 Added
@@ -52,19 +52,19 @@
 #define Vector_CFuncmSec          (*(int*)(BaseAddress+0x78))       // CFuncmSec
 #define Vector_CFuncRam           (*(int*)(BaseAddress+0x7C))       // StartOfCFuncRam
 #define Vector_ScrollLCD          *(unsigned int *)(int*)(BaseAddress+0x80)          // void scrollLCD(int lines, int blank)
-#define Vector_IntToFloat         (*(int*)(BaseAddress+0x84))       	// MMFLOAT IntToFloat(long long int a)
-#define Vector_FloatToInt         (*(int*)(BaseAddress+0x88))       	// long long int FloatToInt64(MMFLOAT x)
-#define Vector_Option             (*(int*)(BaseAddress+0x8c))       	// Option
-#define Vector_Sine               (*(int*)(BaseAddress+0x90))       	// MMFLOAT sin(MMFLOAT)
-#define Vector_DrawCircle         (*(int*)(BaseAddress+0x94))       	// DrawCircle(int x, int y, int radius, int w, int c, int fill, MMFLOAT aspect)
-#define Vector_DrawTriangle       (*(int*)BaseAddress+0x98))       	// DrawTriangle(int x0, int y0, int x1, int y1, int x2, int y2, int c, int fill)
-#define Vector_Timer   			  (*(int*)(BaseAddress+0x9C))       	// uint64_t timer(void)
-#define Vector_FMul   			  (*(int*)(BaseAddress+0xA0))       	// MMFLOAT FMul(MMFLOAT a, MMFLOAT b){ return a * b; }
-#define Vector_FAdd   			  (*(int*)(BaseAddress+0xA4))       	// MMFLOAT FAdd(MMFLOAT a, MMFLOAT b){ return a + b; }
-#define Vector_FSub   			  (*(int*)(BaseAddress+0xA8))       	// MMFLOAT FSub(MMFLOAT a, MMFLOAT b){ return a - b; }
-#define Vector_FDiv   			  (*(int*)(BaseAddress+0xAC))       	// MMFLOAT FDiv(MMFLOAT a, MMFLOAT b){ return a / b; }
-#define Vector_FCmp   			  (*(int*)(BaseAddress+0xB0))      	    // int   FCmp(MMFLOAT a,MMFLOAT b){if(a>b) return 1;else if(a<b)return -1; else return 0;}
-#define Vector_LoadFloat   	      (*(int*)(BaseAddress+0xB4))       	// MMFLOAT LoadFloat(unsigned long long c){union ftype{ unsigned long long a; MMFLOAT b;}f;f.a=c;return f.b; }
+#define Vector_IntToFloat         (*(int*)(BaseAddress+0x84))               // MMFLOAT IntToFloat(long long int a)
+#define Vector_FloatToInt         (*(int*)(BaseAddress+0x88))               // long long int FloatToInt64(MMFLOAT x)
+#define Vector_Option             (*(int*)(BaseAddress+0x8c))               // Option
+#define Vector_Sine               (*(int*)(BaseAddress+0x90))               // MMFLOAT sin(MMFLOAT)
+#define Vector_DrawCircle         (*(int*)(BaseAddress+0x94))               // DrawCircle(int x, int y, int radius, int w, int c, int fill, MMFLOAT aspect)
+#define Vector_DrawTriangle       (*(int*)BaseAddress+0x98))               // DrawTriangle(int x0, int y0, int x1, int y1, int x2, int y2, int c, int fill)
+#define Vector_Timer                             (*(int*)(BaseAddress+0x9C))               // uint64_t timer(void)
+#define Vector_FMul                             (*(int*)(BaseAddress+0xA0))               // MMFLOAT FMul(MMFLOAT a, MMFLOAT b){ return a * b; }
+#define Vector_FAdd                             (*(int*)(BaseAddress+0xA4))               // MMFLOAT FAdd(MMFLOAT a, MMFLOAT b){ return a + b; }
+#define Vector_FSub                             (*(int*)(BaseAddress+0xA8))               // MMFLOAT FSub(MMFLOAT a, MMFLOAT b){ return a - b; }
+#define Vector_FDiv                             (*(int*)(BaseAddress+0xAC))               // MMFLOAT FDiv(MMFLOAT a, MMFLOAT b){ return a / b; }
+#define Vector_FCmp                             (*(int*)(BaseAddress+0xB0))                  // int   FCmp(MMFLOAT a,MMFLOAT b){if(a>b) return 1;else if(a<b)return -1; else return 0;}
+#define Vector_LoadFloat                 (*(int*)(BaseAddress+0xB4))               // MMFLOAT LoadFloat(unsigned long long c){union ftype{ unsigned long long a; MMFLOAT b;}f;f.a=c;return f.b; }
 //Macros to call each function.
 #define uSec(a)                         ((void (*)(unsigned int )) Vector_uSec) (a)
 #define putConsole(a)                   ((void (*)(char)) Vector_putConsole) (a)
@@ -131,7 +131,7 @@
 #define CFuncInt2                       (*(unsigned int *) Vector_CFuncInt2)
 #define FastTimer                       ((unsigned long long  (*)(void)) Vector_FastTimer)
 #define TicksPerUsec                    (*(unsigned int *) Vector_TicksPerUsec)
-#define map(a)							((int(*)(int)) Vector_Map) (a)
+#define map(a)                                                        ((int(*)(int)) Vector_Map) (a)
 #define Sine(a)                         ((MMFLOAT (*)(MMFLOAT)) Vector_Sine) (a)
 #define VideoColour                     (*(int *) Vector_VideoColour)
 #define DrawCircle(a,b,c,d,e,f,g)       ((void (*)(int,int,int,int,int,int,MMFLOAT)) Vector_DrawCircle) (a,b,c,d,e,f,g)
@@ -195,7 +195,7 @@ struct option_s {
     int  PIN;
     int  Baudrate;
     int  ColourCode;
-    int CPU_Speed; 
+    int CPU_Speed;
     unsigned int Dummyint;    // used to store the size of the program flash (also start of the LIBRARY code)
     int DefaultFC, DefaultBC;      // the default colours
     int DefaultBrightness;         // default backlight brightness //40
@@ -213,14 +213,14 @@ struct option_s {
     // touch related
     unsigned char TOUCH_CS;
     unsigned char TOUCH_IRQ;
-    char TOUCH_SWAPXY; 
+    char TOUCH_SWAPXY;
     char dummy[2];//56
     int  TOUCH_XZERO;
     int  TOUCH_YZERO;
     float TOUCH_XSCALE;
     float TOUCH_YSCALE; //72
     unsigned int fullrefresh;
- 
+
      // these are only used in the MX470 version
     unsigned char SD_CS;
     unsigned char SYSTEM_MOSI;
@@ -307,30 +307,30 @@ struct option_s {
 // configurations for an I/O pin
 // these are used by ExtCfg(a,b,c)
 #define EXT_NOT_CONFIG          0
-#define EXT_ANA_IN				1
-#define EXT_DIG_IN				2
-#define EXT_FREQ_IN				3
-#define EXT_PER_IN				4
-#define EXT_CNT_IN				5
-#define EXT_INT_HI				6
-#define EXT_INT_LO				7
-#define EXT_DIG_OUT				8
-#define EXT_HEARTBEAT			9
-#define EXT_INT_BOTH	  10
-#define EXT_UART0TX			11
-#define EXT_UART0RX			12
-#define EXT_UART1TX			13
-#define EXT_UART1RX			14
-#define EXT_I2C0SDA			15
-#define EXT_I2C0SCL			16
-#define EXT_I2C1SDA			17
-#define EXT_I2C1SCL			18
-#define EXT_SPI0RX			19
-#define EXT_SPI0TX			20
-#define EXT_SPI0SCK			21
-#define EXT_SPI1RX			22
-#define EXT_SPI1TX			23
-#define EXT_SPI1SCK			24
+#define EXT_ANA_IN                                1
+#define EXT_DIG_IN                                2
+#define EXT_FREQ_IN                                3
+#define EXT_PER_IN                                4
+#define EXT_CNT_IN                                5
+#define EXT_INT_HI                                6
+#define EXT_INT_LO                                7
+#define EXT_DIG_OUT                                8
+#define EXT_HEARTBEAT                        9
+#define EXT_INT_BOTH          10
+#define EXT_UART0TX                        11
+#define EXT_UART0RX                        12
+#define EXT_UART1TX                        13
+#define EXT_UART1RX                        14
+#define EXT_I2C0SDA                        15
+#define EXT_I2C0SCL                        16
+#define EXT_I2C1SDA                        17
+#define EXT_I2C1SCL                        18
+#define EXT_SPI0RX                        19
+#define EXT_SPI0TX                        20
+#define EXT_SPI0SCK                        21
+#define EXT_SPI1RX                        22
+#define EXT_SPI1TX                        23
+#define EXT_SPI1SCK                        24
 #define EXT_IR          25
 #define EXT_INT1        26
 #define EXT_INT2        27

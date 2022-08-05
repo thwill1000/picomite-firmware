@@ -4,22 +4,22 @@ PicoMite MMBasic
 Picomite.c
 
 <COPYRIGHT HOLDERS>  Geoff Graham, Peter Mather
-Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved. 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 
-1.	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-2.	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
+Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+1.        Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2.        Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
     in the documentation and/or other materials provided with the distribution.
-3.	The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed 
+3.        The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed
     on the console at startup (additional copyright messages may be added).
-4.	All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed 
+4.        All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed
     by the <copyright holder>.
-5.	Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software 
+5.        Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software
     without specific prior written permission.
 THIS SOFTWARE IS PROVIDED BY <COPYRIGHT HOLDERS> AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ************************************************************************************************************************/
 #ifdef __cplusplus
@@ -44,17 +44,17 @@ extern "C" {
 #include "pico/unique_id.h"
 #include <pico/bootrom.h>
 #include "hardware/irq.h"
-#include "class/cdc/cdc_device.h" 
+#include "class/cdc/cdc_device.h"
 
 #ifdef PICOMITEVGA
 #include "Include.h"
 #define MES_SIGNON  "\rPicoMiteVGA MMBasic Version " VERSION "\r\n"\
-					"Copyright " YEAR " Geoff Graham\r\n"\
-					"Copyright " YEAR2 " Peter Mather\r\n\r\n"
+                                        "Copyright " YEAR " Geoff Graham\r\n"\
+                                        "Copyright " YEAR2 " Peter Mather\r\n\r\n"
 #else
 #define MES_SIGNON  "\rPicoMite MMBasic Version " VERSION "\r\n"\
-					"Copyright " YEAR " Geoff Graham\r\n"\
-					"Copyright " YEAR2 " Peter Mather\r\n\r\n"
+                                        "Copyright " YEAR " Geoff Graham\r\n"\
+                                        "Copyright " YEAR2 " Peter Mather\r\n\r\n"
 #endif
 #define USBKEEPALIVE 30000
 int ListCnt;
@@ -81,7 +81,7 @@ volatile unsigned int diskchecktimer = DISKCHECKRATE;
 volatile unsigned int clocktimer=60*60*1000;
 volatile unsigned int PauseTimer = 0;
 volatile unsigned int IntPauseTimer = 0;
-volatile unsigned int Timer1=0, Timer2=0;		                       //1000Hz decrement timer
+volatile unsigned int Timer1=0, Timer2=0;                                       //1000Hz decrement timer
 volatile unsigned int USBKeepalive=USBKEEPALIVE;
 volatile int ds18b20Timer = -1;
 volatile unsigned int ScrewUpTimer = 0;
@@ -113,7 +113,7 @@ const uint8_t *flash_progmemory = (const uint8_t *) (XIP_BASE + PROGSTART);
     uint16_t tilefcols[40*30];
     uint16_t tilebcols[40*30];
 #endif
-int ticks_per_second; 
+int ticks_per_second;
 int InterruptUsed;
 int calibrate=0;
 char id_out[12];
@@ -126,7 +126,7 @@ unsigned char IgnorePIN = false;
 bool timer_callback(repeating_timer_t *rt);
 uint32_t __uninitialized_ram(_excep_code);
 unsigned char lastcmd[STRINGSIZE*4];                                           // used to store the last command in case it is needed by the EDIT command
-int QVGA_CLKDIV;	// SM divide clock ticks
+int QVGA_CLKDIV;        // SM divide clock ticks
 FATFS fs;                 // Work area (file system object) for logical drive
 bool timer_callback(repeating_timer_t *rt);
 static uint64_t __not_in_flash_func(uSecFunc)(uint64_t a){
@@ -160,104 +160,104 @@ MMFLOAT FSub(MMFLOAT a, MMFLOAT b){ return a - b; }
 MMFLOAT FDiv(MMFLOAT a, MMFLOAT b){ return a / b; }
 int   FCmp(MMFLOAT a,MMFLOAT b){if(a>b) return 1;else if(a<b)return -1; else return 0;}
 MMFLOAT LoadFloat(unsigned long long c){union ftype{ unsigned long long a; MMFLOAT b;}f;f.a=c;return f.b; }
-const void * const CallTable[] __attribute__((section(".text")))  = {	(void *)uSecFunc,	//0x00
-																		(void *)putConsole,	//0x04
-																		(void *)getConsole,	//0x08
-																		(void *)ExtCfg,	//0x0c
-																		(void *)ExtSet,	//0x10
-																		(void *)ExtInp,	//0x14
-																		(void *)PinSetBit,	//0x18
-																		(void *)PinReadFunc,	//0x1c
-																		(void *)MMPrintString,	//0x20
-																		(void *)IntToStr,	//0x24
-																		(void *)CheckAbort,	//0x28
-																		(void *)GetMemory,	//0x2c
-																		(void *)GetTempMemory,	//0x30
-																		(void *)FreeMemory, //0x34
-																		(void *)&DrawRectangle,	//0x38
-																		(void *)&DrawBitmap,	//0x3c
-																		(void *)DrawLine,	//0x40
-																		(void *)FontTable,	//0x44
-																		(void *)&ExtCurrentConfig,	//0x48
-																		(void *)&HRes,	//0x4C
-																		(void *)&VRes,	//0x50
-																		(void *)SoftReset, //0x54
-																		(void *)error,	//0x58
-																		(void *)&ProgMemory,	//0x5c
-																		(void *)&vartbl, //0x60
-																		(void *)&varcnt,  //0x64
-																		(void *)&DrawBuffer,	//0x68
-																		(void *)&ReadBuffer,	//0x6c
-																		(void *)&FloatToStr,	//0x70
+const void * const CallTable[] __attribute__((section(".text")))  = {        (void *)uSecFunc,        //0x00
+                                                                                                                                                (void *)putConsole,        //0x04
+                                                                                                                                                (void *)getConsole,        //0x08
+                                                                                                                                                (void *)ExtCfg,        //0x0c
+                                                                                                                                                (void *)ExtSet,        //0x10
+                                                                                                                                                (void *)ExtInp,        //0x14
+                                                                                                                                                (void *)PinSetBit,        //0x18
+                                                                                                                                                (void *)PinReadFunc,        //0x1c
+                                                                                                                                                (void *)MMPrintString,        //0x20
+                                                                                                                                                (void *)IntToStr,        //0x24
+                                                                                                                                                (void *)CheckAbort,        //0x28
+                                                                                                                                                (void *)GetMemory,        //0x2c
+                                                                                                                                                (void *)GetTempMemory,        //0x30
+                                                                                                                                                (void *)FreeMemory, //0x34
+                                                                                                                                                (void *)&DrawRectangle,        //0x38
+                                                                                                                                                (void *)&DrawBitmap,        //0x3c
+                                                                                                                                                (void *)DrawLine,        //0x40
+                                                                                                                                                (void *)FontTable,        //0x44
+                                                                                                                                                (void *)&ExtCurrentConfig,        //0x48
+                                                                                                                                                (void *)&HRes,        //0x4C
+                                                                                                                                                (void *)&VRes,        //0x50
+                                                                                                                                                (void *)SoftReset, //0x54
+                                                                                                                                                (void *)error,        //0x58
+                                                                                                                                                (void *)&ProgMemory,        //0x5c
+                                                                                                                                                (void *)&vartbl, //0x60
+                                                                                                                                                (void *)&varcnt,  //0x64
+                                                                                                                                                (void *)&DrawBuffer,        //0x68
+                                                                                                                                                (void *)&ReadBuffer,        //0x6c
+                                                                                                                                                (void *)&FloatToStr,        //0x70
                                                                         (void *)CallExecuteProgram, //0x74
                                                                         (void *)&CFuncmSec, //0x78
-                                                                        (void *)CFuncRam,	//0x7c
-                                                                        (void *)&ScrollLCD,	//0x80
-																		(void *)IntToFloat, //0x84
-																		(void *)FloatToInt64,	//0x88
-																		(void *)&Option,	//0x8c
-																		(void *)sin,	//0x90
-																		(void *)DrawCircle,	//0x94
-																		(void *)DrawTriangle,	//0x98
-																		(void *)timer,	//0x9c
+                                                                        (void *)CFuncRam,        //0x7c
+                                                                        (void *)&ScrollLCD,        //0x80
+                                                                                                                                                (void *)IntToFloat, //0x84
+                                                                                                                                                (void *)FloatToInt64,        //0x88
+                                                                                                                                                (void *)&Option,        //0x8c
+                                                                                                                                                (void *)sin,        //0x90
+                                                                                                                                                (void *)DrawCircle,        //0x94
+                                                                                                                                                (void *)DrawTriangle,        //0x98
+                                                                                                                                                (void *)timer,        //0x9c
                                                                         (void *)FMul,//0xa0
                                                                         (void *)FAdd,//0xa4
                                                                         (void *)FSub,//0xa8
                                                                         (void *)FDiv,//0xac
                                                                         (void *)FCmp,//0xb0
                                                                         (void *)&LoadFloat,//0xb4
-                                                                        (void *)&CFuncInt1,	//0xb8
-                                                                        (void *)&CFuncInt2,	//0xbc
-																		(void *)&CSubComplete,	//0xc0
-									   	   	   	   	   	   	   	   	   	   };
+                                                                        (void *)&CFuncInt1,        //0xb8
+                                                                        (void *)&CFuncInt2,        //0xbc
+                                                                                                                                                (void *)&CSubComplete,        //0xc0
+                                                                                                                                                                              };
 
 const struct s_PinDef PinDef[NBRPINS + 1]={
-	    { 0, 99, "NULL",  UNUSED  ,99, 99},                                                         // pin 0
-	    { 1,  0, "GP0",  DIGITAL_IN | DIGITAL_OUT | SPI0RX | UART0TX  | I2C0SDA | PWM0A,99,0},  	// pin 1
-		{ 2,  1, "GP1",  DIGITAL_IN | DIGITAL_OUT | UART0RX | I2C0SCL | PWM0B ,99,128},    		    // pin 2
-		{ 3, 99, "GND",  UNUSED  ,99,99},                                                           // pin 3
-		{ 4,  2, "GP2",  DIGITAL_IN | DIGITAL_OUT | SPI0SCK | I2C1SDA | PWM1A ,99,1},   		    // pin 4
-		{ 5,  3, "GP3",  DIGITAL_IN | DIGITAL_OUT | SPI0TX | I2C1SCL | PWM1B ,99,129},    			// pin 5
-		{ 6,  4, "GP4",  DIGITAL_IN | DIGITAL_OUT | SPI0RX| UART1TX  | I2C0SDA | PWM2A ,99,2},  	// pin 6
-		{ 7,  5, "GP5",  DIGITAL_IN | DIGITAL_OUT | UART1RX | I2C0SCL | PWM2B	,99,130},    		// pin 7
-		{ 8, 99, "GND",  UNUSED  ,99, 99},                                                          // pin 8
-		{ 9,  6, "GP6",  DIGITAL_IN | DIGITAL_OUT | SPI0SCK | I2C1SDA | PWM3A	,99, 3},  			// pin 9
-		{ 10,  7, "GP7",  DIGITAL_IN | DIGITAL_OUT | SPI0TX | I2C1SCL | PWM3B	,99, 131}, 		    // pin 10
-	    { 11,  8, "GP8",  DIGITAL_IN | DIGITAL_OUT | SPI1RX | UART1TX  | I2C0SDA | PWM4A ,99, 4}, 	// pin 11
-		{ 12,  9, "GP9",  DIGITAL_IN | DIGITAL_OUT | UART1RX | I2C0SCL | PWM4B	,99, 132},    		// pin 12
-		{ 13, 99, "GND",  UNUSED  ,99, 99},                                                         // pin 13
-		{ 14, 10, "GP10",  DIGITAL_IN | DIGITAL_OUT | SPI1SCK | I2C1SDA | PWM5A	,99, 5},  			// pin 14
-		{ 15, 11, "GP11",  DIGITAL_IN | DIGITAL_OUT | SPI1TX | I2C1SCL | PWM5B	,99, 133},       	// pin 15
-		{ 16, 12, "GP12",  DIGITAL_IN | DIGITAL_OUT | SPI1RX | UART0TX | I2C0SDA | PWM6A ,99, 6},   // pin 16
-		{ 17, 13, "GP13",  DIGITAL_IN | DIGITAL_OUT | UART0RX | I2C0SCL | PWM6B	,99, 134},    		// pin 17
-		{ 18, 99, "GND", UNUSED  ,99, 99},                                                          // pin 18
-		{ 19, 14, "GP14",  DIGITAL_IN | DIGITAL_OUT | SPI1SCK | I2C1SDA | PWM7A	,99, 7},    		// pin 19
-		{ 20, 15, "GP15",  DIGITAL_IN | DIGITAL_OUT | SPI1TX | I2C1SCL | PWM7B	,99, 135},  		// pin 20
+            { 0, 99, "NULL",  UNUSED  ,99, 99},                                                         // pin 0
+            { 1,  0, "GP0",  DIGITAL_IN | DIGITAL_OUT | SPI0RX | UART0TX  | I2C0SDA | PWM0A,99,0},          // pin 1
+                { 2,  1, "GP1",  DIGITAL_IN | DIGITAL_OUT | UART0RX | I2C0SCL | PWM0B ,99,128},                        // pin 2
+                { 3, 99, "GND",  UNUSED  ,99,99},                                                           // pin 3
+                { 4,  2, "GP2",  DIGITAL_IN | DIGITAL_OUT | SPI0SCK | I2C1SDA | PWM1A ,99,1},                       // pin 4
+                { 5,  3, "GP3",  DIGITAL_IN | DIGITAL_OUT | SPI0TX | I2C1SCL | PWM1B ,99,129},                            // pin 5
+                { 6,  4, "GP4",  DIGITAL_IN | DIGITAL_OUT | SPI0RX| UART1TX  | I2C0SDA | PWM2A ,99,2},          // pin 6
+                { 7,  5, "GP5",  DIGITAL_IN | DIGITAL_OUT | UART1RX | I2C0SCL | PWM2B        ,99,130},                    // pin 7
+                { 8, 99, "GND",  UNUSED  ,99, 99},                                                          // pin 8
+                { 9,  6, "GP6",  DIGITAL_IN | DIGITAL_OUT | SPI0SCK | I2C1SDA | PWM3A        ,99, 3},                          // pin 9
+                { 10,  7, "GP7",  DIGITAL_IN | DIGITAL_OUT | SPI0TX | I2C1SCL | PWM3B        ,99, 131},                     // pin 10
+            { 11,  8, "GP8",  DIGITAL_IN | DIGITAL_OUT | SPI1RX | UART1TX  | I2C0SDA | PWM4A ,99, 4},         // pin 11
+                { 12,  9, "GP9",  DIGITAL_IN | DIGITAL_OUT | UART1RX | I2C0SCL | PWM4B        ,99, 132},                    // pin 12
+                { 13, 99, "GND",  UNUSED  ,99, 99},                                                         // pin 13
+                { 14, 10, "GP10",  DIGITAL_IN | DIGITAL_OUT | SPI1SCK | I2C1SDA | PWM5A        ,99, 5},                          // pin 14
+                { 15, 11, "GP11",  DIGITAL_IN | DIGITAL_OUT | SPI1TX | I2C1SCL | PWM5B        ,99, 133},               // pin 15
+                { 16, 12, "GP12",  DIGITAL_IN | DIGITAL_OUT | SPI1RX | UART0TX | I2C0SDA | PWM6A ,99, 6},   // pin 16
+                { 17, 13, "GP13",  DIGITAL_IN | DIGITAL_OUT | UART0RX | I2C0SCL | PWM6B        ,99, 134},                    // pin 17
+                { 18, 99, "GND", UNUSED  ,99, 99},                                                          // pin 18
+                { 19, 14, "GP14",  DIGITAL_IN | DIGITAL_OUT | SPI1SCK | I2C1SDA | PWM7A        ,99, 7},                    // pin 19
+                { 20, 15, "GP15",  DIGITAL_IN | DIGITAL_OUT | SPI1TX | I2C1SCL | PWM7B        ,99, 135},                  // pin 20
 
-		{ 21, 16, "GP16",  DIGITAL_IN | DIGITAL_OUT | SPI0RX | UART0TX | I2C0SDA | PWM0A ,99, 0},   // pin 21
-		{ 22, 17, "GP17",  DIGITAL_IN | DIGITAL_OUT | UART0RX | I2C0SCL | PWM0B	,99, 128},    		// pin 22
-		{ 23, 99, "GND",  UNUSED  ,99, 99},                                                         // pin 23
-	    { 24, 18, "GP18",  DIGITAL_IN | DIGITAL_OUT | SPI0SCK | I2C1SDA | PWM1A	,99, 1}, 			// pin 24
-	    { 25, 19, "GP19",  DIGITAL_IN | DIGITAL_OUT | SPI0TX | I2C1SCL | PWM1B	,99, 129},  		// pin 25
-	    { 26, 20, "GP20",  DIGITAL_IN | DIGITAL_OUT | SPI0RX | UART1TX| I2C0SDA | PWM2A	,99, 2},    // pin 26
-	    { 27, 21, "GP21",  DIGITAL_IN | DIGITAL_OUT | UART1RX| I2C0SCL | PWM2B	,99, 130},    		// pin 27
-		{ 28, 99, "GND",  UNUSED  ,99, 99},                                                         // pin 28
-		{ 29, 22, "GP22",  DIGITAL_IN | DIGITAL_OUT | I2C1SDA| PWM3A	,99, 3},    				// pin 29
-		{ 30, 99, "RUN",  UNUSED  ,99, 99},                                                         // pin 30
-	    { 31, 26, "GP26",  DIGITAL_IN | DIGITAL_OUT	| ANALOG_IN | SPI1SCK| I2C1SDA | PWM5A , 0 , 5},// pin 31
-	    { 32, 27, "GP27",  DIGITAL_IN | DIGITAL_OUT	| ANALOG_IN | SPI1TX| I2C1SCL | PWM5B , 1, 133},// pin 32
-		{ 33, 99, "AGND", UNUSED  ,99, 99},                                                         // pin 33
-		{ 34, 28, "GP28", DIGITAL_IN |DIGITAL_OUT| ANALOG_IN| SPI1RX| UART0TX|I2C0SDA| PWM6A, 2, 6},// pin 34
-	    { 35, 99, "VREF", UNUSED  ,99, 99},                                                         // pin 35
-		{ 36, 99, "3V3", UNUSED  ,99, 99},                                                          // pin 36
-		{ 37, 99, "3V3E", UNUSED  ,99, 99},                                                         // pin 37
-		{ 38, 99, "GND", UNUSED  ,99, 99},                                                          // pin 38
-		{ 39, 99, "VSYS", UNUSED  ,99, 99},                                                         // pin 39
-		{ 40, 99, "VBUS", UNUSED  ,99, 99},                                                         // pin 40
-		{ 41, 23, "GP23", DIGITAL_IN | DIGITAL_OUT | SPI0TX | I2C1SCL| PWM3B  ,99 , 131},           // pseudo pin 41
-		{ 42, 24, "GP24", DIGITAL_IN | DIGITAL_OUT | SPI1RX | UART1TX | I2C0SDA| PWM4A  ,99 , 4},   // pseudo pin 42
-		{ 43, 25, "GP25", DIGITAL_IN | DIGITAL_OUT | UART1RX | I2C0SCL| PWM4B  ,99 , 132},          // pseudo pin 43
-		{ 44, 29, "GP29", DIGITAL_IN | DIGITAL_OUT | ANALOG_IN | UART0RX | I2C0SCL | PWM6B, 3, 134},// pseudo pin 44
+                { 21, 16, "GP16",  DIGITAL_IN | DIGITAL_OUT | SPI0RX | UART0TX | I2C0SDA | PWM0A ,99, 0},   // pin 21
+                { 22, 17, "GP17",  DIGITAL_IN | DIGITAL_OUT | UART0RX | I2C0SCL | PWM0B        ,99, 128},                    // pin 22
+                { 23, 99, "GND",  UNUSED  ,99, 99},                                                         // pin 23
+            { 24, 18, "GP18",  DIGITAL_IN | DIGITAL_OUT | SPI0SCK | I2C1SDA | PWM1A        ,99, 1},                         // pin 24
+            { 25, 19, "GP19",  DIGITAL_IN | DIGITAL_OUT | SPI0TX | I2C1SCL | PWM1B        ,99, 129},                  // pin 25
+            { 26, 20, "GP20",  DIGITAL_IN | DIGITAL_OUT | SPI0RX | UART1TX| I2C0SDA | PWM2A        ,99, 2},    // pin 26
+            { 27, 21, "GP21",  DIGITAL_IN | DIGITAL_OUT | UART1RX| I2C0SCL | PWM2B        ,99, 130},                    // pin 27
+                { 28, 99, "GND",  UNUSED  ,99, 99},                                                         // pin 28
+                { 29, 22, "GP22",  DIGITAL_IN | DIGITAL_OUT | I2C1SDA| PWM3A        ,99, 3},                                    // pin 29
+                { 30, 99, "RUN",  UNUSED  ,99, 99},                                                         // pin 30
+            { 31, 26, "GP26",  DIGITAL_IN | DIGITAL_OUT        | ANALOG_IN | SPI1SCK| I2C1SDA | PWM5A , 0 , 5},// pin 31
+            { 32, 27, "GP27",  DIGITAL_IN | DIGITAL_OUT        | ANALOG_IN | SPI1TX| I2C1SCL | PWM5B , 1, 133},// pin 32
+                { 33, 99, "AGND", UNUSED  ,99, 99},                                                         // pin 33
+                { 34, 28, "GP28", DIGITAL_IN |DIGITAL_OUT| ANALOG_IN| SPI1RX| UART0TX|I2C0SDA| PWM6A, 2, 6},// pin 34
+            { 35, 99, "VREF", UNUSED  ,99, 99},                                                         // pin 35
+                { 36, 99, "3V3", UNUSED  ,99, 99},                                                          // pin 36
+                { 37, 99, "3V3E", UNUSED  ,99, 99},                                                         // pin 37
+                { 38, 99, "GND", UNUSED  ,99, 99},                                                          // pin 38
+                { 39, 99, "VSYS", UNUSED  ,99, 99},                                                         // pin 39
+                { 40, 99, "VBUS", UNUSED  ,99, 99},                                                         // pin 40
+                { 41, 23, "GP23", DIGITAL_IN | DIGITAL_OUT | SPI0TX | I2C1SCL| PWM3B  ,99 , 131},           // pseudo pin 41
+                { 42, 24, "GP24", DIGITAL_IN | DIGITAL_OUT | SPI1RX | UART1TX | I2C0SDA| PWM4A  ,99 , 4},   // pseudo pin 42
+                { 43, 25, "GP25", DIGITAL_IN | DIGITAL_OUT | UART1RX | I2C0SCL| PWM4B  ,99 , 132},          // pseudo pin 43
+                { 44, 29, "GP29", DIGITAL_IN | DIGITAL_OUT | ANALOG_IN | UART0RX | I2C0SCL | PWM6B, 3, 134},// pseudo pin 44
 };
 char alive[]="\033[?25h";
 const char DaysInMonth[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
@@ -284,7 +284,7 @@ void __not_in_flash_func(routinechecks)(void){
             }
         }
     }
-	if(GPSchannel)processgps();
+        if(GPSchannel)processgps();
     if(diskchecktimer== 0 || CurrentlyPlaying == P_WAV)CheckSDCard();
 #ifndef PICOMITEVGA
         if(Ctrl)ProcessTouch();
@@ -304,7 +304,7 @@ int __not_in_flash_func(getConsole)(void) {
     if(ConsoleRxBufHead != ConsoleRxBufTail) {                            // if the queue has something in it
         c = ConsoleRxBuf[ConsoleRxBufTail];
         ConsoleRxBufTail = (ConsoleRxBufTail + 1) % CONSOLE_RX_BUF_SIZE;   // advance the head of the queue
-	}
+        }
     return c;
 }
 
@@ -324,13 +324,13 @@ char SerialConsolePutC(char c, int flush) {
         }
     } else {
         int empty=uart_is_writable(Option.SerialConsole==1 ? uart0 : uart1);
-		while(ConsoleTxBufTail == ((ConsoleTxBufHead + 1) % CONSOLE_TX_BUF_SIZE)); //wait if buffer full
-		ConsoleTxBuf[ConsoleTxBufHead] = c;							// add the char
-		ConsoleTxBufHead = (ConsoleTxBufHead + 1) % CONSOLE_TX_BUF_SIZE;		   // advance the head of the queue
-		if(empty){
-	        uart_set_irq_enables(Option.SerialConsole==1 ? uart0 : uart1, true, true);
-			irq_set_pending(Option.SerialConsole==1 ? UART0_IRQ : UART1_IRQ);
-		}
+                while(ConsoleTxBufTail == ((ConsoleTxBufHead + 1) % CONSOLE_TX_BUF_SIZE)); //wait if buffer full
+                ConsoleTxBuf[ConsoleTxBufHead] = c;                                                        // add the char
+                ConsoleTxBufHead = (ConsoleTxBufHead + 1) % CONSOLE_TX_BUF_SIZE;                   // advance the head of the queue
+                if(empty){
+                uart_set_irq_enables(Option.SerialConsole==1 ? uart0 : uart1, true, true);
+                        irq_set_pending(Option.SerialConsole==1 ? UART0_IRQ : UART1_IRQ);
+                }
     }
     return c;
 }
@@ -419,10 +419,10 @@ if(!(c==0x1b))return c;
 // get a line from the keyboard or a serial file handle
 // filenbr == 0 means the console input
 void MMgetline(int filenbr, char *p) {
-	int c, nbrchars = 0;
-	char *tp;
+        int c, nbrchars = 0;
+        char *tp;
     while(1) {
-        CheckAbort();												// jump right out if CTRL-C
+        CheckAbort();                                                                                                // jump right out if CTRL-C
         if(FileTable[filenbr].com > MAXCOMPORTS && FileEOF(filenbr)) break;
         c = MMfgetc(filenbr);
         if(c <= 0) continue;                                       // keep looping if there are no chars
@@ -449,23 +449,23 @@ void MMgetline(int filenbr, char *p) {
             }
         }
 
-		if(c == '\t') {												// expand tabs to spaces
-			 do {
-				if(++nbrchars > MAXSTRLEN) error("Line is too long");
-				*p++ = ' ';
-				if(filenbr == 0 && EchoOption) MMputchar(' ',1);
-			} while(nbrchars % 4);
-			continue;
-		}
+                if(c == '\t') {                                                                                                // expand tabs to spaces
+                         do {
+                                if(++nbrchars > MAXSTRLEN) error("Line is too long");
+                                *p++ = ' ';
+                                if(filenbr == 0 && EchoOption) MMputchar(' ',1);
+                        } while(nbrchars % 4);
+                        continue;
+                }
 
-		if(c == '\b') {												// handle the backspace
-			if(nbrchars) {
-				if(filenbr == 0 && EchoOption) MMPrintString("\b \b");
-				nbrchars--;
-				p--;
-			}
-			continue;
-		}
+                if(c == '\b') {                                                                                                // handle the backspace
+                        if(nbrchars) {
+                                if(filenbr == 0 && EchoOption) MMPrintString("\b \b");
+                                nbrchars--;
+                                p--;
+                        }
+                        continue;
+                }
 
         if(c == '\n') {                                             // what to do with a newline
                 break;                                              // a newline terminates a line (for a file)
@@ -478,14 +478,14 @@ void MMgetline(int filenbr, char *p) {
             } else
                 continue ;                                          // for files loop around looking for the following newline
         }
-        
-		if(isprint(c)) {
-			if(filenbr == 0 && EchoOption) MMputchar(c,1);           // The console requires that chars be echoed
-		}
-		if(++nbrchars > MAXSTRLEN) error("Line is too long");		// stop collecting if maximum length
-		*p++ = c;													// save our char
-	}
-	*p = 0;
+
+                if(isprint(c)) {
+                        if(filenbr == 0 && EchoOption) MMputchar(c,1);           // The console requires that chars be echoed
+                }
+                if(++nbrchars > MAXSTRLEN) error("Line is too long");                // stop collecting if maximum length
+                *p++ = c;                                                                                                        // save our char
+        }
+        *p = 0;
 }
 // insert a string into the start of the lastcmd buffer.
 // the buffer is a sequence of strings separated by a zero byte.
@@ -554,7 +554,7 @@ void EditInputLine(void) {
                                 while(CharIndex)  { MMputchar('\b',0); CharIndex--; }         // go to the beginning of the line
                                 MMPrintString(inpbuf); MMputchar(' ',0); MMputchar('\b',0);     // display the line and erase the last char
                                 for(CharIndex = strlen(inpbuf); CharIndex > i; CharIndex--)
-                                    MMputchar('\b',0);  
+                                    MMputchar('\b',0);
                                 fflush(stdout);                                      // return the cursor to the righ position
                             }
                             break;
@@ -568,7 +568,7 @@ void EditInputLine(void) {
                                 MMputchar('\b',1);
                                 CharIndex--;
                             }
-                            break; 
+                            break;
 
                 case CTRLKEY('D'):
                 case RIGHT: if(CharIndex < strlen(inpbuf)) {
@@ -585,7 +585,7 @@ void EditInputLine(void) {
                                 while(CharIndex)  { MMputchar('\b',0); CharIndex--; }         // go to the beginning of the line
                                 MMPrintString(inpbuf); MMputchar(' ',0); MMputchar('\b',0);     // display the line and erase the last char
                                 for(CharIndex = strlen(inpbuf); CharIndex > i; CharIndex--)
-                                    MMputchar('\b',0);   
+                                    MMputchar('\b',0);
                                 fflush(stdout);                                     // return the cursor to the right position
                             }
                             break;
@@ -661,7 +661,7 @@ void EditInputLine(void) {
                     break;
                 case CTRLKEY('E'):
                 case UP:    if(!(BufEdited /*|| autoOn || CurrentLineNbr */)) {
-                                while(CharIndex)  { MMputchar('\b',0); CharIndex--; } 
+                                while(CharIndex)  { MMputchar('\b',0); CharIndex--; }
                                 fflush(stdout);       // go to the beginning of line
                                 if(lastcmd_edit) {
                                     i = lastcmd_idx + strlen(&lastcmd[lastcmd_idx]) + 1;    // find the next command
@@ -676,7 +676,7 @@ void EditInputLine(void) {
 
                 case CTRLKEY('X'):
                 case DOWN:  if(!(BufEdited /*|| autoOn || CurrentLineNbr */)) {
-                                while(CharIndex)  { MMputchar('\b',0); CharIndex--; }   
+                                while(CharIndex)  { MMputchar('\b',0); CharIndex--; }
                                 fflush(stdout);      // go to the beginning of line
                                 if(lastcmd_idx == 0)
                                     *inpbuf = lastcmd_edit = 0;
@@ -717,7 +717,7 @@ void EditInputLine(void) {
                                     MMPrintString(&inpbuf[CharIndex]);                      // display new part of the line
                                     CharIndex++;
                                     for(j = strlen(inpbuf); j > CharIndex; j--)
-                                        MMputchar('\b',0); 
+                                        MMputchar('\b',0);
                                         fflush(stdout);                                   // return the cursor to the right position
                                 } else {
                                     inpbuf[strlen(inpbuf) + 1] = 0;                         // incase we are adding to the end of the string
@@ -747,14 +747,14 @@ void EditInputLine(void) {
 // get a keystroke.  Will wait forever for input
 // if the unsigned char is a cr then replace it with a newline (lf)
 int MMgetchar(void) {
-	int c;
-	do {
-		ShowCursor(1);
+        int c;
+        do {
+                ShowCursor(1);
         CheckKeyboard();
-		c=MMInkey();
-	} while(c == -1);
-	ShowCursor(0);
-	return c;
+                c=MMInkey();
+        } while(c == -1);
+        ShowCursor(0);
+        return c;
 }
 // print a string to the console interfaces
 void MMPrintString(char* s) {
@@ -780,18 +780,18 @@ void SSPrintString(char* s) {
 }*/
 
 void mT4IntEnable(int status){
-	if(status){
-		processtick=1;
-	} else{
-		processtick=0;
-	}
+        if(status){
+                processtick=1;
+        } else{
+                processtick=0;
+        }
 }
 
 /*void init_systick()
-{ 
-	systick_hw->csr = 0; 	    //Disable 
-	systick_hw->rvr = 249999; //Standard System clock (125Mhz)/ (rvr value + 1) = 1ms 
-    systick_hw->csr = 0x7;      //Enable Systic, Enable Exceptions	
+{
+        systick_hw->csr = 0;             //Disable
+        systick_hw->rvr = 249999; //Standard System clock (125Mhz)/ (rvr value + 1) = 1ms
+    systick_hw->csr = 0x7;      //Enable Systic, Enable Exceptions
 }*/
 bool __not_in_flash_func(timer_callback)(repeating_timer_t *rt)
 {
@@ -802,21 +802,21 @@ bool __not_in_flash_func(timer_callback)(repeating_timer_t *rt)
         AHRSTimer++;
         InkeyTimer++;                                                     // used to delay on an escape character
         mSecTimer++;                                                      // used by the TIMER function
-        PauseTimer++;													// used by the PAUSE command
-        IntPauseTimer++;												// used by the PAUSE command inside an interrupt
+        PauseTimer++;                                                                                                        // used by the PAUSE command
+        IntPauseTimer++;                                                                                                // used by the PAUSE command inside an interrupt
         ds18b20Timer++;
-		GPSTimer++;
+                GPSTimer++;
         I2CTimer++;
         if(clocktimer)clocktimer--;
         if(Timer2)Timer2--;
         if(Timer1)Timer1--;
         if(USBKeepalive)USBKeepalive--;
         if(diskchecktimer && Option.SD_CS)diskchecktimer--;
-	    if(++CursorTimer > CURSOR_OFF + CURSOR_ON) CursorTimer = 0;		// used to control cursor blink rate
+            if(++CursorTimer > CURSOR_OFF + CURSOR_ON) CursorTimer = 0;                // used to control cursor blink rate
         if(CFuncmSec) CallCFuncmSec();                                  // the 1mS tick for CFunctions (see CFunction.c)
         if(InterruptUsed) {
             int i;
-            for(i = 0; i < NBRSETTICKS; i++) if(TickActive[i])TickTimer[i]++;			// used in the interrupt tick
+            for(i = 0; i < NBRSETTICKS; i++) if(TickActive[i])TickTimer[i]++;                        // used in the interrupt tick
          }
         if(WDTimer) {
             if(--WDTimer == 0) {
@@ -845,13 +845,13 @@ bool __not_in_flash_func(timer_callback)(repeating_timer_t *rt)
         ElapsedMicroSec = readIRclock();
         if(IrState > IR_WAIT_START && ElapsedMicroSec > 15000) IrReset();
         IrCmdTmp = -1;
-        
+
         // check for any Sony IR receive activity
         if(IrState == SONY_WAIT_BIT_START && ElapsedMicroSec > 2800 && (IrCount == 12 || IrCount == 15 || IrCount == 20)) {
             IrDevTmp = ((IrBits >> 7) & 0b11111);
             IrCmdTmp = (IrBits & 0b1111111) | ((IrBits >> 5) & ~0b1111111);
         }
-        
+
         // check for any NEC IR receive activity
         if(IrState == NEC_WAIT_BIT_END && IrCount == 32) {
             // check if it is a NON extended address and adjust if it is
@@ -911,10 +911,10 @@ bool __not_in_flash_func(timer_callback)(repeating_timer_t *rt)
         IrReset();
     }
     IrTick++;
-	if(ExtCurrentConfig[Option.INT1pin] == EXT_PER_IN) INT1Count++;
-	if(ExtCurrentConfig[Option.INT2pin] == EXT_PER_IN) INT2Count++;
-	if(ExtCurrentConfig[Option.INT3pin] == EXT_PER_IN) INT3Count++;
-	if(ExtCurrentConfig[Option.INT4pin] == EXT_PER_IN) INT4Count++;
+        if(ExtCurrentConfig[Option.INT1pin] == EXT_PER_IN) INT1Count++;
+        if(ExtCurrentConfig[Option.INT2pin] == EXT_PER_IN) INT2Count++;
+        if(ExtCurrentConfig[Option.INT3pin] == EXT_PER_IN) INT3Count++;
+        if(ExtCurrentConfig[Option.INT4pin] == EXT_PER_IN) INT4Count++;
     if(ExtCurrentConfig[Option.INT1pin] == EXT_FREQ_IN && --INT1Timer <= 0) { INT1Value = INT1Count; INT1Count = 0; INT1Timer = INT1InitTimer; }
     if(ExtCurrentConfig[Option.INT2pin] == EXT_FREQ_IN && --INT2Timer <= 0) { INT2Value = INT2Count; INT2Count = 0; INT2Timer = INT2InitTimer; }
     if(ExtCurrentConfig[Option.INT3pin] == EXT_FREQ_IN && --INT3Timer <= 0) { INT3Value = INT3Count; INT3Count = 0; INT3Timer = INT3InitTimer; }
@@ -922,7 +922,7 @@ bool __not_in_flash_func(timer_callback)(repeating_timer_t *rt)
 
     ////////////////////////////////// this code runs once a second /////////////////////////////////
     if(++SecondsTimer >= 1000) {
-        SecondsTimer -= 1000; 
+        SecondsTimer -= 1000;
         if(ExtCurrentConfig[PinDef[HEARTBEATpin].pin]==EXT_HEARTBEAT)gpio_xor_mask(1<<PinDef[HEARTBEATpin].GPno);
             // keep track of the time and date
         if(++second >= 60) {
@@ -999,19 +999,19 @@ void PIntBC(unsigned long long int n) {
 }
 
 void PFlt(MMFLOAT flt){
-	   char s[20];
-	   FloatToStr(s, flt, 4,4, ' ');
-	    MMPrintString(s);
+           char s[20];
+           FloatToStr(s, flt, 4,4, ' ');
+            MMPrintString(s);
 }
 void PFltComma(MMFLOAT n) {
     MMPrintString(", "); PFlt(n);
 }
 void sigbus(void){
     MMPrintString("Error: Invalid address - resetting\r\n");
-	uSec(250000);
-	disable_interrupts();
-	flash_range_erase(PROGSTART, MAX_PROG_SIZE);
-	enable_interrupts();
+        uSec(250000);
+        disable_interrupts();
+        flash_range_erase(PROGSTART, MAX_PROG_SIZE);
+        enable_interrupts();
     memset(inpbuf,0,STRINGSIZE);
     SoftReset();
 }
@@ -1052,16 +1052,16 @@ void sigbus(void){
 //
 // We want reach 25.175 pixel clock (at 640x480). Default system clock is 125 MHz, which is
 // approx. 5x pixel clock. We need 25.175*5 = 125.875 MHz. We use nearest frequency 126 MHz.
-//	126000, 1512000, 126, 6, 2,     // 126.00MHz, VC0=1512MHz, FBDIV=126, PD1=6, PD2=2
-//	126000, 504000, 42, 4, 1,       // 126.00MHz, VC0=504MHz, FBDIV=42, PD1=4, PD2=1
-//	sysclk=126.000000 MHz, vco=504 MHz, fbdiv=42, pd1=4, pd2=1
-//	sysclk=126.000000 MHz, vco=504 MHz, fbdiv=42, pd1=2, pd2=2
-//	sysclk=126.000000 MHz, vco=756 MHz, fbdiv=63, pd1=6, pd2=1
-//	sysclk=126.000000 MHz, vco=756 MHz, fbdiv=63, pd1=3, pd2=2
-//	sysclk=126.000000 MHz, vco=1008 MHz, fbdiv=84, pd1=4, pd2=2 !!!!!
-//	sysclk=126.000000 MHz, vco=1260 MHz, fbdiv=105, pd1=5, pd2=2
-//	sysclk=126.000000 MHz, vco=1512 MHz, fbdiv=126, pd1=6, pd2=2
-//	sysclk=126.000000 MHz, vco=1512 MHz, fbdiv=126, pd1=4, pd2=3
+//        126000, 1512000, 126, 6, 2,     // 126.00MHz, VC0=1512MHz, FBDIV=126, PD1=6, PD2=2
+//        126000, 504000, 42, 4, 1,       // 126.00MHz, VC0=504MHz, FBDIV=42, PD1=4, PD2=1
+//        sysclk=126.000000 MHz, vco=504 MHz, fbdiv=42, pd1=4, pd2=1
+//        sysclk=126.000000 MHz, vco=504 MHz, fbdiv=42, pd1=2, pd2=2
+//        sysclk=126.000000 MHz, vco=756 MHz, fbdiv=63, pd1=6, pd2=1
+//        sysclk=126.000000 MHz, vco=756 MHz, fbdiv=63, pd1=3, pd2=2
+//        sysclk=126.000000 MHz, vco=1008 MHz, fbdiv=84, pd1=4, pd2=2 !!!!!
+//        sysclk=126.000000 MHz, vco=1260 MHz, fbdiv=105, pd1=5, pd2=2
+//        sysclk=126.000000 MHz, vco=1512 MHz, fbdiv=126, pd1=6, pd2=2
+//        sysclk=126.000000 MHz, vco=1512 MHz, fbdiv=126, pd1=4, pd2=3
 // Pixel clock is now:
 //      5 system clock ticks per pixel at VGA ... pixel clock = 25.2 MHz, 0.039683 us per pixel
 //     10 system clock ticks per pixel at QVGA ... pixel clock = 12.6 MHz, 0.079365 us per pixel
@@ -1090,23 +1090,23 @@ void sigbus(void){
 // display frame buffer
 
 // pointer to current frame buffer
-uint QVGAOff;	// offset of QVGA PIO program
+uint QVGAOff;        // offset of QVGA PIO program
 
 // Scanline data buffers (commands sent to PIO)
-uint32_t ScanLineImg[3];	// image: HSYNC ... back porch ... image command
-uint32_t ScanLineFp;		// front porch
-uint32_t ScanLineDark[2];	// dark: HSYNC ... back porch + dark + front porch
-uint32_t ScanLineSync[2];	// vertical sync: VHSYNC ... VSYNC(back porch + dark + front porch)
+uint32_t ScanLineImg[3];        // image: HSYNC ... back porch ... image command
+uint32_t ScanLineFp;                // front porch
+uint32_t ScanLineDark[2];        // dark: HSYNC ... back porch + dark + front porch
+uint32_t ScanLineSync[2];        // vertical sync: VHSYNC ... VSYNC(back porch + dark + front porch)
 
 // Scanline control buffers
-#define CB_MAX 8	// size of one scanline control buffer (1 link to data buffer requires 2x uint32_t)
+#define CB_MAX 8        // size of one scanline control buffer (1 link to data buffer requires 2x uint32_t)
 uint32_t ScanLineCB[2*CB_MAX]; // 2 control buffers
-int QVgaBufInx;		// current running control buffer
-uint32_t* ScanLineCBNext;	// next control buffer
+int QVgaBufInx;                // current running control buffer
+uint32_t* ScanLineCBNext;        // next control buffer
 
 // handler variables
 volatile int QVgaScanLine; // current processed scan line 0... (next displayed scan line)
-volatile uint32_t QVgaFrame;	// frame counter
+volatile uint32_t QVgaFrame;        // frame counter
 uint16_t fbuff[2][160]={0};
 
 // saved integer divider state
@@ -1114,55 +1114,55 @@ uint16_t fbuff[2][160]={0};
 void __not_in_flash_func(QVgaLine0)()
 {
     static int nextbuf=0,nowbuf=1,i,line,bufinx;
-	// Clear the interrupt request for DMA control channel
-	dma_hw->ints0 = (1u << QVGA_DMA_PIO);
+        // Clear the interrupt request for DMA control channel
+        dma_hw->ints0 = (1u << QVGA_DMA_PIO);
 
-	// update DMA control channel and run it
-	dma_channel_set_read_addr(QVGA_DMA_CB, ScanLineCBNext, true);
+        // update DMA control channel and run it
+        dma_channel_set_read_addr(QVGA_DMA_CB, ScanLineCBNext, true);
 
-	// save integer divider state
-//	hw_divider_save_state(&SaveDividerState);
+        // save integer divider state
+//        hw_divider_save_state(&SaveDividerState);
 
-	// switch current buffer index (bufinx = current preparing buffer, MiniVgaBufInx = current running buffer)
-	bufinx = QVgaBufInx;
-	QVgaBufInx = bufinx ^ 1;
+        // switch current buffer index (bufinx = current preparing buffer, MiniVgaBufInx = current running buffer)
+        bufinx = QVgaBufInx;
+        QVgaBufInx = bufinx ^ 1;
 
-	// prepare control buffer to be processed
-	uint32_t* cb = &ScanLineCB[bufinx*CB_MAX];
-	ScanLineCBNext = cb;
+        // prepare control buffer to be processed
+        uint32_t* cb = &ScanLineCB[bufinx*CB_MAX];
+        ScanLineCBNext = cb;
 
-	// increment scanline (1..)
-	line = QVgaScanLine; // current scanline
-	line++; 		// new current scanline
-	if (line >= QVGA_VTOT) // last scanline?
-	{
-		QVgaFrame++;	// increment frame counter
-		line = 0; 	// restart scanline
-	}
-	QVgaScanLine = line;	// store new scanline
+        // increment scanline (1..)
+        line = QVgaScanLine; // current scanline
+        line++;                 // new current scanline
+        if (line >= QVGA_VTOT) // last scanline?
+        {
+                QVgaFrame++;        // increment frame counter
+                line = 0;         // restart scanline
+        }
+        QVgaScanLine = line;        // store new scanline
 
-	// check scanline
-	line -= QVGA_VSYNC;
-	if (line < 0)
-	{
-		// VSYNC
-		*cb++ = 2;
-		*cb++ = (uint32_t)&ScanLineSync[0];
-	}
-	else
-	{
-		// front porch and back porch
-		line -= QVGA_VBACK;
-		if ((line < 0) || (line >= QVGA_VACT))
-		{
-			// dark line
-			*cb++ = 2;
-			*cb++ = (uint32_t)&ScanLineDark[0];
-		}
+        // check scanline
+        line -= QVGA_VSYNC;
+        if (line < 0)
+        {
+                // VSYNC
+                *cb++ = 2;
+                *cb++ = (uint32_t)&ScanLineSync[0];
+        }
+        else
+        {
+                // front porch and back porch
+                line -= QVGA_VBACK;
+                if ((line < 0) || (line >= QVGA_VACT))
+                {
+                        // dark line
+                        *cb++ = 2;
+                        *cb++ = (uint32_t)&ScanLineDark[0];
+                }
 
-		// image scanlines
-		else
-		{
+                // image scanlines
+                else
+                {
         // prepare image line
             if(DISPLAY_TYPE==MONOVGA){
                 int ytile=line>>4;
@@ -1188,80 +1188,80 @@ void __not_in_flash_func(QVgaLine0)()
                 nextbuf=1;nowbuf=0;
             }
 
-			// HSYNC ... back porch ... image command
-			*cb++ = 3;
-			*cb++ = (uint32_t)&ScanLineImg[0];
+                        // HSYNC ... back porch ... image command
+                        *cb++ = 3;
+                        *cb++ = (uint32_t)&ScanLineImg[0];
 
-			// image data
-			*cb++ = 80;
-			*cb++ = (uint32_t)fbuff[nowbuf];
+                        // image data
+                        *cb++ = 80;
+                        *cb++ = (uint32_t)fbuff[nowbuf];
 
-			// front porch
-			*cb++ = 1;
-			*cb++ = (uint32_t)&ScanLineFp;
-		}
-	}
+                        // front porch
+                        *cb++ = 1;
+                        *cb++ = (uint32_t)&ScanLineFp;
+                }
+        }
 
-	// end mark
-	*cb++ = 0;
-	*cb = 0;
+        // end mark
+        *cb++ = 0;
+        *cb = 0;
 
-	// restore integer divider state
-//	hw_divider_restore_state(&SaveDividerState);
+        // restore integer divider state
+//        hw_divider_restore_state(&SaveDividerState);
 }
 void __not_in_flash_func(QVgaLine1)()
 {
     static int nextbuf=0,nowbuf=1,i,line,bufinx;
-	// Clear the interrupt request for DMA control channel
-	dma_hw->ints0 = (1u << QVGA_DMA_PIO);
+        // Clear the interrupt request for DMA control channel
+        dma_hw->ints0 = (1u << QVGA_DMA_PIO);
 
-	// update DMA control channel and run it
-	dma_channel_set_read_addr(QVGA_DMA_CB, ScanLineCBNext, true);
+        // update DMA control channel and run it
+        dma_channel_set_read_addr(QVGA_DMA_CB, ScanLineCBNext, true);
 
-	// save integer divider state
-//	hw_divider_save_state(&SaveDividerState);
+        // save integer divider state
+//        hw_divider_save_state(&SaveDividerState);
 
-	// switch current buffer index (bufinx = current preparing buffer, MiniVgaBufInx = current running buffer)
-	bufinx = QVgaBufInx;
-	QVgaBufInx = bufinx ^ 1;
+        // switch current buffer index (bufinx = current preparing buffer, MiniVgaBufInx = current running buffer)
+        bufinx = QVgaBufInx;
+        QVgaBufInx = bufinx ^ 1;
 
-	// prepare control buffer to be processed
-	uint32_t* cb = &ScanLineCB[bufinx*CB_MAX];
-	ScanLineCBNext = cb;
+        // prepare control buffer to be processed
+        uint32_t* cb = &ScanLineCB[bufinx*CB_MAX];
+        ScanLineCBNext = cb;
 
-	// increment scanline (1..)
-	line = QVgaScanLine; // current scanline
-	line++; 		// new current scanline
-	if (line >= QVGA_VTOT) // last scanline?
-	{
-		QVgaFrame++;	// increment frame counter
-		line = 0; 	// restart scanline
-	}
-	QVgaScanLine = line;	// store new scanline
+        // increment scanline (1..)
+        line = QVgaScanLine; // current scanline
+        line++;                 // new current scanline
+        if (line >= QVGA_VTOT) // last scanline?
+        {
+                QVgaFrame++;        // increment frame counter
+                line = 0;         // restart scanline
+        }
+        QVgaScanLine = line;        // store new scanline
 
-	// check scanline
-	line -= QVGA_VSYNC;
-	if (line < 0)
-	{
-		// VSYNC
-		*cb++ = 2;
-		*cb++ = (uint32_t)&ScanLineSync[0];
-	}
-	else
-	{
-		// front porch and back porch
-		line -= QVGA_VBACK;
-		if ((line < 0) || (line >= QVGA_VACT))
-		{
-			// dark line
-			*cb++ = 2;
-			*cb++ = (uint32_t)&ScanLineDark[0];
-		}
+        // check scanline
+        line -= QVGA_VSYNC;
+        if (line < 0)
+        {
+                // VSYNC
+                *cb++ = 2;
+                *cb++ = (uint32_t)&ScanLineSync[0];
+        }
+        else
+        {
+                // front porch and back porch
+                line -= QVGA_VBACK;
+                if ((line < 0) || (line >= QVGA_VACT))
+                {
+                        // dark line
+                        *cb++ = 2;
+                        *cb++ = (uint32_t)&ScanLineDark[0];
+                }
 
-		// image scanlines
-		else
-		{
-			// prepare image line
+                // image scanlines
+                else
+                {
+                        // prepare image line
             if(DISPLAY_TYPE==MONOVGA){
                 int ytile=line>>4;
                 for(int i=0,j=0;i<80;i++,j+=2){
@@ -1290,101 +1290,101 @@ void __not_in_flash_func(QVgaLine1)()
                 nextbuf=1;nowbuf=0;
             }
 
-			// HSYNC ... back porch ... image command
-			*cb++ = 3;
-			*cb++ = (uint32_t)&ScanLineImg[0];
+                        // HSYNC ... back porch ... image command
+                        *cb++ = 3;
+                        *cb++ = (uint32_t)&ScanLineImg[0];
 
-			// image data
-			*cb++ = 80;
-			*cb++ = (uint32_t)fbuff[nowbuf];
+                        // image data
+                        *cb++ = 80;
+                        *cb++ = (uint32_t)fbuff[nowbuf];
 
-			// front porch
-			*cb++ = 1;
-			*cb++ = (uint32_t)&ScanLineFp;
-		}
-	}
+                        // front porch
+                        *cb++ = 1;
+                        *cb++ = (uint32_t)&ScanLineFp;
+                }
+        }
 
-	// end mark
-	*cb++ = 0;
-	*cb = 0;
+        // end mark
+        *cb++ = 0;
+        *cb = 0;
 
-	// restore integer divider state
-//	hw_divider_restore_state(&SaveDividerState);
+        // restore integer divider state
+//        hw_divider_restore_state(&SaveDividerState);
 }
 // initialize QVGA PIO
 void QVgaPioInit()
 {
-	int i;
+        int i;
 
-	// load PIO program
-	QVGAOff = pio_add_program(QVGA_PIO, &qvga_program);
+        // load PIO program
+        QVGAOff = pio_add_program(QVGA_PIO, &qvga_program);
 
 
-	// configure GPIOs for use by PIO
-	for (i = QVGA_GPIO_FIRST; i <= QVGA_GPIO_LAST; i++) pio_gpio_init(QVGA_PIO, i);
-	pio_gpio_init(QVGA_PIO, QVGA_GPIO_HSYNC);
-	pio_gpio_init(QVGA_PIO, QVGA_GPIO_VSYNC);
+        // configure GPIOs for use by PIO
+        for (i = QVGA_GPIO_FIRST; i <= QVGA_GPIO_LAST; i++) pio_gpio_init(QVGA_PIO, i);
+        pio_gpio_init(QVGA_PIO, QVGA_GPIO_HSYNC);
+        pio_gpio_init(QVGA_PIO, QVGA_GPIO_VSYNC);
 
-	// set pin direction to output
-	pio_sm_set_consecutive_pindirs(QVGA_PIO, QVGA_SM, QVGA_GPIO_FIRST, QVGA_GPIO_NUM, true);
-	pio_sm_set_consecutive_pindirs(QVGA_PIO, QVGA_SM, QVGA_GPIO_HSYNC, 2, true);
+        // set pin direction to output
+        pio_sm_set_consecutive_pindirs(QVGA_PIO, QVGA_SM, QVGA_GPIO_FIRST, QVGA_GPIO_NUM, true);
+        pio_sm_set_consecutive_pindirs(QVGA_PIO, QVGA_SM, QVGA_GPIO_HSYNC, 2, true);
 
-	// negate HSYNC and VSYNC output
-	gpio_set_outover(QVGA_GPIO_HSYNC, GPIO_OVERRIDE_INVERT);
-	gpio_set_outover(QVGA_GPIO_VSYNC, GPIO_OVERRIDE_INVERT);
+        // negate HSYNC and VSYNC output
+        gpio_set_outover(QVGA_GPIO_HSYNC, GPIO_OVERRIDE_INVERT);
+        gpio_set_outover(QVGA_GPIO_VSYNC, GPIO_OVERRIDE_INVERT);
 
-	// prepare default PIO program config
-	pio_sm_config cfg = qvga_program_get_default_config(QVGAOff);
+        // prepare default PIO program config
+        pio_sm_config cfg = qvga_program_get_default_config(QVGAOff);
 
-	// map state machine's OUT and MOV pins	
-	sm_config_set_out_pins(&cfg, QVGA_GPIO_FIRST, QVGA_GPIO_NUM);
+        // map state machine's OUT and MOV pins
+        sm_config_set_out_pins(&cfg, QVGA_GPIO_FIRST, QVGA_GPIO_NUM);
 
-	// set sideset pins (HSYNC and VSYNC)
-	sm_config_set_sideset_pins(&cfg, QVGA_GPIO_HSYNC);
+        // set sideset pins (HSYNC and VSYNC)
+        sm_config_set_sideset_pins(&cfg, QVGA_GPIO_HSYNC);
 
-	// join FIFO to send only
-	sm_config_set_fifo_join(&cfg, PIO_FIFO_JOIN_TX);
+        // join FIFO to send only
+        sm_config_set_fifo_join(&cfg, PIO_FIFO_JOIN_TX);
 
-	// PIO clock divider
-	sm_config_set_clkdiv(&cfg, QVGA_CLKDIV);
+        // PIO clock divider
+        sm_config_set_clkdiv(&cfg, QVGA_CLKDIV);
 
-	// shift right, autopull, pull threshold
-	sm_config_set_out_shift(&cfg, true, true, 32);
+        // shift right, autopull, pull threshold
+        sm_config_set_out_shift(&cfg, true, true, 32);
 
-	// initialize state machine
-	pio_sm_init(QVGA_PIO, QVGA_SM, QVGAOff+qvga_offset_entry, &cfg);
+        // initialize state machine
+        pio_sm_init(QVGA_PIO, QVGA_SM, QVGAOff+qvga_offset_entry, &cfg);
 }
 
 // initialize scanline buffers
 void QVgaBufInit()
 {
-	// image scanline data buffer: HSYNC ... back porch ... image command
-	ScanLineImg[0] = QVGACMD(qvga_offset_hsync, QVGA_HSYNC-3); // HSYNC
-	ScanLineImg[1] = QVGACMD(qvga_offset_dark, QVGA_BP-4); // back porch
-	ScanLineImg[2] = QVGACMD(qvga_offset_output, 640-2); // image
+        // image scanline data buffer: HSYNC ... back porch ... image command
+        ScanLineImg[0] = QVGACMD(qvga_offset_hsync, QVGA_HSYNC-3); // HSYNC
+        ScanLineImg[1] = QVGACMD(qvga_offset_dark, QVGA_BP-4); // back porch
+        ScanLineImg[2] = QVGACMD(qvga_offset_output, 640-2); // image
 
-	// front porch
-	ScanLineFp = QVGACMD(qvga_offset_dark, QVGA_FP-4); // front porch
+        // front porch
+        ScanLineFp = QVGACMD(qvga_offset_dark, QVGA_FP-4); // front porch
 
-	// dark scanline: HSYNC ... back porch + dark + front porch
-	ScanLineDark[0] = QVGACMD(qvga_offset_hsync, QVGA_HSYNC-3); // HSYNC
-	ScanLineDark[1] = QVGACMD(qvga_offset_dark, QVGA_TOTAL-QVGA_HSYNC-4); // back porch + dark + front porch
+        // dark scanline: HSYNC ... back porch + dark + front porch
+        ScanLineDark[0] = QVGACMD(qvga_offset_hsync, QVGA_HSYNC-3); // HSYNC
+        ScanLineDark[1] = QVGACMD(qvga_offset_dark, QVGA_TOTAL-QVGA_HSYNC-4); // back porch + dark + front porch
 
-	// vertical sync: VHSYNC ... VSYNC(back porch + dark + front porch)
-	ScanLineSync[0] = QVGACMD(qvga_offset_vhsync, QVGA_HSYNC-3); // VHSYNC
-	ScanLineSync[1] = QVGACMD(qvga_offset_vsync, QVGA_TOTAL-QVGA_HSYNC-3); // VSYNC(back porch + dark + front porch)
+        // vertical sync: VHSYNC ... VSYNC(back porch + dark + front porch)
+        ScanLineSync[0] = QVGACMD(qvga_offset_vhsync, QVGA_HSYNC-3); // VHSYNC
+        ScanLineSync[1] = QVGACMD(qvga_offset_vsync, QVGA_TOTAL-QVGA_HSYNC-3); // VSYNC(back porch + dark + front porch)
 
-	// control buffer 1 - initialize to VSYNC
-	ScanLineCB[0] = 2; // send 2x uint32_t (send ScanLineSync)
-	ScanLineCB[1] = (uint32_t)&ScanLineSync[0]; // VSYNC data buffer
-	ScanLineCB[2] = 0; // stop mark
-	ScanLineCB[3] = 0; // stop mark
+        // control buffer 1 - initialize to VSYNC
+        ScanLineCB[0] = 2; // send 2x uint32_t (send ScanLineSync)
+        ScanLineCB[1] = (uint32_t)&ScanLineSync[0]; // VSYNC data buffer
+        ScanLineCB[2] = 0; // stop mark
+        ScanLineCB[3] = 0; // stop mark
 
-	// control buffer 1 - initialize to VSYNC
-	ScanLineCB[CB_MAX+0] = 2; // send 2x uint32_t (send ScanLineSync)
-	ScanLineCB[CB_MAX+1] = (uint32_t)&ScanLineSync[0]; // VSYNC data buffer
-	ScanLineCB[CB_MAX+2] = 0; // stop mark
-	ScanLineCB[CB_MAX+3] = 0; // stop mark
+        // control buffer 1 - initialize to VSYNC
+        ScanLineCB[CB_MAX+0] = 2; // send 2x uint32_t (send ScanLineSync)
+        ScanLineCB[CB_MAX+1] = (uint32_t)&ScanLineSync[0]; // VSYNC data buffer
+        ScanLineCB[CB_MAX+2] = 0; // stop mark
+        ScanLineCB[CB_MAX+3] = 0; // stop mark
 }
 
 // initialize QVGA DMA
@@ -1399,105 +1399,105 @@ void QVgaDmaInit()
 
 // ==== prepare DMA control channel
     dma_channel_claim (QVGA_DMA_CB);
-	// prepare DMA default config
-	dma_channel_config cfg = dma_channel_get_default_config(QVGA_DMA_CB);
+        // prepare DMA default config
+        dma_channel_config cfg = dma_channel_get_default_config(QVGA_DMA_CB);
 
-	// increment address on read from memory
-	channel_config_set_read_increment(&cfg, true);
+        // increment address on read from memory
+        channel_config_set_read_increment(&cfg, true);
 
-	// increment address on write to DMA port
-	channel_config_set_write_increment(&cfg, true);
+        // increment address on write to DMA port
+        channel_config_set_write_increment(&cfg, true);
 
-	// each DMA transfered entry is 32-bits
-	channel_config_set_transfer_data_size(&cfg, DMA_SIZE_32);
+        // each DMA transfered entry is 32-bits
+        channel_config_set_transfer_data_size(&cfg, DMA_SIZE_32);
 
-	// write ring - wrap to 8-byte boundary (TRANS_COUNT and READ_ADDR_TRIG of data DMA)
-	channel_config_set_ring(&cfg, true, 3);
+        // write ring - wrap to 8-byte boundary (TRANS_COUNT and READ_ADDR_TRIG of data DMA)
+        channel_config_set_ring(&cfg, true, 3);
 
-	// DMA configure
-	dma_channel_configure(
-		QVGA_DMA_CB,		// channel
-		&cfg,			// configuration
-		&dma_hw->ch[QVGA_DMA_PIO].al3_transfer_count, // write address
-		&ScanLineCB[0],		// read address - as first, control buffer 1 will be sent out
-		2,			// number of transfers in uint32_t (number of transfers per one request from data DMA)
-		false			// do not start yet
-	);
+        // DMA configure
+        dma_channel_configure(
+                QVGA_DMA_CB,                // channel
+                &cfg,                        // configuration
+                &dma_hw->ch[QVGA_DMA_PIO].al3_transfer_count, // write address
+                &ScanLineCB[0],                // read address - as first, control buffer 1 will be sent out
+                2,                        // number of transfers in uint32_t (number of transfers per one request from data DMA)
+                false                        // do not start yet
+        );
 
 // ==== prepare DMA data channel
 
-	// prepare DMA default config
-	cfg = dma_channel_get_default_config(QVGA_DMA_PIO);
+        // prepare DMA default config
+        cfg = dma_channel_get_default_config(QVGA_DMA_PIO);
 
-	// increment address on read from memory
-	channel_config_set_read_increment(&cfg, true);
+        // increment address on read from memory
+        channel_config_set_read_increment(&cfg, true);
 
-	// do not increment address on write to PIO
-	channel_config_set_write_increment(&cfg, false);
+        // do not increment address on write to PIO
+        channel_config_set_write_increment(&cfg, false);
 
-	// each DMA transfered entry is 32-bits
-	channel_config_set_transfer_data_size(&cfg, DMA_SIZE_32);
+        // each DMA transfered entry is 32-bits
+        channel_config_set_transfer_data_size(&cfg, DMA_SIZE_32);
 
-	// DMA data request for sending data to PIO
-	channel_config_set_dreq(&cfg, pio_get_dreq(QVGA_PIO, QVGA_SM, true));
+        // DMA data request for sending data to PIO
+        channel_config_set_dreq(&cfg, pio_get_dreq(QVGA_PIO, QVGA_SM, true));
 
-	// chain channel to DMA control block
-	channel_config_set_chain_to(&cfg, QVGA_DMA_CB);
+        // chain channel to DMA control block
+        channel_config_set_chain_to(&cfg, QVGA_DMA_CB);
 
-	// raise the IRQ flag when 0 is written to a trigger register (end of chain)
-	channel_config_set_irq_quiet(&cfg, true);
+        // raise the IRQ flag when 0 is written to a trigger register (end of chain)
+        channel_config_set_irq_quiet(&cfg, true);
 
-	// set high priority
-	cfg.ctrl |= DMA_CH0_CTRL_TRIG_HIGH_PRIORITY_BITS;
+        // set high priority
+        cfg.ctrl |= DMA_CH0_CTRL_TRIG_HIGH_PRIORITY_BITS;
 
-	// DMA configure
-	dma_channel_configure(
-		QVGA_DMA_PIO,		// channel
-		&cfg,			// configuration
-		&QVGA_PIO->txf[QVGA_SM], // write address
-		NULL,			// read address
-		0,			// number of transfers in uint32_t
-		false			// do not start immediately
-	);
+        // DMA configure
+        dma_channel_configure(
+                QVGA_DMA_PIO,                // channel
+                &cfg,                        // configuration
+                &QVGA_PIO->txf[QVGA_SM], // write address
+                NULL,                        // read address
+                0,                        // number of transfers in uint32_t
+                false                        // do not start immediately
+        );
 
 // ==== initialize IRQ0, raised from DMA data channel
 
-	// enable DMA channel IRQ0
-	dma_channel_set_irq0_enabled(QVGA_DMA_PIO, true);
+        // enable DMA channel IRQ0
+        dma_channel_set_irq0_enabled(QVGA_DMA_PIO, true);
 
-	// set DMA IRQ handler
+        // set DMA IRQ handler
     if(Option.CPU_Speed==126000)irq_set_exclusive_handler(DMA_IRQ_0, QVgaLine0);
     else irq_set_exclusive_handler(DMA_IRQ_0, QVgaLine1);
-	// set highest IRQ priority
-	irq_set_priority(DMA_IRQ_0, 0);
+        // set highest IRQ priority
+        irq_set_priority(DMA_IRQ_0, 0);
 }
 
 // initialize QVGA (can change system clock)
 void QVgaInit()
 {
-	// initialize PIO
-	QVgaPioInit();
+        // initialize PIO
+        QVgaPioInit();
 
-	// initialize scanline buffers
-	QVgaBufInit();
+        // initialize scanline buffers
+        QVgaBufInit();
 
-	// initialize DMA
-	QVgaDmaInit();
+        // initialize DMA
+        QVgaDmaInit();
 
-	// initialize parameters
-	QVgaScanLine = 0; // currently processed scanline
-	QVgaBufInx = 0; // at first, control buffer 1 will be sent out
-	QVgaFrame = 0; // current frame
-	ScanLineCBNext = &ScanLineCB[CB_MAX]; // send control buffer 2 next
+        // initialize parameters
+        QVgaScanLine = 0; // currently processed scanline
+        QVgaBufInx = 0; // at first, control buffer 1 will be sent out
+        QVgaFrame = 0; // current frame
+        ScanLineCBNext = &ScanLineCB[CB_MAX]; // send control buffer 2 next
 
-	// enable DMA IRQ
-	irq_set_enabled(DMA_IRQ_0, true);
+        // enable DMA IRQ
+        irq_set_enabled(DMA_IRQ_0, true);
 
-	// start DMA
-	dma_channel_start(QVGA_DMA_CB);
+        // start DMA
+        dma_channel_start(QVGA_DMA_CB);
 
-	// run state machine
-	pio_sm_set_enabled(QVGA_PIO, QVGA_SM, true);
+        // run state machine
+        pio_sm_set_enabled(QVGA_PIO, QVGA_SM, true);
 }
 
 void (* volatile Core1Fnc)() = NULL; // core 1 remote function
@@ -1505,14 +1505,14 @@ void (* volatile Core1Fnc)() = NULL; // core 1 remote function
 // QVGA core
 void __not_in_flash_func(QVgaCore)()
 {
-	// initialize QVGA
-	QVgaInit();
+        // initialize QVGA
+        QVgaInit();
 
-	// infinite loop
-	while (true)
-	{
-		// data memory barrier
-		__dmb();
+        // infinite loop
+        while (true)
+        {
+                // data memory barrier
+                __dmb();
         if (multicore_fifo_rvalid()) {
             int command=multicore_fifo_pop_blocking();
             if(command==0x5555){
@@ -1521,7 +1521,7 @@ void __not_in_flash_func(QVgaCore)()
             if(command==0xAAAA){
                 irq_set_enabled(DMA_IRQ_0, true);
             }
-        } 
+        }
     }
 }
 uint32_t core1stack[64];
@@ -1571,7 +1571,7 @@ int main(){
     // the UART etc.
     stdio_set_translate_crlf(&stdio_usb, false);
     LoadOptions();
-	stdio_init_all();
+        stdio_init_all();
     adc_init();
     adc_set_temp_sensor_enabled(true);
     add_repeating_timer_us(-1000, timer_callback, NULL, &timer);
@@ -1583,12 +1583,12 @@ int main(){
     ConsoleRxBufTail = 0;
     ConsoleTxBufHead = 0;
     ConsoleTxBufTail = 0;
-    InitHeap();              										// initilise memory allocation
+    InitHeap();                                                                                              // initilise memory allocation
     uSecFunc(10);
     DISPLAY_TYPE = Option.DISPLAY_TYPE;
     // negative timeout means exact delay (rather than delay between callbacks)
-	OptionErrorSkip = false;
-	InitBasic();
+        OptionErrorSkip = false;
+        InitBasic();
 #ifndef PICOMITEVGA
     InitDisplaySSD();
     InitDisplaySPI(0);
@@ -1601,7 +1601,7 @@ int main(){
     while((i=getConsole())!=-1){}
 #ifdef PICOMITEVGA
     multicore_launch_core1_with_stack(QVgaCore,core1stack,256);
-	memset(WriteBuf, 0, 38400);
+        memset(WriteBuf, 0, 38400);
     if(Option.DISPLAY_TYPE!=MONOVGA)ClearScreen(Option.DefaultBC);
 #endif
     if(!(_excep_code == RESTART_NOAUTORUN || _excep_code == WATCHDOG_TIMEOUT)){
@@ -1611,7 +1611,7 @@ int main(){
             if(Option.Autorun!=MAXFLASHSLOTS+1){
                 ProgMemory=(char *)(flash_target_contents+(Option.Autorun-1)*MAX_PROG_SIZE);
             }
-            if(*ProgMemory != 0x01 ) MMPrintString(MES_SIGNON); 
+            if(*ProgMemory != 0x01 ) MMPrintString(MES_SIGNON);
         }
     }
     if(_excep_code == WATCHDOG_TIMEOUT) {
@@ -1624,14 +1624,14 @@ int main(){
         SaveOptions();
         MMPrintString("RTC not found, OPTION RTC AUTO disabled\r\n");
     }
- 	*tknbuf = 0;
+         *tknbuf = 0;
      ContinuePoint = nextstmt;                               // in case the user wants to use the continue command
-	if(setjmp(mark) != 0) {
+        if(setjmp(mark) != 0) {
      // we got here via a long jump which means an error or CTRL-C or the program wants to exit to the command prompt
         ScrewUpTimer = 0;
         ProgMemory=(uint8_t *)flash_progmemory;
         ContinuePoint = nextstmt;                               // in case the user wants to use the continue command
-		*tknbuf = 0;											// we do not want to run whatever is in the token buffer
+                *tknbuf = 0;                                                                                        // we do not want to run whatever is in the token buffer
     } else {
         if(*ProgMemory == 0x01 ) ClearVars(0);
         else {
@@ -1643,11 +1643,11 @@ int main(){
             ClearRuntime();
             PrepareProgram(true);
             if(*ProgMemory == 0x01 ){
-                ExecuteProgram(ProgMemory);  
+                ExecuteProgram(ProgMemory);
             }  else {
                 Option.Autorun=0;
                 SaveOptions();
-            }       
+            }
         }
     }
     while(1) {
@@ -1694,20 +1694,20 @@ int main(){
         InsertLastcmd(inpbuf);                                  // save in case we want to edit it later
 //        MMgetline(0, inpbuf);                                       // get the input
         if(!*inpbuf) continue;                                      // ignore an empty line
-	  char *p=inpbuf;
-	  skipspace(p);
-	  if(*p=='*'){ //shortform RUN command so convert to a normal version
-		  memmove(&p[4],&p[0],strlen(p)+1);
-		  p[0]='R';p[1]='U';p[2]='N';p[3]='$';p[4]=34;
-		  char  *q;
-		  if((q=strchr(p,' ')) != 0){ //command line after the filename
-			  *q=','; //chop the command at the first space character
-			  memmove(&q[1],&q[0],strlen(q)+1);
-			  q[0]=34;
-		  } else strcat(p,"\"");
-		  p[3]=' ';
-//		  PRet();MMPrintString(inpbuf);PRet();
-	  }
+          char *p=inpbuf;
+          skipspace(p);
+          if(*p=='*'){ //shortform RUN command so convert to a normal version
+                  memmove(&p[4],&p[0],strlen(p)+1);
+                  p[0]='R';p[1]='U';p[2]='N';p[3]='$';p[4]=34;
+                  char  *q;
+                  if((q=strchr(p,' ')) != 0){ //command line after the filename
+                          *q=','; //chop the command at the first space character
+                          memmove(&q[1],&q[0],strlen(q)+1);
+                          q[0]=34;
+                  } else strcat(p,"\"");
+                  p[3]=' ';
+//                  PRet();MMPrintString(inpbuf);PRet();
+          }
         tokenise(true);                                             // turn into executable code
         if (setjmp(jmprun) != 0) {
             PrepareProgram(false);
@@ -1715,7 +1715,7 @@ int main(){
         }
         ExecuteProgram(tknbuf);                                     // execute the line straight away
         memset(inpbuf,0,STRINGSIZE);
-	}
+        }
 }
 
 // takes a pointer to RAM containing a program (in clear text) and writes it to memory in tokenised format
@@ -1777,7 +1777,7 @@ void SaveProgramToFlash(unsigned char *pm, int msg) {
     realflashsave= realflashpointer;
     p = (char *)flash_progmemory;                                              // start scanning program memory
     while(*p != 0xff) {
-    	nbr++;
+            nbr++;
         if(*p == 0) p++;                                            // if it is at the end of an element skip the zero marker
         if(*p == 0) break;                                          // end of the program
         if(*p == T_NEWLINE) {
@@ -1820,7 +1820,7 @@ void SaveProgramToFlash(unsigned char *pm, int msg) {
                  if(!isnamestart((uint8_t)*p)){
                     error("Function name");
                     enable_interrupts();
-                 }  
+                 }
                  do { p++; } while(isnamechar((uint8_t)*p));
                  skipspace(p);
                  if(!(isxdigit((uint8_t)p[0]) && isxdigit((uint8_t)p[1]) && isxdigit((uint8_t)p[2]))) {
@@ -1853,8 +1853,8 @@ void SaveProgramToFlash(unsigned char *pm, int msg) {
                      realflashpointer+=4;
                      skipspace(p);
                      if(firsthex){
-                    	 firsthex=0;
-                    	 if(((n>>16) & 0xff) < 0x20){
+                             firsthex=0;
+                             if(((n>>16) & 0xff) < 0x20){
                             enable_interrupts();
                             error("Can't define non-printing characters");
                          }
@@ -1882,7 +1882,7 @@ void SaveProgramToFlash(unsigned char *pm, int msg) {
     updatecount=0;
     p = (char *)flash_progmemory;                                              // start scanning program memory
      while(*p != 0xff) {
-     	nbr++;
+             nbr++;
          if(*p == 0) p++;                                            // if it is at the end of an element skip the zero marker
          if(*p == 0) break;                                          // end of the program
          if(*p == T_NEWLINE) {

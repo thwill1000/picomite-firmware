@@ -4,22 +4,22 @@ PicoMite MMBasic
 Operators.c
 
 <COPYRIGHT HOLDERS>  Geoff Graham, Peter Mather
-Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved. 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 
-1.	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-2.	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
+Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+1.        Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2.        Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
     in the documentation and/or other materials provided with the distribution.
-3.	The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed 
+3.        The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed
     on the console at startup (additional copyright messages may be added).
-4.	All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed 
+4.        All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed
     by the <copyright holder>.
-5.	Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software 
+5.        Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software
     without specific prior written permission.
 THIS SOFTWARE IS PROVIDED BY <COPYRIGHT HOLDERS> AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ************************************************************************************************************************/
 
@@ -54,7 +54,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 
 
 void  __not_in_flash_func(op_invalid)(void) {
-	error("Syntax error");
+        error("Syntax error");
 }
 
 
@@ -97,25 +97,25 @@ void  __not_in_flash_func(op_divint)(void) {
 
 
 void  __not_in_flash_func(op_add)(void) {
-	if(targ & T_NBR)
-		fret = farg1 + farg2;
-	else if(targ & T_INT)
-		iret = iarg1 + iarg2;
+        if(targ & T_NBR)
+                fret = farg1 + farg2;
+        else if(targ & T_INT)
+                iret = iarg1 + iarg2;
     else {
-		if(*sarg1 + *sarg2 > MAXSTRLEN) error("String too long");
-		sret = GetTempMemory(STRINGSIZE);								// this will last for the life of the command
-		Mstrcpy(sret, sarg1);
-		Mstrcat(sret, sarg2);
-	}
+                if(*sarg1 + *sarg2 > MAXSTRLEN) error("String too long");
+                sret = GetTempMemory(STRINGSIZE);                                                                // this will last for the life of the command
+                Mstrcpy(sret, sarg1);
+                Mstrcat(sret, sarg2);
+        }
 }
 
 
 
 void  __not_in_flash_func(op_subtract)(void) {
-	if(targ & T_NBR)
-		fret = farg1 - farg2;
-	else
-		iret = iarg1 - iarg2;
+        if(targ & T_NBR)
+                fret = farg1 - farg2;
+        else
+                iret = iarg1 - iarg2;
 }
 
 
@@ -130,7 +130,7 @@ long long int  __not_in_flash_func(compare)(void) {
     long long int  r;
     MMFLOAT f;
     if(targ & T_NBR) {
-		f = farg1 - farg2;
+                f = farg1 - farg2;
         if(f > 0)
             r = 1;
         else if(f < 0)
@@ -138,12 +138,12 @@ long long int  __not_in_flash_func(compare)(void) {
         else
             r = 0;
     }
-	else
+        else
         if(targ & T_INT)
             r = iarg1 - iarg2;
         else
             r = Mstrcmp(sarg1, sarg2);
-     targ = T_INT;									// always return an float, even if the args are string
+     targ = T_INT;                                                                        // always return an float, even if the args are string
      return r;
 }
 
@@ -212,12 +212,12 @@ void  __not_in_flash_func(op_xor)(void) {
 
 
 void  __not_in_flash_func(op_not)(void){
-	// don't do anything, just a place holder
-	error("Syntax error");
+        // don't do anything, just a place holder
+        error("Syntax error");
 }
 
 void  __not_in_flash_func(op_inv)(void){
-	// don't do anything, just a place holder
-	error("Syntax error");
+        // don't do anything, just a place holder
+        error("Syntax error");
 }
 

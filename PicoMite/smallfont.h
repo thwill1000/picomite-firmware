@@ -3,8 +3,8 @@
 // Font size    : 32x50 pixels
 // Memory usage : 2204 bytes
 
-	#define PROGMEM
-	
+        #define PROGMEM
+
 
 uint32_t TinyFont[] ={
 0x60200604,

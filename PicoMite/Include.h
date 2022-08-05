@@ -22,7 +22,7 @@ typedef unsigned char Bool;
 #endif
 
 // I/O port prefix
-#define __IO	volatile
+#define __IO        volatile
 
 // request to use inline
 #define INLINE __attribute__((always_inline)) inline
@@ -41,11 +41,11 @@ typedef unsigned char Bool;
 
 // nop instruction
 INLINE void nop()
-	{ __asm volatile (" nop\n"); }
+        { __asm volatile (" nop\n"); }
 
 // compiler barrier
 INLINE void cb()
-	{ __asm volatile ("" ::: "memory"); }
+        { __asm volatile ("" ::: "memory"); }
 
 // ----------------------------------------------------------------------------
 //                               Constants
@@ -83,7 +83,7 @@ INLINE void cb()
 #include "hardware/irq.h"
 #include "hardware/pio.h"
 #include "PicoMiteVGA.pio.h"
-#include "class/cdc/cdc_device.h" 
+#include "class/cdc/cdc_device.h"
 
 
 // ****************************************************************************
@@ -92,43 +92,43 @@ INLINE void cb()
 //
 // ****************************************************************************
 // port pins
-//	GP22... VGA
-//	GP16 ... VGA HSYNC/CSYNC synchronization (inverted: negative SYNC=LOW=0x80, BLACK=HIGH=0x00)
-//	GP17 ... VSYNC
+//        GP22... VGA
+//        GP16 ... VGA HSYNC/CSYNC synchronization (inverted: negative SYNC=LOW=0x80, BLACK=HIGH=0x00)
+//        GP17 ... VSYNC
 
 // QVGA port pins
-#define QVGA_GPIO_FIRST	18	// first QVGA GPIO
-#define QVGA_GPIO_NUM	4	// number of QVGA color GPIOs, without HSYNC and VSYNC
-#define QVGA_GPIO_LAST	(QVGA_GPIO_FIRST+QVGA_GPIO_NUM-1) // last QVGA GPIO
-#define QVGA_GPIO_HSYNC	16	// QVGA HSYNC/CSYNC GPIO
-#define QVGA_GPIO_VSYNC	(QVGA_GPIO_HSYNC+1) // QVGA VSYNC GPIO
+#define QVGA_GPIO_FIRST        18        // first QVGA GPIO
+#define QVGA_GPIO_NUM        4        // number of QVGA color GPIOs, without HSYNC and VSYNC
+#define QVGA_GPIO_LAST        (QVGA_GPIO_FIRST+QVGA_GPIO_NUM-1) // last QVGA GPIO
+#define QVGA_GPIO_HSYNC        16        // QVGA HSYNC/CSYNC GPIO
+#define QVGA_GPIO_VSYNC        (QVGA_GPIO_HSYNC+1) // QVGA VSYNC GPIO
 
 // QVGA PIO and state machines
-#define QVGA_PIO	pio0	// QVGA PIO
-#define QVGA_SM		0	// QVGA state machine
+#define QVGA_PIO        pio0        // QVGA PIO
+#define QVGA_SM                0        // QVGA state machine
 
 // QVGA DMA channel
-#define QVGA_DMA_CB	0	// DMA control block of base layer
-#define QVGA_DMA_PIO	1	// DMA copy data to PIO (raises IRQ0 on quiet)
+#define QVGA_DMA_CB        0        // DMA control block of base layer
+#define QVGA_DMA_PIO        1        // DMA copy data to PIO (raises IRQ0 on quiet)
 
 // QVGA display resolution
 #define FRAMESIZE (38400) // display frame size in bytes (=38400)
 
 // 126 MHz timings
-//#define QVGA_TOTAL	(DISPLAY_TYPE==COLOURVGA ? 2002	: 4004)// total clock ticks (= QVGA_HSYNC + QVGA_BP + WIDTH*QVGA_CPP[1600] + QVGA_FP)
-//#define QVGA_HSYNC	(DISPLAY_TYPE==COLOURVGA ?  240	: 480)	// horizontal sync clock ticks
-//#define QVGA_BP	(DISPLAY_TYPE==COLOURVGA ?  121	: 242)	// back porch clock ticks
-//#define QVGA_FP	(DISPLAY_TYPE==COLOURVGA ?  41	: 82)	// front porch clock ticks
-#define QVGA_TOTAL	4004// total clock ticks (= QVGA_HSYNC + QVGA_BP + WIDTH*QVGA_CPP[1600] + QVGA_FP)
-#define QVGA_HSYNC	480	// horizontal sync clock ticks
-#define QVGA_BP	 242	// back porch clock ticks
-#define QVGA_FP	82	// front porch clock ticks
+//#define QVGA_TOTAL        (DISPLAY_TYPE==COLOURVGA ? 2002        : 4004)// total clock ticks (= QVGA_HSYNC + QVGA_BP + WIDTH*QVGA_CPP[1600] + QVGA_FP)
+//#define QVGA_HSYNC        (DISPLAY_TYPE==COLOURVGA ?  240        : 480)        // horizontal sync clock ticks
+//#define QVGA_BP        (DISPLAY_TYPE==COLOURVGA ?  121        : 242)        // back porch clock ticks
+//#define QVGA_FP        (DISPLAY_TYPE==COLOURVGA ?  41        : 82)        // front porch clock ticks
+#define QVGA_TOTAL        4004// total clock ticks (= QVGA_HSYNC + QVGA_BP + WIDTH*QVGA_CPP[1600] + QVGA_FP)
+#define QVGA_HSYNC        480        // horizontal sync clock ticks
+#define QVGA_BP         242        // back porch clock ticks
+#define QVGA_FP        82        // front porch clock ticks
 
 // QVGA vertical timings
-#define QVGA_VTOT	525	// total scanlines (= QVGA_VSYNC + QVGA_VBACK + QVGA_VACT + QVGA_VFRONT)
-#define QVGA_VSYNC	2	// length of V sync (number of scanlines)
-#define QVGA_VBACK	33	// V back porch
-#define QVGA_VACT	480	// V active scanlines (= 2*HEIGHT)
-#define QVGA_VFRONT	10	// V front porch
+#define QVGA_VTOT        525        // total scanlines (= QVGA_VSYNC + QVGA_VBACK + QVGA_VACT + QVGA_VFRONT)
+#define QVGA_VSYNC        2        // length of V sync (number of scanlines)
+#define QVGA_VBACK        33        // V back porch
+#define QVGA_VACT        480        // V active scanlines (= 2*HEIGHT)
+#define QVGA_VFRONT        10        // V front porch
 
 #endif // _MAIN_H

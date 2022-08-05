@@ -4,22 +4,22 @@ PicoMite MMBasic
 External.h
 
 <COPYRIGHT HOLDERS>  Geoff Graham, Peter Mather
-Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved. 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 
-1.	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-2.	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
+Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+1.        Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2.        Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
     in the documentation and/or other materials provided with the distribution.
-3.	The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed 
+3.        The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed
     on the console at startup (additional copyright messages may be added).
-4.	All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed 
+4.        All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed
     by the <copyright holder>.
-5.	Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software 
+5.        Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software
     without specific prior written permission.
 THIS SOFTWARE IS PROVIDED BY <COPYRIGHT HOLDERS> AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ************************************************************************************************************************/
 
@@ -61,21 +61,21 @@ void cmd_bitbang(void);
 **********************************************************************************/
 #ifdef INCLUDE_COMMAND_TABLE
 // the format is:
-//    TEXT      	TYPE                P  FUNCTION TO CALL
+//    TEXT              TYPE                P  FUNCTION TO CALL
 // where type is always T_CMD
 // and P is the precedence (which is only used for operators and not commands)
 
-  { (unsigned char *)"ADC",		T_CMD,			0, cmd_adc        },
-  { (unsigned char *)"Pin(",		T_CMD | T_FUN,		0, cmd_pin          },
-	{ (unsigned char *)"SetPin",		T_CMD,			0, cmd_setpin       },
-	{ (unsigned char *)"Pulse",		T_CMD,			0, cmd_pulse        },
-	{ (unsigned char *)"Port(",		T_CMD | T_FUN,		0, cmd_port	    },
-	{ (unsigned char *)"IR",                 T_CMD,			0, cmd_ir           },
-	{ (unsigned char *)"KeyPad",             T_CMD,			0, cmd_keypad       },
-	{ (unsigned char *)"Bitbang",              T_CMD,			0, cmd_bitbang        },
-	{ (unsigned char *)"PWM",		T_CMD,		0, cmd_pwm		},
+  { (unsigned char *)"ADC",                T_CMD,                        0, cmd_adc        },
+  { (unsigned char *)"Pin(",                T_CMD | T_FUN,                0, cmd_pin          },
+        { (unsigned char *)"SetPin",                T_CMD,                        0, cmd_setpin       },
+        { (unsigned char *)"Pulse",                T_CMD,                        0, cmd_pulse        },
+        { (unsigned char *)"Port(",                T_CMD | T_FUN,                0, cmd_port            },
+        { (unsigned char *)"IR",                 T_CMD,                        0, cmd_ir           },
+        { (unsigned char *)"KeyPad",             T_CMD,                        0, cmd_keypad       },
+        { (unsigned char *)"Bitbang",              T_CMD,                        0, cmd_bitbang        },
+        { (unsigned char *)"PWM",                T_CMD,                0, cmd_pwm                },
 #ifndef PICOMITEVGA
-	{ (unsigned char *)"Backlight",		T_CMD,		0, cmd_backlight		},
+        { (unsigned char *)"Backlight",                T_CMD,                0, cmd_backlight                },
 #endif
 #endif
 
@@ -85,13 +85,13 @@ void cmd_bitbang(void);
 **********************************************************************************/
 #ifdef INCLUDE_TOKEN_TABLE
 // the format is:
-//    TEXT      	TYPE                P  FUNCTION TO CALL
+//    TEXT              TYPE                P  FUNCTION TO CALL
 // where type is T_NA, T_FUN, T_FNA or T_OPER argumented by the types T_STR and/or T_NBR
 // and P is the precedence (which is only used for operators)
-	{ (unsigned char *)"Pin(",		T_FUN | T_NBR | T_INT,	0, fun_pin		},
-	{ (unsigned char *)"Port(",		T_FUN | T_INT,		0, fun_port		},
-	{ (unsigned char *)"Distance(",		T_FUN | T_NBR,		0, fun_distance		},
-	{ (unsigned char *)"Pulsin(",		T_FUN | T_INT,		0, fun_pulsin		},
+        { (unsigned char *)"Pin(",                T_FUN | T_NBR | T_INT,        0, fun_pin                },
+        { (unsigned char *)"Port(",                T_FUN | T_INT,                0, fun_port                },
+        { (unsigned char *)"Distance(",                T_FUN | T_NBR,                0, fun_distance                },
+        { (unsigned char *)"Pulsin(",                T_FUN | T_INT,                0, fun_pulsin                },
 
 #endif
 
@@ -169,30 +169,30 @@ New, more portable, method of manipulating an I/O pin
 #define CNSTATINV           31
 
 #define EXT_NOT_CONFIG          0
-#define EXT_ANA_IN				1
-#define EXT_DIG_IN				2
-#define EXT_FREQ_IN				3
-#define EXT_PER_IN				4
-#define EXT_CNT_IN				5
-#define EXT_INT_HI				6
-#define EXT_INT_LO				7
-#define EXT_DIG_OUT				8
-#define EXT_HEARTBEAT			9
-#define EXT_INT_BOTH	  10
-#define EXT_UART0TX			11
-#define EXT_UART0RX			12
-#define EXT_UART1TX			13
-#define EXT_UART1RX			14
-#define EXT_I2C0SDA			15
-#define EXT_I2C0SCL			16
-#define EXT_I2C1SDA			17
-#define EXT_I2C1SCL			18
-#define EXT_SPI0RX			19
-#define EXT_SPI0TX			20
-#define EXT_SPI0SCK			21
-#define EXT_SPI1RX			22
-#define EXT_SPI1TX			23
-#define EXT_SPI1SCK			24
+#define EXT_ANA_IN                                1
+#define EXT_DIG_IN                                2
+#define EXT_FREQ_IN                                3
+#define EXT_PER_IN                                4
+#define EXT_CNT_IN                                5
+#define EXT_INT_HI                                6
+#define EXT_INT_LO                                7
+#define EXT_DIG_OUT                                8
+#define EXT_HEARTBEAT                        9
+#define EXT_INT_BOTH          10
+#define EXT_UART0TX                        11
+#define EXT_UART0RX                        12
+#define EXT_UART1TX                        13
+#define EXT_UART1RX                        14
+#define EXT_I2C0SDA                        15
+#define EXT_I2C0SCL                        16
+#define EXT_I2C1SDA                        17
+#define EXT_I2C1SCL                        18
+#define EXT_SPI0RX                        19
+#define EXT_SPI0TX                        20
+#define EXT_SPI0SCK                        21
+#define EXT_SPI1RX                        22
+#define EXT_SPI1TX                        23
+#define EXT_SPI1SCK                        24
 #define EXT_IR          25
 #define EXT_INT1        26
 #define EXT_INT2        27

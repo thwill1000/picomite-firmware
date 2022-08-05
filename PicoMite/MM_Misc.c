@@ -4,22 +4,22 @@ PicoMite MMBasic
 MM_Misc.c
 
 <COPYRIGHT HOLDERS>  Geoff Graham, Peter Mather
-Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved. 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 
-1.	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-2.	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
+Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+1.        Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2.        Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
     in the documentation and/or other materials provided with the distribution.
-3.	The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed 
+3.        The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed
     on the console at startup (additional copyright messages may be added).
-4.	All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed 
+4.        All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed
     by the <copyright holder>.
-5.	Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software 
+5.        Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software
     without specific prior written permission.
 THIS SOFTWARE IS PROVIDED BY <COPYRIGHT HOLDERS> AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ************************************************************************************************************************/
 
@@ -46,9 +46,9 @@ unsigned char *InterruptReturn;
 extern const char *FErrorMsg[];
 extern FRESULT FSerror;
 extern struct s_vartbl {                               // structure of the variable table
-	unsigned char name[MAXVARLEN];                       // variable's name
-	unsigned char type;                                  // its type (T_NUM, T_INT or T_STR)
-	unsigned char level;                                 // its subroutine or function level (used to track local variables)
+        unsigned char name[MAXVARLEN];                       // variable's name
+        unsigned char type;                                  // its type (T_NUM, T_INT or T_STR)
+        unsigned char level;                                 // its subroutine or function level (used to track local variables)
     unsigned char size;                         // the number of chars to allocate for each element in a string array
     unsigned char dummy;
     int __attribute__ ((aligned (4))) dims[MAXDIM];                     // the dimensions. it is an array if the first dimension is NOT zero
@@ -93,41 +93,41 @@ void integersort(int64_t *iarray, int n, long long *index, int flags, int startp
     int i, j = n, s = 1;
     int64_t t;
     if((flags & 1) == 0){
-		while (s) {
-			s = 0;
-			for (i = 1; i < j; i++) {
-				if (iarray[i] < iarray[i - 1]) {
-					t = iarray[i];
-					iarray[i] = iarray[i - 1];
-					iarray[i - 1] = t;
-					s = 1;
-			        if(index!=NULL){
-			        	t=index[i-1+startpoint];
-			        	index[i-1+startpoint]=index[i+startpoint];
-			        	index[i+startpoint]=t;
-			        }
-				}
-			}
-			j--;
-		}
+                while (s) {
+                        s = 0;
+                        for (i = 1; i < j; i++) {
+                                if (iarray[i] < iarray[i - 1]) {
+                                        t = iarray[i];
+                                        iarray[i] = iarray[i - 1];
+                                        iarray[i - 1] = t;
+                                        s = 1;
+                                if(index!=NULL){
+                                        t=index[i-1+startpoint];
+                                        index[i-1+startpoint]=index[i+startpoint];
+                                        index[i+startpoint]=t;
+                                }
+                                }
+                        }
+                        j--;
+                }
     } else {
-		while (s) {
-			s = 0;
-			for (i = 1; i < j; i++) {
-				if (iarray[i] > iarray[i - 1]) {
-					t = iarray[i];
-					iarray[i] = iarray[i - 1];
-					iarray[i - 1] = t;
-					s = 1;
-			        if(index!=NULL){
-			        	t=index[i-1+startpoint];
-			        	index[i-1+startpoint]=index[i+startpoint];
-			        	index[i+startpoint]=t;
-			        }
-				}
-			}
-			j--;
-		}
+                while (s) {
+                        s = 0;
+                        for (i = 1; i < j; i++) {
+                                if (iarray[i] > iarray[i - 1]) {
+                                        t = iarray[i];
+                                        iarray[i] = iarray[i - 1];
+                                        iarray[i - 1] = t;
+                                        s = 1;
+                                if(index!=NULL){
+                                        t=index[i-1+startpoint];
+                                        index[i-1+startpoint]=index[i+startpoint];
+                                        index[i+startpoint]=t;
+                                }
+                                }
+                        }
+                        j--;
+                }
     }
 }
 void floatsort(MMFLOAT *farray, int n, long long *index, int flags, int startpoint){
@@ -135,50 +135,50 @@ void floatsort(MMFLOAT *farray, int n, long long *index, int flags, int startpoi
     int64_t t;
     MMFLOAT f;
     if((flags & 1) == 0){
-		while (s) {
-			s = 0;
-			for (i = 1; i < j; i++) {
-				if (farray[i] < farray[i - 1]) {
-					f = farray[i];
-					farray[i] = farray[i - 1];
-					farray[i - 1] = f;
-					s = 1;
-			        if(index!=NULL){
-			        	t=index[i-1+startpoint];
-			        	index[i-1+startpoint]=index[i+startpoint];
-			        	index[i+startpoint]=t;
-			        }
-				}
-			}
-			j--;
-		}
+                while (s) {
+                        s = 0;
+                        for (i = 1; i < j; i++) {
+                                if (farray[i] < farray[i - 1]) {
+                                        f = farray[i];
+                                        farray[i] = farray[i - 1];
+                                        farray[i - 1] = f;
+                                        s = 1;
+                                if(index!=NULL){
+                                        t=index[i-1+startpoint];
+                                        index[i-1+startpoint]=index[i+startpoint];
+                                        index[i+startpoint]=t;
+                                }
+                                }
+                        }
+                        j--;
+                }
     } else {
-		while (s) {
-			s = 0;
-			for (i = 1; i < j; i++) {
-				if (farray[i] > farray[i - 1]) {
-					f = farray[i];
-					farray[i] = farray[i - 1];
-					farray[i - 1] = f;
-					s = 1;
-			        if(index!=NULL){
-			        	t=index[i-1+startpoint];
-			        	index[i-1+startpoint]=index[i+startpoint];
-			        	index[i+startpoint]=t;
-			        }
-				}
-			}
-			j--;
-		}
+                while (s) {
+                        s = 0;
+                        for (i = 1; i < j; i++) {
+                                if (farray[i] > farray[i - 1]) {
+                                        f = farray[i];
+                                        farray[i] = farray[i - 1];
+                                        farray[i - 1] = f;
+                                        s = 1;
+                                if(index!=NULL){
+                                        t=index[i-1+startpoint];
+                                        index[i-1+startpoint]=index[i+startpoint];
+                                        index[i+startpoint]=t;
+                                }
+                                }
+                        }
+                        j--;
+                }
     }
 }
 
 void stringsort(unsigned char *sarray, int n, int offset, long long *index, int flags, int startpoint){
-	int ii,i, s = 1,isave;
-	int k;
-	unsigned char *s1,*s2,*p1,*p2;
-	unsigned char temp;
-	int reverse= 1-((flags & 1)<<1);
+        int ii,i, s = 1,isave;
+        int k;
+        unsigned char *s1,*s2,*p1,*p2;
+        unsigned char temp;
+        int reverse= 1-((flags & 1)<<1);
     while (s){
       s=0;
       for(i=1;i<n;i++){
@@ -189,19 +189,19 @@ void stringsort(unsigned char *sarray, int n, int offset, long long *index, int 
         k=0; //assume the strings match
         while((ii--) && (k==0)) {
           if(flags & 2){
-			  if(toupper(*p1) > toupper(*p2)){
-				k=reverse; //earlier in the array is bigger
-			  }
-			  if(toupper(*p1) < toupper(*p2)){
-				 k=-reverse; //later in the array is bigger
-			  }
+                          if(toupper(*p1) > toupper(*p2)){
+                                k=reverse; //earlier in the array is bigger
+                          }
+                          if(toupper(*p1) < toupper(*p2)){
+                                 k=-reverse; //later in the array is bigger
+                          }
           } else {
-			  if(*p1 > *p2){
-				k=reverse; //earlier in the array is bigger
-			  }
-			  if(*p1 < *p2){
-				 k=-reverse; //later in the array is bigger
-			  }
+                          if(*p1 > *p2){
+                                k=reverse; //earlier in the array is bigger
+                          }
+                          if(*p1 < *p2){
+                                 k=-reverse; //later in the array is bigger
+                          }
           }
           p1++; p2++;
         }
@@ -223,9 +223,9 @@ void stringsort(unsigned char *sarray, int n, int offset, long long *index, int 
         }
         s=1;
         if(index!=NULL){
-        	isave=index[i-1+startpoint];
-        	index[i-1+startpoint]=index[i+startpoint];
-        	index[i+startpoint]=isave;
+                isave=index[i-1+startpoint];
+                index[i-1+startpoint]=index[i+startpoint];
+                index[i+startpoint]=isave;
         }
       }
     }
@@ -238,41 +238,41 @@ void cmd_sort(void){
     int64_t *a3int=NULL,*a4int=NULL;
     unsigned char *a3str=NULL;
     int i, size, truesize,flags=0, maxsize=0, startpoint=0;
-	getargs(&cmdline,9,",");
+        getargs(&cmdline,9,",");
     ptr1 = findvar(argv[0], V_FIND | V_EMPTY_OK | V_NOFIND_ERR);
     if(vartbl[VarIndex].type & T_NBR) {
         if(vartbl[VarIndex].dims[1] != 0) error("Invalid variable");
-        if(vartbl[VarIndex].dims[0] <= 0) {		// Not an array
+        if(vartbl[VarIndex].dims[0] <= 0) {                // Not an array
             error("Argument 1 must be array");
         }
         a3float = (MMFLOAT *)ptr1;
     } else if(vartbl[VarIndex].type & T_INT) {
         if(vartbl[VarIndex].dims[1] != 0) error("Invalid variable");
-        if(vartbl[VarIndex].dims[0] <= 0) {		// Not an array
+        if(vartbl[VarIndex].dims[0] <= 0) {                // Not an array
             error("Argument 1 must be array");
         }
         a3int = (int64_t *)ptr1;
     } else if(vartbl[VarIndex].type & T_STR) {
         if(vartbl[VarIndex].dims[1] != 0) error("Invalid variable");
-        if(vartbl[VarIndex].dims[0] <= 0) {		// Not an array
+        if(vartbl[VarIndex].dims[0] <= 0) {                // Not an array
             error("Argument 1 must be array");
         }
         a3str = (unsigned char *)ptr1;
         maxsize=vartbl[VarIndex].size;
     } else error("Argument 1 must be array");
-	if((uint32_t)ptr1!=(uint32_t)vartbl[VarIndex].val.s)error("Argument 1 must be array");
+        if((uint32_t)ptr1!=(uint32_t)vartbl[VarIndex].val.s)error("Argument 1 must be array");
     truesize=size=(vartbl[VarIndex].dims[0] - OptionBase);
     if(argc>=3 && *argv[2]){
-    	ptr2 = findvar(argv[2], V_FIND | V_EMPTY_OK | V_NOFIND_ERR);
-    	if(vartbl[VarIndex].type & T_INT) {
-    		if(vartbl[VarIndex].dims[1] != 0) error("Invalid variable");
-    		if(vartbl[VarIndex].dims[0] <= 0 ) {		// Not an array
-    			error("Argument 2 must be integer array");
-    		}
-    		a4int = (int64_t *)ptr2;
-    	} else error("Argument 2 must be integer array");
-    	if((vartbl[VarIndex].dims[0] - OptionBase) !=size)error("Arrays should be the same size");
-		if((uint32_t)ptr2!=(uint32_t)vartbl[VarIndex].val.s)error("Argument 2 must be array");
+            ptr2 = findvar(argv[2], V_FIND | V_EMPTY_OK | V_NOFIND_ERR);
+            if(vartbl[VarIndex].type & T_INT) {
+                    if(vartbl[VarIndex].dims[1] != 0) error("Invalid variable");
+                    if(vartbl[VarIndex].dims[0] <= 0 ) {                // Not an array
+                            error("Argument 2 must be integer array");
+                    }
+                    a4int = (int64_t *)ptr2;
+            } else error("Argument 2 must be integer array");
+            if((vartbl[VarIndex].dims[0] - OptionBase) !=size)error("Arrays should be the same size");
+                if((uint32_t)ptr2!=(uint32_t)vartbl[VarIndex].val.s)error("Argument 2 must be array");
     }
     if(argc>=5 && *argv[4])flags=getint(argv[4],0,3);
     if(argc>=7 && *argv[6])startpoint=getint(argv[6],OptionBase,size+OptionBase);
@@ -280,17 +280,17 @@ void cmd_sort(void){
     if(argc==9)size=getint(argv[8],1,size+1+OptionBase)-1;
     if(startpoint)startpoint-=OptionBase;
     if(a3float!=NULL){
-    	a3float+=startpoint;
-    	if(a4int!=NULL)for(i=0;i<truesize+1;i++)a4int[i]=i+OptionBase;
-    	floatsort(a3float, size+1, a4int, flags, startpoint);
+            a3float+=startpoint;
+            if(a4int!=NULL)for(i=0;i<truesize+1;i++)a4int[i]=i+OptionBase;
+            floatsort(a3float, size+1, a4int, flags, startpoint);
     } else if(a3int!=NULL){
-    	a3int+=startpoint;
-    	if(a4int!=NULL)for(i=0;i<truesize+1;i++)a4int[i]=i+OptionBase;
-    	integersort(a3int,  size+1, a4int, flags, startpoint);
+            a3int+=startpoint;
+            if(a4int!=NULL)for(i=0;i<truesize+1;i++)a4int[i]=i+OptionBase;
+            integersort(a3int,  size+1, a4int, flags, startpoint);
     } else if(a3str!=NULL){
-    	a3str+=((startpoint)*(maxsize+1));
-    	if(a4int!=NULL)for(i=0;i<truesize+1;i++)a4int[i]=i+OptionBase;
-    	stringsort(a3str,  size+1,maxsize+1, a4int, flags, startpoint);
+            a3str+=((startpoint)*(maxsize+1));
+            if(a4int!=NULL)for(i=0;i<truesize+1;i++)a4int[i]=i+OptionBase;
+            stringsort(a3str,  size+1,maxsize+1, a4int, flags, startpoint);
     }
 }
 // this is invoked as a command (ie, TIMER = 0)
@@ -350,11 +350,11 @@ void fun_epoch(void){
             d = atoi(argv[0]);
             m = atoi(argv[2]);
             y = atoi(argv[4]);
-			if(d>1000){
-				int tmp=d;
-				d=y;
-				y=tmp;
-			}
+                        if(d>1000){
+                                int tmp=d;
+                                d=y;
+                                y=tmp;
+                        }
             if(y >= 0 && y < 100) y += 2000;
             if(d < 1 || d > 31 || m < 1 || m > 12 || y < 1902 || y > 2999) error("Invalid date");
             h = atoi(argv[6]);
@@ -384,7 +384,7 @@ void fun_epoch(void){
 }
 
 void cmd_pause(void) {
-	static int interrupted = false;
+        static int interrupted = false;
     MMFLOAT f;
     static int64_t end,count;
     int64_t start, stop, tick;
@@ -392,9 +392,9 @@ void cmd_pause(void) {
     if(f < 0) error("Number out of bounds");
     if(f < 0.05) return;
 
-	if(f < 1.5) {
-		uSec(f * 1000);                                             // if less than 1.5mS do the pause right now
-		return;                                                     // and exit straight away
+        if(f < 1.5) {
+                uSec(f * 1000);                                             // if less than 1.5mS do the pause right now
+                return;                                                     // and exit straight away
     }
     if(!interrupted){
         count=(int64_t)(f*1000);
@@ -408,37 +408,37 @@ void cmd_pause(void) {
         PauseTimer=0;
     }
     if(count){
-		if(InterruptReturn == NULL) {
-			// we are running pause in a normal program
-			// first check if we have reentered (from an interrupt) and only zero the timer if we have NOT been interrupted.
-			// This means an interrupted pause will resume from where it was when interrupted
-			if(!interrupted) PauseTimer = 0;
-			interrupted = false;
+                if(InterruptReturn == NULL) {
+                        // we are running pause in a normal program
+                        // first check if we have reentered (from an interrupt) and only zero the timer if we have NOT been interrupted.
+                        // This means an interrupted pause will resume from where it was when interrupted
+                        if(!interrupted) PauseTimer = 0;
+                        interrupted = false;
 
-			while(PauseTimer < count) {
-				CheckAbort();
-				if(check_interrupt()) {
-					// if there is an interrupt fake the return point to the start of this stmt
-					// and return immediately to the program processor so that it can send us off
-					// to the interrupt routine.  When the interrupt routine finishes we should reexecute
-					// this stmt and because the variable interrupted is static we can see that we need to
-					// resume pausing rather than start a new pause time.
-					while(*cmdline && *cmdline != cmdtoken) cmdline--;	// step back to find the command token
-					InterruptReturn = cmdline;							// point to it
-					interrupted = true;								    // show that this stmt was interrupted
-					return;											    // and let the interrupt run
-				}
-			}
-			interrupted = false;
-		}
-		else {
-			// we are running pause in an interrupt, this is much simpler but note that
-			// we use a different timer from the main pause code (above)
-			IntPauseTimer = 0;
-			while(IntPauseTimer < FloatToInt32(f)) CheckAbort();
-		}
+                        while(PauseTimer < count) {
+                                CheckAbort();
+                                if(check_interrupt()) {
+                                        // if there is an interrupt fake the return point to the start of this stmt
+                                        // and return immediately to the program processor so that it can send us off
+                                        // to the interrupt routine.  When the interrupt routine finishes we should reexecute
+                                        // this stmt and because the variable interrupted is static we can see that we need to
+                                        // resume pausing rather than start a new pause time.
+                                        while(*cmdline && *cmdline != cmdtoken) cmdline--;        // step back to find the command token
+                                        InterruptReturn = cmdline;                                                        // point to it
+                                        interrupted = true;                                                                    // show that this stmt was interrupted
+                                        return;                                                                                            // and let the interrupt run
+                                }
+                        }
+                        interrupted = false;
+                }
+                else {
+                        // we are running pause in an interrupt, this is much simpler but note that
+                        // we use a different timer from the main pause code (above)
+                        IntPauseTimer = 0;
+                        while(IntPauseTimer < FloatToInt32(f)) CheckAbort();
+                }
     }
-	uSec(end);
+        uSec(end);
 }
 
 void cmd_longString(void){
@@ -451,12 +451,12 @@ void cmd_longString(void){
         uint8_t *q=NULL;
         int nbr;
         int j=0;
-    	getargs(&tp, 5, ",");
+            getargs(&tp, 5, ",");
         if(argc != 5)error("Argument count");
         ptr1 = findvar(argv[0], V_FIND | V_EMPTY_OK);
         if(vartbl[VarIndex].type & T_INT) {
             if(vartbl[VarIndex].dims[1] != 0) error("Invalid variable");
-            if(vartbl[VarIndex].dims[0] <= 0) {		// Not an array
+            if(vartbl[VarIndex].dims[0] <= 0) {                // Not an array
                 error("Argument 1 must be integer array");
             }
             j=(vartbl[VarIndex].dims[0] - OptionBase)*8-1;
@@ -717,7 +717,7 @@ void cmd_longString(void){
         ptr1 = findvar(argv[0], V_FIND | V_EMPTY_OK);
         if(vartbl[VarIndex].type & T_INT) {
             if(vartbl[VarIndex].dims[1] != 0) error("Invalid variable");
-            if(vartbl[VarIndex].dims[0] <= 0) {		// Not an array
+            if(vartbl[VarIndex].dims[0] <= 0) {                // Not an array
                 error("Argument 1 must be integer array");
             }
             j=(vartbl[VarIndex].dims[0] - OptionBase)*8;
@@ -927,12 +927,12 @@ void fun_LGetByte(void){
         uint8_t *s=NULL;
         int64_t *src=NULL;
         int start,j;
-    	getargs(&ep, 3, ",");
+            getargs(&ep, 3, ",");
         if(argc != 3)error("Argument count");
         ptr1 = findvar(argv[0], V_FIND | V_EMPTY_OK);
         if(vartbl[VarIndex].type & T_INT) {
             if(vartbl[VarIndex].dims[1] != 0) error("Invalid variable");
-            if(vartbl[VarIndex].dims[0] <= 0) {		// Not an array
+            if(vartbl[VarIndex].dims[0] <= 0) {                // Not an array
                 error("Argument 1 must be integer array");
             }
             src = (int64_t *)ptr1;
@@ -1072,72 +1072,72 @@ void update_clock(void){
 // search through the line looking for the equals sign and step over it,
 // evaluate the rest of the command, split it up and save in the system counters
 void cmd_date(void) {
-	unsigned char *arg;
-	struct tm  *tm;
-	struct tm tma;
-	tm=&tma;
-	int dd, mm, yy;
-	while(*cmdline && tokenfunction(*cmdline) != op_equal) cmdline++;
-	if(!*cmdline) error("Syntax");
-	++cmdline;
-	arg = getCstring(cmdline);
-	{
-		getargs(&arg, 5, "-/");										// this is a macro and must be the first executable stmt in a block
-		if(argc != 5) error("Syntax");
-		dd = atoi(argv[0]);
-		mm = atoi(argv[2]);
-		yy = atoi(argv[4]);
+        unsigned char *arg;
+        struct tm  *tm;
+        struct tm tma;
+        tm=&tma;
+        int dd, mm, yy;
+        while(*cmdline && tokenfunction(*cmdline) != op_equal) cmdline++;
+        if(!*cmdline) error("Syntax");
+        ++cmdline;
+        arg = getCstring(cmdline);
+        {
+                getargs(&arg, 5, "-/");                                                                                // this is a macro and must be the first executable stmt in a block
+                if(argc != 5) error("Syntax");
+                dd = atoi(argv[0]);
+                mm = atoi(argv[2]);
+                yy = atoi(argv[4]);
         if(dd>1000){
             int tmp=dd;
             dd=yy;
             yy=tmp;
         }
-		if(yy >= 0 && yy < 100) yy += 2000;
-	    //check year
-	    if(yy>=1900 && yy<=9999)
-	    {
-	        //check month
-	        if(mm>=1 && mm<=12)
-	        {
-	            //check days
-	            if((dd>=1 && dd<=31) && (mm==1 || mm==3 || mm==5 || mm==7 || mm==8 || mm==10 || mm==12))
-	                {}
-	            else if((dd>=1 && dd<=30) && (mm==4 || mm==6 || mm==9 || mm==11))
-	                {}
-	            else if((dd>=1 && dd<=28) && (mm==2))
-	                {}
-	            else if(dd==29 && mm==2 && (yy%400==0 ||(yy%4==0 && yy%100!=0)))
-	                {}
-	            else
-	                error("Day is invalid");
-	        }
-	        else
-	        {
-	            error("Month is not valid");
-	        }
-	    }
-	    else
-	    {
-	        error("Year is not valid");
-	    }
+                if(yy >= 0 && yy < 100) yy += 2000;
+            //check year
+            if(yy>=1900 && yy<=9999)
+            {
+                //check month
+                if(mm>=1 && mm<=12)
+                {
+                    //check days
+                    if((dd>=1 && dd<=31) && (mm==1 || mm==3 || mm==5 || mm==7 || mm==8 || mm==10 || mm==12))
+                        {}
+                    else if((dd>=1 && dd<=30) && (mm==4 || mm==6 || mm==9 || mm==11))
+                        {}
+                    else if((dd>=1 && dd<=28) && (mm==2))
+                        {}
+                    else if(dd==29 && mm==2 && (yy%400==0 ||(yy%4==0 && yy%100!=0)))
+                        {}
+                    else
+                        error("Day is invalid");
+                }
+                else
+                {
+                    error("Month is not valid");
+                }
+            }
+            else
+            {
+                error("Year is not valid");
+            }
 
-		mT4IntEnable(0);       										// disable the timer interrupt to prevent any conflicts while updating
-		day = dd;
-		month = mm;
-		year = yy;
-	    tm->tm_year = year - 1900;
-	    tm->tm_mon = month - 1;
-	    tm->tm_mday = day;
-	    tm->tm_hour = hour;
-	    tm->tm_min = minute;
-	    tm->tm_sec = second;
-	    time_t timestamp = timegm(tm); /* See README.md if your system lacks timegm(). */
-	    tm=gmtime(&timestamp);
-	    day_of_week=tm->tm_wday;
-	    if(day_of_week==0)day_of_week=7;
-		update_clock();
-		mT4IntEnable(1);       										// enable interrupt
-	}
+                mT4IntEnable(0);                                                                                       // disable the timer interrupt to prevent any conflicts while updating
+                day = dd;
+                month = mm;
+                year = yy;
+            tm->tm_year = year - 1900;
+            tm->tm_mon = month - 1;
+            tm->tm_mday = day;
+            tm->tm_hour = hour;
+            tm->tm_min = minute;
+            tm->tm_sec = second;
+            time_t timestamp = timegm(tm); /* See README.md if your system lacks timegm(). */
+            tm=gmtime(&timestamp);
+            day_of_week=tm->tm_wday;
+            if(day_of_week==0)day_of_week=7;
+                update_clock();
+                mT4IntEnable(1);                                                                                       // enable interrupt
+        }
 }
 
 // this is invoked as a function
@@ -1168,11 +1168,11 @@ void fun_day(void) {
         d = atoi(argv[0]);
         m = atoi(argv[2]);
         y = atoi(argv[4]);
-		if(d>1000){
-			int tmp=d;
-			d=y;
-			y=tmp;
-		}
+                if(d>1000){
+                        int tmp=d;
+                        d=y;
+                        y=tmp;
+                }
         if(y >= 0 && y < 100) y += 2000;
         if(d < 1 || d > 31 || m < 1 || m > 12 || y < 1902 || y > 2999) error("Invalid date");
         tm->tm_year = y - 1900;
@@ -1207,58 +1207,58 @@ void fun_day(void) {
 // search through the line looking for the equals sign and step over it,
 // evaluate the rest of the command, split it up and save in the system counters
 void cmd_time(void) {
-	unsigned char *arg;
-	int h = 0;
-	int m = 0;
-	int s = 0;
+        unsigned char *arg;
+        int h = 0;
+        int m = 0;
+        int s = 0;
     MMFLOAT f;
     long long int i64;
     unsigned char *ss;
     int t=0;
     int offset;
-	while(*cmdline && tokenfunction(*cmdline) != op_equal) cmdline++;
-	if(!*cmdline) error("Syntax");
-	++cmdline;
+        while(*cmdline && tokenfunction(*cmdline) != op_equal) cmdline++;
+        if(!*cmdline) error("Syntax");
+        ++cmdline;
     evaluate(cmdline, &f, &i64, &ss, &t, false);
-	if(t==T_STR){
-	arg = getCstring(cmdline);
-	{
-		getargs(&arg, 5, ":");								// this is a macro and must be the first executable stmt in a block
-		if(argc%2 == 0) error("Syntax");
-		h = atoi(argv[0]);
-		if(argc >= 3) m = atoi(argv[2]);
-		if(argc == 5) s = atoi(argv[4]);
-		if(h < 0 || h > 23 || m < 0 || m > 59 || s < 0 || s > 59) error("Invalid time");
-		mT4IntEnable(0);       										// disable the timer interrupt to prevent any conflicts while updating
-		hour = h;
-		minute = m;
-		second = s;
-		SecondsTimer = 0;
-		update_clock();
-    	mT4IntEnable(1);       										// enable interrupt
+        if(t==T_STR){
+        arg = getCstring(cmdline);
+        {
+                getargs(&arg, 5, ":");                                                                // this is a macro and must be the first executable stmt in a block
+                if(argc%2 == 0) error("Syntax");
+                h = atoi(argv[0]);
+                if(argc >= 3) m = atoi(argv[2]);
+                if(argc == 5) s = atoi(argv[4]);
+                if(h < 0 || h > 23 || m < 0 || m > 59 || s < 0 || s > 59) error("Invalid time");
+                mT4IntEnable(0);                                                                                       // disable the timer interrupt to prevent any conflicts while updating
+                hour = h;
+                minute = m;
+                second = s;
+                SecondsTimer = 0;
+                update_clock();
+            mT4IntEnable(1);                                                                                       // enable interrupt
     }
-	} else {
-		struct tm  *tm;
-		struct tm tma;
-		tm=&tma;
-		offset=getinteger(cmdline);
-		tm->tm_year = year - 1900;
-		tm->tm_mon = month - 1;
-		tm->tm_mday = day;
-		tm->tm_hour = hour;
-		tm->tm_min = minute;
-		tm->tm_sec = second;
-	    time_t timestamp = timegm(tm); /* See README.md if your system lacks timegm(). */
-	    timestamp+=offset;
-	    tm=gmtime(&timestamp);
-		mT4IntEnable(0);       										// disable the timer interrupt to prevent any conflicts while updating
-		hour = tm->tm_hour;
-		minute = tm->tm_min;
-		second = tm->tm_sec;
-		SecondsTimer = 0;
-		update_clock();
-    	mT4IntEnable(1);       										// enable interrupt
-	}
+        } else {
+                struct tm  *tm;
+                struct tm tma;
+                tm=&tma;
+                offset=getinteger(cmdline);
+                tm->tm_year = year - 1900;
+                tm->tm_mon = month - 1;
+                tm->tm_mday = day;
+                tm->tm_hour = hour;
+                tm->tm_min = minute;
+                tm->tm_sec = second;
+            time_t timestamp = timegm(tm); /* See README.md if your system lacks timegm(). */
+            timestamp+=offset;
+            tm=gmtime(&timestamp);
+                mT4IntEnable(0);                                                                                       // disable the timer interrupt to prevent any conflicts while updating
+                hour = tm->tm_hour;
+                minute = tm->tm_min;
+                second = tm->tm_sec;
+                SecondsTimer = 0;
+                update_clock();
+            mT4IntEnable(1);                                                                                       // enable interrupt
+        }
 }
 
 
@@ -1294,7 +1294,7 @@ void cmd_ireturn(void){
         DelayedDrawFmtBox = false;
     }
 #endif
-	if(SaveOptionErrorSkip>0)OptionErrorSkip=SaveOptionErrorSkip+1;
+        if(SaveOptionErrorSkip>0)OptionErrorSkip=SaveOptionErrorSkip+1;
     strcpy(MMErrMsg , SaveErrorMessage);
     MMerrno = Saveerrno;
 }
@@ -1352,7 +1352,7 @@ void PO5Int(char *s1, int n1, int n2, int n3, int n4) {
 }
 
 void printoptions(void){
-//	LoadOptions();
+//        LoadOptions();
     int i=Option.DISPLAY_ORIENTATION;
     if(Option.SerialConsole){
         MMPrintString("OPTION SERIAL CONSOLE COM");
@@ -1382,13 +1382,13 @@ void printoptions(void){
     if(Option.Listcase != CONFIG_TITLE) PO2Str("CASE", CaseList[(int)Option.Listcase]);
     if(Option.Tab != 2) PO2Int("TAB", Option.Tab);
     if(Option.KeyboardConfig != NO_KEYBOARD){
-        PO("KEYBOARD"); MMPrintString((char *)KBrdList[(int)Option.KeyboardConfig]); 
+        PO("KEYBOARD"); MMPrintString((char *)KBrdList[(int)Option.KeyboardConfig]);
         if(Option.capslock || Option.numlock!=1 || Option.repeat!=0b00101100){
             PIntComma(Option.capslock);PIntComma(Option.numlock);PIntComma(Option.repeat>>5);
             PIntComma(Option.repeat & 0x1f);
         }
         PRet();
-    } 
+    }
 #ifdef PICOMITEVGA
     if(Option.CPU_Speed!=126000)PO2Int("CPUSPEED (KHz)", Option.CPU_Speed);
     if(Option.DISPLAY_TYPE==COLOURVGA)PO2Str("DEFAULT MODE", "2");
@@ -1460,14 +1460,14 @@ void printoptions(void){
     }
     if(Option.DISPLAY_TYPE >= SSDPANEL) {
         PO("LCDPANEL"); MMPrintString((char *)display_details[Option.DISPLAY_TYPE].name); MMPrintString(", "); MMPrintString((char *)OrientList[(int)i - 1]);
-		if(Option.DISPLAY_BL){
+                if(Option.DISPLAY_BL){
             MMputchar(',',1);;MMPrintString((char *)PinDef[Option.DISPLAY_BL].pinname);
-		}
+                }
         PRet();
     }
     if(Option.MaxCtrls)PO2Int("GUI CONTROLS", Option.MaxCtrls);
     if(Option.TOUCH_CS) {
-        PO("TOUCH"); 
+        PO("TOUCH");
         MMPrintString((char *)PinDef[Option.TOUCH_CS].pinname);MMputchar(',',1);;
         MMPrintString((char *)PinDef[Option.TOUCH_IRQ].pinname);
         if(Option.TOUCH_Click) {
@@ -1519,13 +1519,13 @@ int checkslice(int pin1,int pin2){
     return PinDef[pin1].slice & 0xf;
 }
 void setterminal(void){
-	  char sp[20]={0};
-	  strcpy(sp,"\033[8;");
-	  IntToStr(&sp[strlen(sp)],Option.Height,10);
-	  strcat(sp,";");
-	  IntToStr(&sp[strlen(sp)],Option.Width+1,10);
-	  strcat(sp,"t");
-	  SSPrintString(sp);						//
+          char sp[20]={0};
+          strcpy(sp,"\033[8;");
+          IntToStr(&sp[strlen(sp)],Option.Height,10);
+          strcat(sp,";");
+          IntToStr(&sp[strlen(sp)],Option.Width+1,10);
+          strcat(sp,"t");
+          SSPrintString(sp);                                                //
 }
 
 void cmd_update(void){
@@ -1533,9 +1533,9 @@ void cmd_update(void){
     reset_usb_boot(gpio_mask, PICO_STDIO_USB_RESET_BOOTSEL_INTERFACE_DISABLE_MASK);
 }
 void disable_systemspi(void){
-    if(!IsInvalidPin(Option.SYSTEM_MOSI))ExtCurrentConfig[Option.SYSTEM_MOSI] = EXT_DIG_IN ;   
-    if(!IsInvalidPin(Option.SYSTEM_MISO))ExtCurrentConfig[Option.SYSTEM_MISO] = EXT_DIG_IN ;   
-    if(!IsInvalidPin(Option.SYSTEM_CLK))ExtCurrentConfig[Option.SYSTEM_CLK] = EXT_DIG_IN ;   
+    if(!IsInvalidPin(Option.SYSTEM_MOSI))ExtCurrentConfig[Option.SYSTEM_MOSI] = EXT_DIG_IN ;
+    if(!IsInvalidPin(Option.SYSTEM_MISO))ExtCurrentConfig[Option.SYSTEM_MISO] = EXT_DIG_IN ;
+    if(!IsInvalidPin(Option.SYSTEM_CLK))ExtCurrentConfig[Option.SYSTEM_CLK] = EXT_DIG_IN ;
     if(!IsInvalidPin(Option.SYSTEM_MOSI))ExtCfg(Option.SYSTEM_MOSI, EXT_NOT_CONFIG, 0);
     if(!IsInvalidPin(Option.SYSTEM_MISO))ExtCfg(Option.SYSTEM_MISO, EXT_NOT_CONFIG, 0);
     if(!IsInvalidPin(Option.SYSTEM_CLK))ExtCfg(Option.SYSTEM_CLK, EXT_NOT_CONFIG, 0);
@@ -1544,30 +1544,30 @@ void disable_systemspi(void){
     Option.SYSTEM_CLK=0;
 }
 void disable_systemi2c(void){
-    if(!IsInvalidPin(Option.SYSTEM_I2C_SCL))ExtCurrentConfig[Option.SYSTEM_I2C_SCL] = EXT_DIG_IN ;   
-    if(!IsInvalidPin(Option.SYSTEM_I2C_SDA))ExtCurrentConfig[Option.SYSTEM_I2C_SDA] = EXT_DIG_IN ;   
+    if(!IsInvalidPin(Option.SYSTEM_I2C_SCL))ExtCurrentConfig[Option.SYSTEM_I2C_SCL] = EXT_DIG_IN ;
+    if(!IsInvalidPin(Option.SYSTEM_I2C_SDA))ExtCurrentConfig[Option.SYSTEM_I2C_SDA] = EXT_DIG_IN ;
     if(!IsInvalidPin(Option.SYSTEM_I2C_SCL))ExtCfg(Option.SYSTEM_I2C_SCL, EXT_NOT_CONFIG, 0);
     if(!IsInvalidPin(Option.SYSTEM_I2C_SDA))ExtCfg(Option.SYSTEM_I2C_SDA, EXT_NOT_CONFIG, 0);
     Option.SYSTEM_I2C_SCL=0;
     Option.SYSTEM_I2C_SDA=0;
 }
 void disable_sd(void){
-    if(!IsInvalidPin(Option.SD_CS))ExtCurrentConfig[Option.SD_CS] = EXT_DIG_IN ;   
+    if(!IsInvalidPin(Option.SD_CS))ExtCurrentConfig[Option.SD_CS] = EXT_DIG_IN ;
     if(!IsInvalidPin(Option.SD_CS))ExtCfg(Option.SD_CS, EXT_NOT_CONFIG, 0);
     Option.SD_CS=0;
-    if(!IsInvalidPin(Option.SD_CLK_PIN))ExtCurrentConfig[Option.SD_CLK_PIN] = EXT_DIG_IN ;   
+    if(!IsInvalidPin(Option.SD_CLK_PIN))ExtCurrentConfig[Option.SD_CLK_PIN] = EXT_DIG_IN ;
     if(!IsInvalidPin(Option.SD_CLK_PIN))ExtCfg(Option.SD_CLK_PIN, EXT_NOT_CONFIG, 0);
     Option.SD_CLK_PIN=0;
-    if(!IsInvalidPin(Option.SD_MOSI_PIN))ExtCurrentConfig[Option.SD_MOSI_PIN] = EXT_DIG_IN ;   
+    if(!IsInvalidPin(Option.SD_MOSI_PIN))ExtCurrentConfig[Option.SD_MOSI_PIN] = EXT_DIG_IN ;
     if(!IsInvalidPin(Option.SD_MOSI_PIN))ExtCfg(Option.SD_MOSI_PIN, EXT_NOT_CONFIG, 0);
     Option.SD_MOSI_PIN=0;
-    if(!IsInvalidPin(Option.SD_MISO_PIN))ExtCurrentConfig[Option.SD_MISO_PIN] = EXT_DIG_IN ;   
+    if(!IsInvalidPin(Option.SD_MISO_PIN))ExtCurrentConfig[Option.SD_MISO_PIN] = EXT_DIG_IN ;
     if(!IsInvalidPin(Option.SD_MISO_PIN))ExtCfg(Option.SD_MISO_PIN, EXT_NOT_CONFIG, 0);
     Option.SD_MISO_PIN=0;
 }
 void disable_audio(void){
-    if(!IsInvalidPin(Option.AUDIO_L))ExtCurrentConfig[Option.AUDIO_L] = EXT_DIG_IN ;   
-    if(!IsInvalidPin(Option.AUDIO_R))ExtCurrentConfig[Option.AUDIO_R] = EXT_DIG_IN ;   
+    if(!IsInvalidPin(Option.AUDIO_L))ExtCurrentConfig[Option.AUDIO_L] = EXT_DIG_IN ;
+    if(!IsInvalidPin(Option.AUDIO_R))ExtCurrentConfig[Option.AUDIO_R] = EXT_DIG_IN ;
     if(!IsInvalidPin(Option.AUDIO_L))ExtCfg(Option.AUDIO_L, EXT_NOT_CONFIG, 0);
     if(!IsInvalidPin(Option.AUDIO_R))ExtCfg(Option.AUDIO_R, EXT_NOT_CONFIG, 0);
     Option.AUDIO_L=0;
@@ -1605,80 +1605,80 @@ void cmd_option(void) {
         return;
     }
     tp = checkstring(cmdline, "F1");
-	if(tp) {
-		char p[STRINGSIZE];
-		strcpy(p,getCstring(tp));
-		if(strlen(p)>=sizeof(Option.F1key))error("Maximum 63 characters");
-		else strcpy((char *)Option.F1key, p);
-		SaveOptions();
-		return;
-	}
+        if(tp) {
+                char p[STRINGSIZE];
+                strcpy(p,getCstring(tp));
+                if(strlen(p)>=sizeof(Option.F1key))error("Maximum 63 characters");
+                else strcpy((char *)Option.F1key, p);
+                SaveOptions();
+                return;
+        }
     tp = checkstring(cmdline, "F5");
-	if(tp) {
-		char p[STRINGSIZE];
-		strcpy(p,getCstring(tp));
-		if(strlen(p)>=sizeof(Option.F5key))error("Maximum % characters",MAXKEYLEN-1);
-		else strcpy((char *)Option.F5key, p);
-		SaveOptions();
-		return;
-	}
+        if(tp) {
+                char p[STRINGSIZE];
+                strcpy(p,getCstring(tp));
+                if(strlen(p)>=sizeof(Option.F5key))error("Maximum % characters",MAXKEYLEN-1);
+                else strcpy((char *)Option.F5key, p);
+                SaveOptions();
+                return;
+        }
     tp = checkstring(cmdline, "F6");
-	if(tp) {
-		char p[STRINGSIZE];
-		strcpy(p,getCstring(tp));
-		if(strlen(p)>=sizeof(Option.F6key))error("Maximum % characters",MAXKEYLEN-1);
-		else strcpy((char *)Option.F6key, p);
-		SaveOptions();
-		return;
-	}
+        if(tp) {
+                char p[STRINGSIZE];
+                strcpy(p,getCstring(tp));
+                if(strlen(p)>=sizeof(Option.F6key))error("Maximum % characters",MAXKEYLEN-1);
+                else strcpy((char *)Option.F6key, p);
+                SaveOptions();
+                return;
+        }
     tp = checkstring(cmdline, "F7");
-	if(tp) {
-		char p[STRINGSIZE];
-		strcpy(p,getCstring(tp));
-		if(strlen(p)>=sizeof(Option.F7key))error("Maximum % characters",MAXKEYLEN-1);
-		else strcpy((char *)Option.F7key, p);
-		SaveOptions();
-		return;
-	}
+        if(tp) {
+                char p[STRINGSIZE];
+                strcpy(p,getCstring(tp));
+                if(strlen(p)>=sizeof(Option.F7key))error("Maximum % characters",MAXKEYLEN-1);
+                else strcpy((char *)Option.F7key, p);
+                SaveOptions();
+                return;
+        }
     tp = checkstring(cmdline, "F8");
-	if(tp) {
-		char p[STRINGSIZE];
-		strcpy(p,getCstring(tp));
-		if(strlen(p)>=sizeof(Option.F8key))error("Maximum % characters",MAXKEYLEN-1);
-		else strcpy((char *)Option.F8key, p);
-		SaveOptions();
-		return;
-	}
+        if(tp) {
+                char p[STRINGSIZE];
+                strcpy(p,getCstring(tp));
+                if(strlen(p)>=sizeof(Option.F8key))error("Maximum % characters",MAXKEYLEN-1);
+                else strcpy((char *)Option.F8key, p);
+                SaveOptions();
+                return;
+        }
     tp = checkstring(cmdline, "F9");
-	if(tp) {
-		char p[STRINGSIZE];
-		strcpy(p,getCstring(tp));
-		if(strlen(p)>=sizeof(Option.F9key))error("Maximum % characters",MAXKEYLEN-1);
-		else strcpy((char *)Option.F9key, p);
-		SaveOptions();
-		return;
-	}
+        if(tp) {
+                char p[STRINGSIZE];
+                strcpy(p,getCstring(tp));
+                if(strlen(p)>=sizeof(Option.F9key))error("Maximum % characters",MAXKEYLEN-1);
+                else strcpy((char *)Option.F9key, p);
+                SaveOptions();
+                return;
+        }
     tp = checkstring(cmdline, "KEYBOARD");
-	if(tp) {
-    	//if(CurrentLinePtr) error("Invalid in a program");
-		if(checkstring(tp, "DISABLE")){
-			Option.KeyboardConfig = NO_KEYBOARD;
+        if(tp) {
+            //if(CurrentLinePtr) error("Invalid in a program");
+                if(checkstring(tp, "DISABLE")){
+                        Option.KeyboardConfig = NO_KEYBOARD;
             Option.capslock=0;
             Option.numlock=0;
             SaveOptions();
             _excep_code = RESET_COMMAND;
             SoftReset();
-		} else {
+                } else {
         getargs(&tp,9,",");
         if(ExtCurrentConfig[KEYBOARD_CLOCK] != EXT_NOT_CONFIG && Option.KeyboardConfig == NO_KEYBOARD)  error("Pin % is in use",KEYBOARD_CLOCK);
         if(ExtCurrentConfig[KEYBOARD_DATA] != EXT_NOT_CONFIG && Option.KeyboardConfig == NO_KEYBOARD)  error("Pin % is in use",KEYBOARD_DATA);
-        else if(checkstring(argv[0], "US"))	Option.KeyboardConfig = CONFIG_US;
-		else if(checkstring(argv[0], "FR"))	Option.KeyboardConfig = CONFIG_FR;
-		else if(checkstring(argv[0], "GR"))	Option.KeyboardConfig = CONFIG_GR;
-		else if(checkstring(argv[0], "IT"))	Option.KeyboardConfig = CONFIG_IT;
-		else if(checkstring(argv[0], "BE"))	Option.KeyboardConfig = CONFIG_BE;
-		else if(checkstring(argv[0], "UK"))	Option.KeyboardConfig = CONFIG_UK;
-		else if(checkstring(argv[0], "ES"))	Option.KeyboardConfig = CONFIG_ES;
+        else if(checkstring(argv[0], "US"))        Option.KeyboardConfig = CONFIG_US;
+                else if(checkstring(argv[0], "FR"))        Option.KeyboardConfig = CONFIG_FR;
+                else if(checkstring(argv[0], "GR"))        Option.KeyboardConfig = CONFIG_GR;
+                else if(checkstring(argv[0], "IT"))        Option.KeyboardConfig = CONFIG_IT;
+                else if(checkstring(argv[0], "BE"))        Option.KeyboardConfig = CONFIG_BE;
+                else if(checkstring(argv[0], "UK"))        Option.KeyboardConfig = CONFIG_UK;
+                else if(checkstring(argv[0], "ES"))        Option.KeyboardConfig = CONFIG_ES;
         else error("Syntax");
         Option.capslock=0;
         Option.numlock=1;
@@ -1693,13 +1693,13 @@ void cmd_option(void) {
         _excep_code = RESET_COMMAND;
         SoftReset();
         }
-	}
+        }
 
     tp = checkstring(cmdline, "BAUDRATE");
     if(tp) {
         if(CurrentLinePtr) error("Invalid in a program");
         int i;
-        i = getint(tp,Option.CPU_Speed*1000/16/65535,921600);	
+        i = getint(tp,Option.CPU_Speed*1000/16/65535,921600);
         if(i < 100) error("Number out of bounds");
         Option.Baudrate = i;
         SaveOptions();
@@ -1714,8 +1714,8 @@ void cmd_option(void) {
         if(checkstring(tp, "DISABLE")) {
             Option.SerialTX=0;
             Option.SerialRX=0;
-            Option.SerialConsole = 0; 
-            SaveOptions(); 
+            Option.SerialConsole = 0;
+            SaveOptions();
             SoftReset();
             return;
         } else {
@@ -1736,8 +1736,8 @@ void cmd_option(void) {
             else if(PinDef[pin2].mode & UART0RX)Option.SerialRX = pin2;
             else error("Invalid configuration");
             if(Option.SerialTX==Option.SerialRX)error("Invalid configuration");
-            Option.SerialConsole = 1; 
-            SaveOptions(); 
+            Option.SerialConsole = 1;
+            SaveOptions();
             SoftReset();
             return;
         checkcom2:
@@ -1748,10 +1748,10 @@ void cmd_option(void) {
             else if(PinDef[pin2].mode & UART1RX)Option.SerialRX = pin2;
             else error("Invalid configuration");
             if(Option.SerialTX==Option.SerialRX)error("Invalid configuration");
-            Option.SerialConsole = 2; 
-            SaveOptions(); 
+            Option.SerialConsole = 2;
+            SaveOptions();
             SoftReset();
-        }  
+        }
     }
 
     tp = checkstring(cmdline, "AUTORUN");
@@ -1759,7 +1759,7 @@ void cmd_option(void) {
         if(checkstring(tp, "OFF"))      { Option.Autorun = 0; SaveOptions(); return;  }
         if(checkstring(tp, "ON"))      { Option.Autorun = MAXFLASHSLOTS+1; SaveOptions(); return;  }
         Option.Autorun=getint(tp,0,MAXFLASHSLOTS);
-        SaveOptions(); return; 
+        SaveOptions(); return;
     }
     tp = checkstring(cmdline, "LCDPANEL NOCONSOLE");
     if(tp){
@@ -1799,7 +1799,7 @@ void cmd_option(void) {
             }
         }
         if(Option.DISPLAY_BL){
-			MMFLOAT frequency=1000.0,duty=Option.DefaultBrightness;
+                        MMFLOAT frequency=1000.0,duty=Option.DefaultBrightness;
             int wrap=(Option.CPU_Speed*1000)/frequency;
             int high=(int)((MMFLOAT)Option.CPU_Speed/frequency*duty*10.0);
             int div=1;
@@ -1827,7 +1827,7 @@ void cmd_option(void) {
         Option.VGAFC=fcolour;
         Option.VGABC=bcolour;
 #endif
-        Option.DISPLAY_CONSOLE = true; 
+        Option.DISPLAY_CONSOLE = true;
         ResetDisplay();
         if(Option.DISPLAY_TYPE!=MONOVGA)ClearScreen(Option.DefaultBC);
         if(!CurrentLinePtr) {
@@ -1862,7 +1862,7 @@ void cmd_option(void) {
     if(tp) {
         int mode=getint(tp,1,2);
         if(mode==2){
-            Option.DISPLAY_TYPE=COLOURVGA; 
+            Option.DISPLAY_TYPE=COLOURVGA;
             Option.DefaultFont=(6<<4) | 1 ;
         } else {
             Option.DISPLAY_TYPE=MONOVGA;
@@ -1870,7 +1870,7 @@ void cmd_option(void) {
         }
         SaveOptions();
         DISPLAY_TYPE= Option.DISPLAY_TYPE;
-	    memset(WriteBuf, 0, 38400);
+            memset(WriteBuf, 0, 38400);
         ResetDisplay();
         CurrentX = CurrentY =0;
         if(Option.DISPLAY_TYPE!=MONOVGA)ClearScreen(Option.DefaultBC);
@@ -1901,7 +1901,7 @@ void cmd_option(void) {
         else if(checkstring(argv[0], "MYRTLE"))  { forcol=0x2222; DefaultFC=MYRTLE;}
         else if(checkstring(argv[0], "BLUE"))    { forcol=0x1111; DefaultFC=BLUE;}
         else if(checkstring(argv[0], "BLACK"))   { forcol=0x0000; DefaultFC=BLACK;}
-        else error("Invalid colour: $", argv[0]); 
+        else error("Invalid colour: $", argv[0]);
         if(argc==3){
             if(checkstring(argv[2], "WHITE"))        { backcol=0xFFFF; DefaultBC=WHITE;}
             else if(checkstring(argv[2], "YELLOW"))  { backcol=0xEEEE; DefaultBC=YELLOW;}
@@ -1919,8 +1919,8 @@ void cmd_option(void) {
             else if(checkstring(argv[2], "MYRTLE"))  { backcol=0x2222; DefaultBC=MYRTLE;}
             else if(checkstring(argv[2], "BLUE"))    { backcol=0x1111; DefaultBC=BLUE;}
             else if(checkstring(argv[2], "BLACK"))   { backcol=0x0000; DefaultBC=BLACK;}
-            else error("Invalid colour: $", argv[2]); 
-        }      
+            else error("Invalid colour: $", argv[2]);
+        }
         if(backcol==forcol)error("Foreground and Background colours are the same");
         Option.VGABC=backcol;
         Option.VGAFC=forcol;
@@ -1966,19 +1966,19 @@ void cmd_option(void) {
     }
 
     tp = checkstring(cmdline, "AUTOREFRESH");
-	if(tp) {
-	    if((Option.DISPLAY_TYPE==ILI9341 || Option.DISPLAY_TYPE == ILI9163 || Option.DISPLAY_TYPE == ST7735 || Option.DISPLAY_TYPE == ST7789 || Option.DISPLAY_TYPE == ST7789A)) error("Not valid for this display");
-		if(checkstring(tp, "ON"))		{
-			Option.Refresh = 1;
-			Display_Refresh();
-			return;
-		}
-		if(checkstring(tp, "OFF"))		{ Option.Refresh = 0; return; }
-	}
-    
+        if(tp) {
+            if((Option.DISPLAY_TYPE==ILI9341 || Option.DISPLAY_TYPE == ILI9163 || Option.DISPLAY_TYPE == ST7735 || Option.DISPLAY_TYPE == ST7789 || Option.DISPLAY_TYPE == ST7789A)) error("Not valid for this display");
+                if(checkstring(tp, "ON"))                {
+                        Option.Refresh = 1;
+                        Display_Refresh();
+                        return;
+                }
+                if(checkstring(tp, "OFF"))                { Option.Refresh = 0; return; }
+        }
+
     tp = checkstring(cmdline, "LCDPANEL");
     if(tp) {
-    	if(CurrentLinePtr) error("Invalid in a program");
+            if(CurrentLinePtr) error("Invalid in a program");
         if(checkstring(tp, "DISABLE")) {
             Option.LCD_CD = Option.LCD_CS = Option.LCD_Reset = Option.DISPLAY_TYPE = HRes = VRes = 0;
             DrawRectangle = (void (*)(int , int , int , int , int ))DisplayNotSet;
@@ -1986,8 +1986,8 @@ void cmd_option(void) {
             ScrollLCD = (void (*)(int ))DisplayNotSet;
             DrawBuffer = (void (*)(int , int , int , int , unsigned char * ))DisplayNotSet;
             ReadBuffer = (void (*)(int , int , int , int , unsigned char * ))DisplayNotSet;
-			Option.DISPLAY_CONSOLE = false;
-		} else {
+                        Option.DISPLAY_CONSOLE = false;
+                } else {
             if(Option.DISPLAY_TYPE && !CurrentLinePtr) error("Display already configured");
             ConfigDisplaySPI(tp);
             if(!Option.DISPLAY_TYPE)ConfigDisplaySSD(tp);
@@ -2024,7 +2024,7 @@ void cmd_option(void) {
     tp = checkstring(cmdline, "TAB");
     if(tp) {
         if(checkstring(tp, "2"))        { Option.Tab = 2; SaveOptions(); return; }
-		if(checkstring(tp, "3"))		{ Option.Tab = 3; SaveOptions(); return; }
+                if(checkstring(tp, "3"))                { Option.Tab = 3; SaveOptions(); return; }
         if(checkstring(tp, "4"))        { Option.Tab = 4; SaveOptions(); return; }
         if(checkstring(tp, "8"))        { Option.Tab = 8; SaveOptions(); return; }
     }
@@ -2060,7 +2060,7 @@ void cmd_option(void) {
             gpio_init(23);
             gpio_put(23,GPIO_PIN_RESET);
             gpio_set_dir(23, GPIO_OUT);
-    	}
+            }
         return;
     }
 
@@ -2078,10 +2078,10 @@ void cmd_option(void) {
         if(checkstring(tp, "DISABLE"))      { Option.RTC = false; SaveOptions(); return;  }
     }
 
-	tp = checkstring(cmdline, "LIST");
+        tp = checkstring(cmdline, "LIST");
     if(tp) {
-    	printoptions();
-    	return;
+            printoptions();
+            return;
     }
     tp = checkstring(cmdline, "AUDIO");
     if(tp) {
@@ -2093,7 +2093,7 @@ void cmd_option(void) {
             SoftReset();
             return;                                // this will restart the processor ? only works when not in debug
         }
-    	getargs(&tp,3,",");
+            getargs(&tp,3,",");
         if(argc!=3)error("Syntax");
         if(Option.AUDIO_L)error("Audio already configured");
         unsigned char code;
@@ -2133,7 +2133,7 @@ void cmd_option(void) {
             SoftReset();
             return;                                // this will restart the processor ? only works when not in debug
         }
-    	getargs(&tp,3,",");
+            getargs(&tp,3,",");
         if(argc!=3)error("Syntax");
         if(Option.SYSTEM_I2C_SCL)error("I2C already configured");
         unsigned char code;
@@ -2180,7 +2180,7 @@ void cmd_option(void) {
             gpio_set_irq_enabled(PinDef[Option.INT4pin].GPno, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, false);
             CallBackEnabled &= (~16);
         }
-    	getargs(&tp,7,",");
+            getargs(&tp,7,",");
         if(argc!=7)error("Syntax");
         unsigned char code;
         if(!(code=codecheck(argv[0])))argv[0]+=2;
@@ -2223,7 +2223,7 @@ void cmd_option(void) {
             SoftReset();
             return;                                // this will restart the processor ? only works when not in debug
         }
-    	getargs(&tp,5,",");
+            getargs(&tp,5,",");
         if(argc!=5)error("Syntax");
         if(Option.SYSTEM_CLK)error("SDcard already configured");
         unsigned char code;
@@ -2242,7 +2242,7 @@ void cmd_option(void) {
         if(!code)pin3=codemap(pin3);
         if(IsInvalidPin(pin3)) error("Invalid pin");
         if(ExtCurrentConfig[pin3] != EXT_NOT_CONFIG)  error("Pin % is in use",pin3);
-		if(!(PinDef[pin1].mode & SPI0SCK && PinDef[pin2].mode & SPI0TX  && PinDef[pin3].mode & SPI0RX  ) &&
+                if(!(PinDef[pin1].mode & SPI0SCK && PinDef[pin2].mode & SPI0TX  && PinDef[pin3].mode & SPI0RX  ) &&
         !(PinDef[pin1].mode & SPI1SCK && PinDef[pin2].mode & SPI1TX  && PinDef[pin3].mode & SPI1RX  ))error("Not valid SPI pins");
         Option.SYSTEM_CLK=pin1;
         Option.SYSTEM_MOSI=pin2;
@@ -2253,7 +2253,7 @@ void cmd_option(void) {
         return;
     }
 #endif
-	tp = checkstring(cmdline, "SDCARD");
+        tp = checkstring(cmdline, "SDCARD");
     int pin1, pin2, pin3, pin4;
     if(tp) {
         if(checkstring(tp, "DISABLE")){
@@ -2261,7 +2261,7 @@ void cmd_option(void) {
             SaveOptions();
             return;                                // this will restart the processor ? only works when not in debug
         }
-    	getargs(&tp,7,",");
+            getargs(&tp,7,",");
 #ifdef PICOMITEVGA
         if(!(argc==7))error("Syntax");
 #else
@@ -2302,13 +2302,13 @@ void cmd_option(void) {
         SoftReset();
         return;
     }
-	tp = checkstring(cmdline, "RESET");
+        tp = checkstring(cmdline, "RESET");
     if(tp) {
         ResetOptions();
         _excep_code = RESET_COMMAND;
         SoftReset();
     }
-     
+
 
     error("Invalid Option");
 }
@@ -2327,49 +2327,49 @@ void fun_device(void){
 void fun_info(void){
     unsigned char *tp;
     sret = GetTempMemory(STRINGSIZE);                                  // this will last for the life of the command
-	tp=checkstring(ep, "FONT POINTER");
-		if(tp){
-		iret=(int64_t)((uint32_t)&FontTable[getint(tp,1,FONT_TABLE_SIZE)-1]);
-		targ=T_INT;
-		return;
-	}
+        tp=checkstring(ep, "FONT POINTER");
+                if(tp){
+                iret=(int64_t)((uint32_t)&FontTable[getint(tp,1,FONT_TABLE_SIZE)-1]);
+                targ=T_INT;
+                return;
+        }
     tp=checkstring(ep, "FONT ADDRESS");
-		if(tp){
-		iret=(int64_t)((uint32_t)FontTable[getint(tp,1,FONT_TABLE_SIZE)-1]);
-		targ=T_INT;
-		return;
-	}
-	tp=checkstring(ep, "OPTION");
-	if(tp){
+                if(tp){
+                iret=(int64_t)((uint32_t)FontTable[getint(tp,1,FONT_TABLE_SIZE)-1]);
+                targ=T_INT;
+                return;
+        }
+        tp=checkstring(ep, "OPTION");
+        if(tp){
         if(checkstring(tp, "AUTORUN")){
-			if(Option.Autorun == false)strcpy(sret,"Off");
+                        if(Option.Autorun == false)strcpy(sret,"Off");
             else if(Option.Autorun==MAXFLASHSLOTS+1)strcpy(sret,"On");
-			else {
+                        else {
                 char b[10];
                 IntToStr(b,Option.Autorun,10);
                 strcpy(sret,b);
             }
-		} else if(checkstring(tp, "EXPLICIT")){
-			if(OptionExplicit == false)strcpy(sret,"Off");
-			else strcpy(sret,"On");
-		} else if(checkstring(tp, "DEFAULT")){
-			if(DefaultType == T_INT)strcpy(sret,"Integer");
-			else if(DefaultType == T_NBR)strcpy(sret,"Float");
-			else if(DefaultType == T_STR)strcpy(sret,"String");
-			else strcpy(sret,"None");
-		} else if(checkstring(tp, "BASE")){
-			if(OptionBase==1)iret=1;
-			else iret=0;
-			targ=T_INT;
-			return;
-		} else if(checkstring(tp, "BREAK")){
-			iret=BreakKey;
-			targ=T_INT;
-			return;
-		} else error("Syntax");
-		CtoM(sret);
-	    targ=T_STR;
-		return;
+                } else if(checkstring(tp, "EXPLICIT")){
+                        if(OptionExplicit == false)strcpy(sret,"Off");
+                        else strcpy(sret,"On");
+                } else if(checkstring(tp, "DEFAULT")){
+                        if(DefaultType == T_INT)strcpy(sret,"Integer");
+                        else if(DefaultType == T_NBR)strcpy(sret,"Float");
+                        else if(DefaultType == T_STR)strcpy(sret,"String");
+                        else strcpy(sret,"None");
+                } else if(checkstring(tp, "BASE")){
+                        if(OptionBase==1)iret=1;
+                        else iret=0;
+                        targ=T_INT;
+                        return;
+                } else if(checkstring(tp, "BREAK")){
+                        iret=BreakKey;
+                        targ=T_INT;
+                        return;
+                } else error("Syntax");
+                CtoM(sret);
+            targ=T_STR;
+                return;
     }
     tp=checkstring(ep, "CALLTABLE");
     if(tp){
@@ -2389,48 +2389,48 @@ void fun_info(void){
         targ = T_INT;
         return;
     }
-	tp=checkstring(ep, "FILESIZE");
-	if(tp){
-		int i,j;
-		DIR djd;
-		FILINFO fnod;
-		memset(&djd,0,sizeof(DIR));
-		memset(&fnod,0,sizeof(FILINFO));
-		char *p = getCstring(tp);
-		FSerror = f_stat(p, &fnod);
-		if(FSerror != FR_OK){ iret=-1; targ=T_INT; strcpy(MMErrMsg,FErrorMsg[4]); return;}
-		if((fnod.fattrib & AM_DIR)){ iret=-2; targ=T_INT; strcpy(MMErrMsg,FErrorMsg[4]); return;}
-		iret=fnod.fsize;
-		targ=T_INT;
-		return;
-	}
-	tp=checkstring(ep, "MODIFIED");
-	if(tp){
-		int i,j;
-	    DIR djd;
-	    FILINFO fnod;
-		memset(&djd,0,sizeof(DIR));
-		memset(&fnod,0,sizeof(FILINFO));
-		char *p = getCstring(tp);
-		FSerror = f_stat(p, &fnod);
-		if(FSerror != FR_OK){ iret=-1; targ=T_STR; strcpy(MMErrMsg,FErrorMsg[4]); return;}
-//		if((fnod.fattrib & AM_DIR)){ iret=-2; targ=T_INT; strcpy(MMErrMsg,FErrorMsg[4]); return;}
-	    IntToStr(sret , ((fnod.fdate>>9)&0x7F)+1980, 10);
-	    sret[4] = '-'; IntToStrPad(sret + 5, (fnod.fdate>>5)&0xF, '0', 2, 10);
-	    sret[7] = '-'; IntToStrPad(sret + 8, fnod.fdate&0x1F, '0', 2, 10);
-	    sret[10] = ' ';
-	    IntToStrPad(sret+11, (fnod.ftime>>11)&0x1F, '0', 2, 10);
-	    sret[13] = ':'; IntToStrPad(sret + 14, (fnod.ftime>>5)&0x3F, '0', 2, 10);
-	    sret[16] = ':'; IntToStrPad(sret + 17, (fnod.ftime&0x1F)*2, '0', 2, 10);
-		CtoM(sret);
-	    targ=T_STR;
-		return;
-	}
+        tp=checkstring(ep, "FILESIZE");
+        if(tp){
+                int i,j;
+                DIR djd;
+                FILINFO fnod;
+                memset(&djd,0,sizeof(DIR));
+                memset(&fnod,0,sizeof(FILINFO));
+                char *p = getCstring(tp);
+                FSerror = f_stat(p, &fnod);
+                if(FSerror != FR_OK){ iret=-1; targ=T_INT; strcpy(MMErrMsg,FErrorMsg[4]); return;}
+                if((fnod.fattrib & AM_DIR)){ iret=-2; targ=T_INT; strcpy(MMErrMsg,FErrorMsg[4]); return;}
+                iret=fnod.fsize;
+                targ=T_INT;
+                return;
+        }
+        tp=checkstring(ep, "MODIFIED");
+        if(tp){
+                int i,j;
+            DIR djd;
+            FILINFO fnod;
+                memset(&djd,0,sizeof(DIR));
+                memset(&fnod,0,sizeof(FILINFO));
+                char *p = getCstring(tp);
+                FSerror = f_stat(p, &fnod);
+                if(FSerror != FR_OK){ iret=-1; targ=T_STR; strcpy(MMErrMsg,FErrorMsg[4]); return;}
+//                if((fnod.fattrib & AM_DIR)){ iret=-2; targ=T_INT; strcpy(MMErrMsg,FErrorMsg[4]); return;}
+            IntToStr(sret , ((fnod.fdate>>9)&0x7F)+1980, 10);
+            sret[4] = '-'; IntToStrPad(sret + 5, (fnod.fdate>>5)&0xF, '0', 2, 10);
+            sret[7] = '-'; IntToStrPad(sret + 8, fnod.fdate&0x1F, '0', 2, 10);
+            sret[10] = ' ';
+            IntToStrPad(sret+11, (fnod.ftime>>11)&0x1F, '0', 2, 10);
+            sret[13] = ':'; IntToStrPad(sret + 14, (fnod.ftime>>5)&0x3F, '0', 2, 10);
+            sret[16] = ':'; IntToStrPad(sret + 17, (fnod.ftime&0x1F)*2, '0', 2, 10);
+                CtoM(sret);
+            targ=T_STR;
+                return;
+        }
     tp=checkstring(ep, "PINNO");
     if(tp){
         int pin;
         char code;
-        if(!(code=codecheck(tp)))tp+=2;  
+        if(!(code=codecheck(tp)))tp+=2;
         else ("Syntax");
         pin = getinteger(tp);
         if(!code)pin=codemap(pin);
@@ -2464,9 +2464,9 @@ void fun_info(void){
             else if(Option.TOUCH_XZERO == TOUCH_NOT_CALIBRATED)strcpy(sret,"Not calibrated");
             else strcpy(sret,"Ready");
 #endif
-        } else if(checkstring(ep,"ID")){  
+        } else if(checkstring(ep,"ID")){
             strcpy(sret,id_out);
-	    } else if(checkstring(ep, "DEVICE")){
+            } else if(checkstring(ep, "DEVICE")){
             fun_device();
             return;
         } else if(checkstring(ep, "VERSION")){
@@ -2482,7 +2482,7 @@ void fun_info(void){
             targ=T_INT;
             return;
         } else if(checkstring(ep, "DISK SIZE")){
-            if(!InitSDCard()) error((char *)FErrorMsg[20]);					// setup the SD card
+            if(!InitSDCard()) error((char *)FErrorMsg[20]);                                        // setup the SD card
             FATFS *fs;
             DWORD fre_clust;
             /* Get volume information and free clusters of drive 1 */
@@ -2492,7 +2492,7 @@ void fun_info(void){
             targ=T_INT;
             return;
         } else if(checkstring(ep, "FREE SPACE")){
-            if(!InitSDCard()) error((char *)FErrorMsg[20]);					// setup the SD card
+            if(!InitSDCard()) error((char *)FErrorMsg[20]);                                        // setup the SD card
             FATFS *fs;
             DWORD fre_clust;
             /* Get volume information and free clusters of drive 1 */
@@ -2583,7 +2583,7 @@ void cmd_cpu(void) {
         SoftReset();                                                // this will restart the processor ? only works when not in debug
     } else if((p = checkstring(cmdline, "SLEEP"))) {
 //        if(!(*p == 0 || *p =='\'')) {
-        	int pullup=0;
+                int pullup=0;
             MMFLOAT totalseconds;
             getargs(&p, 3, ",");
             totalseconds=getnumber(p);
@@ -2595,22 +2595,22 @@ void cmd_cpu(void) {
              while(ConsoleTxBufTail != ConsoleTxBufHead);
              uSec(10000);
              if(Option.SerialConDisabled){
- 				USBD_Stop(&hUsbDeviceFS);
- 				USBD_DeInit(&hUsbDeviceFS);
- 				USB_DevDisconnect(USB_OTG_FS);
- 				HAL_GPIO_DeInit(GPIOA, GPIO_PIN_12 | GPIO_PIN_11);
- 				GPIO_InitStruct.Pin = GPIO_PIN_12 | GPIO_PIN_11;
- 				GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
- 				GPIO_InitStruct.Pull = GPIO_PULLDOWN;
- 				GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
- 				HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
- 				HAL_Delay(100);
- 				pullup=GPIOA->IDR & GPIO_PIN_12;
- 				GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
- 				HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
- 				HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11 | GPIO_PIN_12, RESET);
- 				HAL_Delay(400);
- 				HAL_GPIO_DeInit(GPIOA, GPIO_PIN_11 | GPIO_PIN_12);
+                                 USBD_Stop(&hUsbDeviceFS);
+                                 USBD_DeInit(&hUsbDeviceFS);
+                                 USB_DevDisconnect(USB_OTG_FS);
+                                 HAL_GPIO_DeInit(GPIOA, GPIO_PIN_12 | GPIO_PIN_11);
+                                 GPIO_InitStruct.Pin = GPIO_PIN_12 | GPIO_PIN_11;
+                                 GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+                                 GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+                                 GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+                                 HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+                                 HAL_Delay(100);
+                                 pullup=GPIOA->IDR & GPIO_PIN_12;
+                                 GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+                                 HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+                                 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11 | GPIO_PIN_12, RESET);
+                                 HAL_Delay(400);
+                                 HAL_GPIO_DeInit(GPIOA, GPIO_PIN_11 | GPIO_PIN_12);
              }
                GPIO_InitStruct.Pin = GPIO_PIN_0;
              GPIO_InitStruct.Pull = GPIO_PULLDOWN;
@@ -2623,9 +2623,9 @@ void cmd_cpu(void) {
              SYSCLKConfig_STOP();
              HAL_ResumeTick();
              if(Option.SerialConDisabled){
-				 MX_USB_DEVICE_Init();
-				 if(!pullup)USB_DevConnect(USB_OTG_FS);
-				 HAL_Delay(400);
+                                 MX_USB_DEVICE_Init();
+                                 if(!pullup)USB_DevConnect(USB_OTG_FS);
+                                 HAL_Delay(400);
              }
 //             MMPrintString(">\r\n");
          }*/
@@ -2636,13 +2636,13 @@ void cmd_csubinterrupt(void){
     if(argc != 0){
         if(checkstring(argv[0],"0")){
             CSubInterrupt = NULL;
-            CSubComplete=0;  
+            CSubComplete=0;
         } else {
-            CSubInterrupt = GetIntAddress(argv[0]); 
-            CSubComplete=0;  
+            CSubInterrupt = GetIntAddress(argv[0]);
+            CSubComplete=0;
             InterruptUsed = true;
         }
-    } else CSubComplete=1;  
+    } else CSubComplete=1;
 }
 void cmd_cfunction(void) {
     char *p, EndToken;
@@ -2685,7 +2685,7 @@ void cmd_poke(void) {
     void *pp;
     if(p = checkstring(cmdline, "DISPLAY")){
         if(!Option.DISPLAY_TYPE)error("Display not configured");
-        if(q=checkstring(p,"HRES")){ 
+        if(q=checkstring(p,"HRES")){
             HRes=getint(q,0,1920);
             return;
         } else if(q=checkstring(p,"VRES")){
@@ -2711,7 +2711,7 @@ void cmd_poke(void) {
                 if(argc>1)error("UNsupported command");
                 I2C_Send_Command(getinteger(argv[0]));
                 return;
-            } else 
+            } else
             error("Display not supported");
 #endif
         } error("Syntax");
@@ -2824,7 +2824,7 @@ void fun_peek(void) {
         targ = T_INT;
         return;
     }
-    
+
     if((p = checkstring(argv[0], "VARADDR"))){
         if(argc != 1) error("Syntax");
         pp = findvar(p, V_FIND | V_EMPTY_OK | V_NOFIND_ERR);
@@ -2834,7 +2834,7 @@ void fun_peek(void) {
         }
 
     if((p = checkstring(argv[0], "CFUNADDR"))){
-    	int i,j;
+            int i,j;
         if(argc != 1) error("Syntax");
         i = FindSubFun(p, true);                                    // search for a function first
         if(i == -1) i = FindSubFun(p, false);                       // and if not found try for a subroutine
@@ -2893,35 +2893,35 @@ void fun_peek(void) {
     targ = T_INT;
 }
 void fun_format(void) {
-	unsigned char *p, *fmt;
-	int inspec;
-	getargs(&ep, 3, ",");
-	if(argc%2 == 0) error("Invalid syntax");
-	if(argc == 3)
-		fmt = getCstring(argv[2]);
-	else
-		fmt = "%g";
+        unsigned char *p, *fmt;
+        int inspec;
+        getargs(&ep, 3, ",");
+        if(argc%2 == 0) error("Invalid syntax");
+        if(argc == 3)
+                fmt = getCstring(argv[2]);
+        else
+                fmt = "%g";
 
-	// check the format string for errors that might crash the CPU
-	for(inspec = 0, p = fmt; *p; p++) {
-		if(*p == '%') {
-			inspec++;
-			if(inspec > 1) error("Only one format specifier (%) allowed");
-			continue;
-		}
+        // check the format string for errors that might crash the CPU
+        for(inspec = 0, p = fmt; *p; p++) {
+                if(*p == '%') {
+                        inspec++;
+                        if(inspec > 1) error("Only one format specifier (%) allowed");
+                        continue;
+                }
 
-		if(inspec == 1 && (*p == 'g' || *p == 'G' || *p == 'f' || *p == 'e' || *p == 'E'|| *p == 'l'))
-			inspec++;
+                if(inspec == 1 && (*p == 'g' || *p == 'G' || *p == 'f' || *p == 'e' || *p == 'E'|| *p == 'l'))
+                        inspec++;
 
 
-		if(inspec == 1 && !(IsDigitinline(*p) || *p == '+' || *p == '-' || *p == '.' || *p == ' '))
-			error("Illegal character in format specification");
-	}
-	if(inspec != 2) error("Format specification not found");
-	sret = GetTempMemory(STRINGSIZE);									// this will last for the life of the command
-	sprintf(sret, fmt, getnumber(argv[0]));
-	CtoM(sret);
-	targ=T_STR;
+                if(inspec == 1 && !(IsDigitinline(*p) || *p == '+' || *p == '-' || *p == '.' || *p == ' '))
+                        error("Illegal character in format specification");
+        }
+        if(inspec != 2) error("Format specification not found");
+        sret = GetTempMemory(STRINGSIZE);                                                                        // this will last for the life of the command
+        sprintf(sret, fmt, getnumber(argv[0]));
+        CtoM(sret);
+        targ=T_STR;
 }
 
 
@@ -2957,10 +2957,10 @@ int checkdetailinterrupts(void) {
 
     // check for an  ON KEY loc  interrupt
     if(KeyInterrupt != NULL && Keycomplete) {
-		Keycomplete=false;
-		intaddr = KeyInterrupt;									    // set the next stmt to the interrupt location
-		goto GotAnInterrupt;
-	}
+                Keycomplete=false;
+                intaddr = KeyInterrupt;                                                                            // set the next stmt to the interrupt location
+                goto GotAnInterrupt;
+        }
 
     if(OnKeyGOSUB && kbhitConsole()) {
         intaddr = OnKeyGOSUB;                                       // set the next stmt to the interrupt location
@@ -2984,7 +2984,7 @@ int checkdetailinterrupts(void) {
 #else
     if (COLLISIONInterrupt != NULL && CollisionFound) {
         CollisionFound = false;
-        intaddr = (unsigned char *)COLLISIONInterrupt;									    // set the next stmt to the interrupt location
+        intaddr = (unsigned char *)COLLISIONInterrupt;                                                                            // set the next stmt to the interrupt location
         goto GotAnInterrupt;
     }
 #endif
@@ -3035,9 +3035,9 @@ int checkdetailinterrupts(void) {
 //#endif
     if(WAVInterrupt != NULL && WAVcomplete) {
         WAVcomplete=false;
-		intaddr = WAVInterrupt;									    // set the next stmt to the interrupt location
-		goto GotAnInterrupt;
-	}
+                intaddr = WAVInterrupt;                                                                            // set the next stmt to the interrupt location
+                goto GotAnInterrupt;
+        }
 
     // interrupt routines for the serial ports
     if(com1_interrupt != NULL && SerialRxStatus(1) >= com1_ilevel) {// do we need to interrupt?
@@ -3104,8 +3104,8 @@ GotAnInterrupt:
     InterruptReturn = nextstmt;                                     // for when IRETURN is executed
     // if the interrupt is pointing to a SUB token we need to call a subroutine
     if(*intaddr == cmdSUB) {
-    	strncpy(CurrentInterruptName, intaddr + 1, MAXVARLEN);
-    	rti[0] = cmdIRET;                                           // setup a dummy IRETURN command
+            strncpy(CurrentInterruptName, intaddr + 1, MAXVARLEN);
+            rti[0] = cmdIRET;                                           // setup a dummy IRETURN command
         rti[1] = 0;
         if(gosubindex >= MAXGOSUB) error("Too many SUBs for interrupt");
         errorstack[gosubindex] = CurrentLinePtr;

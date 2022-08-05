@@ -4,22 +4,22 @@ PicoMite MMBasic
 Memory.c
 
 <COPYRIGHT HOLDERS>  Geoff Graham, Peter Mather
-Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved. 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 
-1.	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-2.	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
+Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+1.        Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2.        Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
     in the documentation and/or other materials provided with the distribution.
-3.	The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed 
+3.        The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed
     on the console at startup (additional copyright messages may be added).
-4.	All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed 
+4.        All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed
     by the <copyright holder>.
-5.	Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software 
+5.        Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software
     without specific prior written permission.
 THIS SOFTWARE IS PROVIDED BY <COPYRIGHT HOLDERS> AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ************************************************************************************************************************/
 
@@ -34,9 +34,9 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 #define ASMMAX 6400 // maximum number of bytes that can be copied or set by assembler routines
 #define MAXCPY 3200 // tuned maximum number of bytes to copy using ZCOPY
 extern struct s_vartbl {                               // structure of the variable table
-	unsigned char name[MAXVARLEN];                       // variable's name
-	unsigned char type;                                  // its type (T_NUM, T_INT or T_STR)
-	unsigned char level;                                 // its subroutine or function level (used to track local variables)
+        unsigned char name[MAXVARLEN];                       // variable's name
+        unsigned char type;                                  // its type (T_NUM, T_INT or T_STR)
+        unsigned char level;                                 // its subroutine or function level (used to track local variables)
     unsigned char size;                         // the number of chars to allocate for each element in a string array
     unsigned char dummy;
     int __attribute__ ((aligned (4))) dims[MAXDIM];                     // the dimensions. it is an array if the first dimension is NOT zero
@@ -75,7 +75,7 @@ volatile char StrTmpLocalIndex[MAXTEMPSTRINGS];                              // 
 
 void *getheap(int size);
 unsigned int UsedHeap(void);
-int TempMemoryIsChanged = false;						            // used to prevent unnecessary scanning of strtmp[]
+int TempMemoryIsChanged = false;                                                            // used to prevent unnecessary scanning of strtmp[]
 int StrTmpIndex = 0;                                                // index to the next unallocated slot in strtmp[]
 
 
@@ -86,153 +86,153 @@ int StrTmpIndex = 0;                                                // index to 
  MMBasic commands
 ************************************************************************************************************************/
 void cmd_memory(void) {
-	unsigned char *p,*tp;
+        unsigned char *p,*tp;
     tp = checkstring(cmdline, "COPY");
     if(tp){
-    	if((p = checkstring(tp, "INTEGER"))) {
-    		int stepin=1, stepout=1;
-        	getargs(&p,9,",");
-        	if(argc<5)error("Syntax");
-        	int n=getinteger(argv[4]);
-        	if(n<=0)return;
-         	uint64_t *from=(uint64_t *)GetPokeAddr(argv[0]);
-         	uint64_t *to=(uint64_t *)GetPokeAddr(argv[2]);
-        	if((uint32_t)from % 8)error("Address not divisible by 8");
-        	if((uint32_t)to % 8)error("Address not divisible by 8");
-        	if(argc>=7 && *argv[6])stepin=getint(argv[6],0,0xFFFF);
-        	if(argc==9)stepout=getint(argv[8],0,0xFFFF);
-        	if(stepin==1 && stepout==1)memcpy(to, from, n*8);
-        	else{
-            	while(n--){
-            		*to=*from;
-            		to+=stepout;
-            		from+=stepin;
-            	}
-        	}
-    		return;
-    	}
-    	if((p = checkstring(tp, "FLOAT"))) {
-    		int stepin=1, stepout=1;
-        	getargs(&p,9,","); //assume byte
-        	if(argc<5)error("Syntax");
-        	int n=getinteger(argv[4]);
-        	if(n<=0)return;
-        	MMFLOAT *from=(MMFLOAT *)GetPokeAddr(argv[0]);
-        	MMFLOAT *to=(MMFLOAT *)GetPokeAddr(argv[2]);
-        	if((uint32_t)from % 8)error("Address not divisible by 8");
-        	if((uint32_t)to % 8)error("Address not divisible by 8");
-        	if(argc>=7 && *argv[6])stepin=getint(argv[6],0,0xFFFF);
-        	if(argc==9)stepout=getint(argv[8],0,0xFFFF);
-        	if(n<=0)return;
-        	if(stepin==1 && stepout==1)memcpy(to, from, n*8);
-        	else{
-            	while(n--){
-            		*to=*from;
-            		to+=stepout;
-            		from+=stepin;
-            	}
-        	}
-    		return;
-    	}
-    	getargs(&tp,5,",");
-    	if(argc!=5)error("Syntax");
-    	char *from=(char *)GetPeekAddr(argv[0]);
-    	char *to=(char *)GetPokeAddr(argv[2]);
-    	int n=getinteger(argv[4]);
-    	memcpy(to, from, n);
-    	return;
+            if((p = checkstring(tp, "INTEGER"))) {
+                    int stepin=1, stepout=1;
+                getargs(&p,9,",");
+                if(argc<5)error("Syntax");
+                int n=getinteger(argv[4]);
+                if(n<=0)return;
+                 uint64_t *from=(uint64_t *)GetPokeAddr(argv[0]);
+                 uint64_t *to=(uint64_t *)GetPokeAddr(argv[2]);
+                if((uint32_t)from % 8)error("Address not divisible by 8");
+                if((uint32_t)to % 8)error("Address not divisible by 8");
+                if(argc>=7 && *argv[6])stepin=getint(argv[6],0,0xFFFF);
+                if(argc==9)stepout=getint(argv[8],0,0xFFFF);
+                if(stepin==1 && stepout==1)memcpy(to, from, n*8);
+                else{
+                    while(n--){
+                            *to=*from;
+                            to+=stepout;
+                            from+=stepin;
+                    }
+                }
+                    return;
+            }
+            if((p = checkstring(tp, "FLOAT"))) {
+                    int stepin=1, stepout=1;
+                getargs(&p,9,","); //assume byte
+                if(argc<5)error("Syntax");
+                int n=getinteger(argv[4]);
+                if(n<=0)return;
+                MMFLOAT *from=(MMFLOAT *)GetPokeAddr(argv[0]);
+                MMFLOAT *to=(MMFLOAT *)GetPokeAddr(argv[2]);
+                if((uint32_t)from % 8)error("Address not divisible by 8");
+                if((uint32_t)to % 8)error("Address not divisible by 8");
+                if(argc>=7 && *argv[6])stepin=getint(argv[6],0,0xFFFF);
+                if(argc==9)stepout=getint(argv[8],0,0xFFFF);
+                if(n<=0)return;
+                if(stepin==1 && stepout==1)memcpy(to, from, n*8);
+                else{
+                    while(n--){
+                            *to=*from;
+                            to+=stepout;
+                            from+=stepin;
+                    }
+                }
+                    return;
+            }
+            getargs(&tp,5,",");
+            if(argc!=5)error("Syntax");
+            char *from=(char *)GetPeekAddr(argv[0]);
+            char *to=(char *)GetPokeAddr(argv[2]);
+            int n=getinteger(argv[4]);
+            memcpy(to, from, n);
+            return;
     }
     tp = checkstring(cmdline, "SET");
     if(tp){
-    	unsigned char *p;
-    	if((p = checkstring(tp, "BYTE"))) {
-        	getargs(&p,5,","); //assume byte
-        	if(argc!=5)error("Syntax");
-         	char *to=(char *)GetPokeAddr(argv[0]);
-         	int val=getint(argv[2],0,255);
-        	int n=getinteger(argv[4]);
-        	if(n<=0)return;
-        	memset(to, val, n);
-    		return;
-    	}
-    	if((p = checkstring(tp, "SHORT"))) {
-        	getargs(&p,5,","); //assume byte
-        	if(argc!=5)error("Syntax");
-         	short *to=(short *)GetPokeAddr(argv[0]);
-        	if((uint32_t)to % 2)error("Address not divisible by 2");
-        	short *q=to;
-   		    short data=getint(argv[2],0,65535);
-        	int n=getinteger(argv[4]);
-        	if(n<=0)return;
-        	while(n>0){
+            unsigned char *p;
+            if((p = checkstring(tp, "BYTE"))) {
+                getargs(&p,5,","); //assume byte
+                if(argc!=5)error("Syntax");
+                 char *to=(char *)GetPokeAddr(argv[0]);
+                 int val=getint(argv[2],0,255);
+                int n=getinteger(argv[4]);
+                if(n<=0)return;
+                memset(to, val, n);
+                    return;
+            }
+            if((p = checkstring(tp, "SHORT"))) {
+                getargs(&p,5,","); //assume byte
+                if(argc!=5)error("Syntax");
+                 short *to=(short *)GetPokeAddr(argv[0]);
+                if((uint32_t)to % 2)error("Address not divisible by 2");
+                short *q=to;
+                       short data=getint(argv[2],0,65535);
+                int n=getinteger(argv[4]);
+                if(n<=0)return;
+                while(n>0){
                 *q++=data;
-                n--;  
-        	}
-    		return;
-    	}
-    	if((p = checkstring(tp, "WORD"))) {
-        	getargs(&p,5,","); //assume byte
-        	if(argc!=5)error("Syntax");
-         	unsigned int *to=(unsigned int *)GetPokeAddr(argv[0]);
-        	if((uint32_t)to % 4)error("Address not divisible by 4");
-        	unsigned int *q=to;
-   		    unsigned int data=getint(argv[2],0,0xFFFFFFFF);
-        	int n=getinteger(argv[4]);
-        	if(n<=0)return;
-        	while(n>0){
+                n--;
+                }
+                    return;
+            }
+            if((p = checkstring(tp, "WORD"))) {
+                getargs(&p,5,","); //assume byte
+                if(argc!=5)error("Syntax");
+                 unsigned int *to=(unsigned int *)GetPokeAddr(argv[0]);
+                if((uint32_t)to % 4)error("Address not divisible by 4");
+                unsigned int *q=to;
+                       unsigned int data=getint(argv[2],0,0xFFFFFFFF);
+                int n=getinteger(argv[4]);
+                if(n<=0)return;
+                while(n>0){
                 *q++=data;
-                n--;  
-        	}
-    		return;
-     	}
-    	if((p = checkstring(tp, "INTEGER"))) {
-    		int stepin=1;
-        	getargs(&p,7,",");
-        	if(argc<5)error("Syntax");
-         	uint64_t *to=(uint64_t *)GetPokeAddr(argv[0]);
-        	if((uint32_t)to % 8)error("Address not divisible by 8");
-        	int64_t data;
-    		data=getinteger(argv[2]);
-        	int n=getinteger(argv[4]);
-        	if(argc==7)stepin=getint(argv[6],0,0xFFFF);
-        	if(n<=0)return;
-        	if(stepin==1)while(n--)*to++=data;
-        	else{
-            	while(n--){
-            		*to=data;
-            		to+=stepin;
-            	}
-        	}
-    		return;
-    	}
-    	if((p = checkstring(tp, "FLOAT"))) {
-    		int stepin=1;
-        	getargs(&p,7,","); //assume byte
-        	if(argc<5)error("Syntax");
-        	MMFLOAT *to=(MMFLOAT *)GetPokeAddr(argv[0]);
-        	if((uint32_t)to % 8)error("Address not divisible by 8");
-        	MMFLOAT data;
-    		data=getnumber(argv[2]);
-        	int n=getinteger(argv[4]);
-           	if(argc==7)stepin=getint(argv[6],0,0xFFFF);
-        	if(n<=0)return;
-        	if(stepin==1)while(n--)*to++=data;
-        	else{
-            	while(n--){
-            		*to=data;
-            		to+=stepin;
-            	}
-        	}
-    		return;
-    	}
-    	getargs(&tp,5,","); //assume byte
-    	if(argc!=5)error("Syntax");
-     	char *to=(char *)GetPokeAddr(argv[0]);
-     	int val=getint(argv[2],0,255);
-    	int n=getinteger(argv[4]);
-    	if(n<=0)return;
-    	memset(to, val, n);
-    	return;
+                n--;
+                }
+                    return;
+             }
+            if((p = checkstring(tp, "INTEGER"))) {
+                    int stepin=1;
+                getargs(&p,7,",");
+                if(argc<5)error("Syntax");
+                 uint64_t *to=(uint64_t *)GetPokeAddr(argv[0]);
+                if((uint32_t)to % 8)error("Address not divisible by 8");
+                int64_t data;
+                    data=getinteger(argv[2]);
+                int n=getinteger(argv[4]);
+                if(argc==7)stepin=getint(argv[6],0,0xFFFF);
+                if(n<=0)return;
+                if(stepin==1)while(n--)*to++=data;
+                else{
+                    while(n--){
+                            *to=data;
+                            to+=stepin;
+                    }
+                }
+                    return;
+            }
+            if((p = checkstring(tp, "FLOAT"))) {
+                    int stepin=1;
+                getargs(&p,7,","); //assume byte
+                if(argc<5)error("Syntax");
+                MMFLOAT *to=(MMFLOAT *)GetPokeAddr(argv[0]);
+                if((uint32_t)to % 8)error("Address not divisible by 8");
+                MMFLOAT data;
+                    data=getnumber(argv[2]);
+                int n=getinteger(argv[4]);
+                   if(argc==7)stepin=getint(argv[6],0,0xFFFF);
+                if(n<=0)return;
+                if(stepin==1)while(n--)*to++=data;
+                else{
+                    while(n--){
+                            *to=data;
+                            to+=stepin;
+                    }
+                }
+                    return;
+            }
+            getargs(&tp,5,","); //assume byte
+            if(argc!=5)error("Syntax");
+             char *to=(char *)GetPokeAddr(argv[0]);
+             int val=getint(argv[2],0,255);
+            int n=getinteger(argv[4]);
+            if(n<=0)return;
+            memset(to, val, n);
+            return;
     }
     int i, j, var, nbr, vsize, VarCnt;
     int ProgramSize, ProgramPercent, VarSize, VarPercent, GeneralSize, GeneralPercent, SavedVarSize, SavedVarSizeK, SavedVarPercent, SavedVarCnt;
@@ -318,7 +318,7 @@ void cmd_memory(void) {
     // count the number of lines in the program
     p = ProgMemory;
     i = 0;
-	while(*p != 0xff) {                                             // skip if program memory is erased
+        while(*p != 0xff) {                                             // skip if program memory is erased
         if(*p == 0) p++;                                            // if it is at the end of an element skip the zero marker
         if(*p == 0) break;                                          // end of the program or module
         if(*p == T_NEWLINE) {
@@ -326,9 +326,9 @@ void cmd_memory(void) {
             p++;                                                    // skip over the newline token
         }
         if(*p == T_LINENBR) p += 3;                                 // skip over the line number
-		skipspace(p);
-		if(p[0] == T_LABEL) p += p[1] + 2;							// skip over the label
-		while(*p) p++;												// look for the zero marking the start of an element
+                skipspace(p);
+                if(p[0] == T_LABEL) p += p[1] + 2;                                                        // skip over the label
+                while(*p) p++;                                                                                                // look for the zero marking the start of an element
     }
     ProgramSize = ((p - ProgMemory) + 512)/1024;
     ProgramPercent = ((p - ProgMemory) * 100)/(Option.PROG_FLASH_SIZE + SAVEDVARS_FLASH_SIZE);
@@ -339,7 +339,7 @@ void cmd_memory(void) {
     IntToStrPad(inpbuf, ProgramSize, ' ', 4, 10); strcat(inpbuf, "K (");
     IntToStrPad(inpbuf + strlen(inpbuf), ProgramPercent, ' ', 2, 10); strcat(inpbuf, "%) Program (");
     IntToStr(inpbuf + strlen(inpbuf), i, 10); strcat(inpbuf, " lines)\r\n");
-	MMPrintString(inpbuf);
+        MMPrintString(inpbuf);
 
     if(CFunctNbr) {
         IntToStrPad(inpbuf, CFunctSizeK, ' ', 4, 10); strcat(inpbuf, "K (");
@@ -367,21 +367,21 @@ void cmd_memory(void) {
 
     IntToStrPad(inpbuf, ((Option.PROG_FLASH_SIZE/* + SAVEDVARS_FLASH_SIZE*/) + 512)/1024 - ProgramSize - CFunctSizeK - FontSizeK - SavedVarSizeK - LibrarySizeK, ' ', 4, 10); strcat(inpbuf, "K (");
     IntToStrPad(inpbuf + strlen(inpbuf), 100 - ProgramPercent - CFunctPercent - FontPercent - SavedVarPercent - LibraryPercent, ' ', 2, 10); strcat(inpbuf, "%) Free\r\n");
-	MMPrintString(inpbuf);
+        MMPrintString(inpbuf);
 
     MMPrintString("\r\nRAM:\r\n");
     IntToStrPad(inpbuf, VarSize, ' ', 4, 10); strcat(inpbuf, "K (");
     IntToStrPad(inpbuf + strlen(inpbuf), VarPercent, ' ', 2, 10); strcat(inpbuf, "%) ");
     IntToStr(inpbuf + strlen(inpbuf), VarCnt, 10); strcat(inpbuf, " Variable"); strcat(inpbuf, VarCnt == 1 ? "\r\n":"s\r\n");
-	MMPrintString(inpbuf);
+        MMPrintString(inpbuf);
 
     IntToStrPad(inpbuf, GeneralSize, ' ', 4, 10); strcat(inpbuf, "K (");
     IntToStrPad(inpbuf + strlen(inpbuf), GeneralPercent, ' ', 2, 10); strcat(inpbuf, "%) General\r\n");
-	MMPrintString(inpbuf);
+        MMPrintString(inpbuf);
 
     IntToStrPad(inpbuf, (CurrentRAM + 512)/1024 - VarSize - GeneralSize, ' ', 4, 10); strcat(inpbuf, "K (");
     IntToStrPad(inpbuf + strlen(inpbuf), 100 - VarPercent - GeneralPercent, ' ', 2, 10); strcat(inpbuf, "%) Free\r\n");
-	MMPrintString(inpbuf);
+        MMPrintString(inpbuf);
 }
 
 
@@ -390,24 +390,24 @@ void cmd_memory(void) {
  Public memory management functions
 ************************************************************************************************************************/
 
-/* all memory allocation (except for the heap) is made by m_alloc() 
+/* all memory allocation (except for the heap) is made by m_alloc()
    memory layout is based on static allocation of RAM (very simple)
    see the Maximite version of MMBasic for a more complex dynamic memory management scheme
-   
+
           |--------------------|
           |                    |
           |    MMBasic Heap    |
           |    (grows down)    |
           |                    |
           |--------------------|   <<<   MMHeap
-          
-          
+
+
           |--------------------|
           |   Variable Table   |
           |     (grows up)     |
           |--------------------|   <<<   vartbl and DOS_vartbl
-          
-          
+
+
           |--------------------|
           |                    |
           |   Program Memory   |
@@ -419,9 +419,9 @@ void cmd_memory(void) {
   These calls must be made in this sequence:
         m_alloc(M_PROG, size)       Called whenever program memory size changes
         m_alloc(M_VAR, size)        Called when the program is running and whenever the variable table needs to be expanded
-        
+
    Separately calls are made to getmemory() and FreeHeap() to allocate or free space on the heap (which grows downward).
-   
+
 */
 
 
@@ -431,12 +431,12 @@ void m_alloc(int type) {
                         // everytime the program size is adjusted up or down this must be called to check for memory overflow
                         ProgMemory = (uint8_t *)flash_progmemory;
                         memset(MMHeap,0,Option.HEAP_SIZE);
-						Ctrl=NULL;
+                                                Ctrl=NULL;
 #ifndef PICOMITEVGA
                         if(Option.MaxCtrls) Ctrl=(struct s_ctrl *)CTRLS;
 #endif
                         break;
-                        
+
         case M_VAR:     // this must be called to initialises the variable memory pointer
                         // everytime the variable table is increased this must be called to verify that enough memory is free
                         vartbl = (struct s_vartbl *)&AllMemory[HEAP_MEMORY_SIZE+1024];
@@ -531,7 +531,7 @@ void InitHeap(void) {
     int i;
     for(i = 0; i < (HEAP_MEMORY_SIZE/PAGESIZE) / PAGESPERWORD; i++) mmap[i] = 0;
     for(i = 0; i < MAXTEMPSTRINGS; i++) StrTmp[i] = NULL;
-}    
+}
 
 
 
@@ -583,7 +583,7 @@ void __not_in_flash_func(*GetMemory)(int size) {
     ClearTempMemory();                                               // hopefully this will give us enough to print the prompt
     error("Not enough memory");
     return NULL;                                                    // keep the compiler happy
-}    
+}
 
 
 
@@ -594,8 +594,8 @@ int FreeSpaceOnHeap(void) {
     for(addr = MMHeap + Option.HEAP_SIZE - PAGESIZE; addr >= MMHeap; addr -= PAGESIZE)
         if(!(MBitsGet(addr) & PUSED)) nbr++;
     return nbr * PAGESIZE;
-}    
-    
+}
+
 
 
 unsigned int UsedHeap(void) {
@@ -605,18 +605,18 @@ unsigned int UsedHeap(void) {
     for(addr = MMHeap + Option.HEAP_SIZE - PAGESIZE; addr >= MMHeap; addr -= PAGESIZE)
         if(MBitsGet(addr) & PUSED) nbr++;
     return nbr * PAGESIZE;
-}    
+}
 
 
 
 unsigned char *HeapBottom(void) {
     unsigned char *p;
     unsigned char *addr;
-    
+
     for(p = addr = MMHeap + Option.HEAP_SIZE - PAGESIZE; addr > MMHeap; addr -= PAGESIZE)
         if(MBitsGet(addr) & PUSED) p = addr;
     return (unsigned char *)p;
-}   
+}
 int MemSize(void *addr){ //returns the amount of heap memory allocated to an address
     int i=0;
     int bits;
@@ -631,19 +631,19 @@ int MemSize(void *addr){ //returns the amount of heap memory allocated to an add
 }
 
 void *ReAllocMemory(void *addr, size_t msize){
-	int size=MemSize(addr);
-	if(msize<=size)return addr;
-	void *newaddr=GetMemory(msize);
-	if(addr!=NULL && size!=0){
-		memcpy(newaddr,addr,MemSize(addr));
-		FreeMemory(addr);
+        int size=MemSize(addr);
+        if(msize<=size)return addr;
+        void *newaddr=GetMemory(msize);
+        if(addr!=NULL && size!=0){
+                memcpy(newaddr,addr,MemSize(addr));
+                FreeMemory(addr);
         addr=NULL;
 
-	}
-	return newaddr;
+        }
+        return newaddr;
 }
 void __not_in_flash_func(FreeMemorySafe)(void **addr){
-	if(*addr!=NULL){
+        if(*addr!=NULL){
         if(*addr >= (void *)MMHeap && *addr < (void *)(MMHeap + Option.HEAP_SIZE)) {FreeMemory(*addr);*addr=NULL;}
-	}
+        }
 }

@@ -25,9 +25,9 @@ unsigned int CFuncInt2 = (unsigned int)NULL;
 static uint64_t timer(void){ return time_us_64();}
 static int64_t PinReadFunc(int a){return gpio_get(PinDef[a].GPno);}
 extern struct s_vartbl {                               // structure of the variable table
-	unsigned char name[MAXVARLEN];                       // variable's name
-	unsigned char type;                                  // its type (T_NUM, T_INT or T_STR)
-	unsigned char level;                                 // its subroutine or function level (used to track local variables)
+        unsigned char name[MAXVARLEN];                       // variable's name
+        unsigned char type;                                  // its type (T_NUM, T_INT or T_STR)
+        unsigned char level;                                 // its subroutine or function level (used to track local variables)
     unsigned char size;                         // the number of chars to allocate for each element in a string array
     unsigned char dummy;
     int __attribute__ ((aligned (4))) dims[MAXDIM];                     // the dimensions. it is an array if the first dimension is NOT zero

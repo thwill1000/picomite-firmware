@@ -55,6 +55,6 @@ target_link_libraries(PicoMite
     hardware_i2c
     hardware_spi
     hardware_dma
-    hardware_exception 
-	hardware_pio
+    hardware_exception
+        hardware_pio
     )

@@ -4,22 +4,22 @@ PicoMite MMBasic
 GUI.c
 
 <COPYRIGHT HOLDERS>  Geoff Graham, Peter Mather
-Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved. 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 
-1.	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-2.	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
+Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+1.        Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2.        Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
     in the documentation and/or other materials provided with the distribution.
-3.	The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed 
+3.        The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed
     on the console at startup (additional copyright messages may be added).
-4.	All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed 
+4.        All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed
     by the <copyright holder>.
-5.	Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software 
+5.        Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software
     without specific prior written permission.
 THIS SOFTWARE IS PROVIDED BY <COPYRIGHT HOLDERS> AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ************************************************************************************************************************/
 
@@ -462,7 +462,7 @@ void cmd_gui(void) {
                 DrawKeyboard(KEY_OPEN);                                         // initial draw of the keypad
             else
                 DelayedDrawKeyboard = true;                                     // leave it until after the keyboard interrupt
-            return;        
+            return;
         } else
             r = GetCtrlParams(CTRL_TEXTBOX, p);
         return;
@@ -991,12 +991,12 @@ void DrawSwitch(int r) {
         } else {
             Ctrl[r].min = Ctrl[r].x1;
             Ctrl[r].max = half;
-        }          
+        }
     } else {
         Ctrl[r].min = Ctrl[r].x1;
         Ctrl[r].max = half = Ctrl[r].x2;
     }
-    
+
     DrawBasicButton(Ctrl[r].x1, Ctrl[r].y1, half, Ctrl[r].y2, BTN_SIDE_WIDTH, on, ChangeBright(Ctrl[r].bc, on ? 0 : -25), Ctrl[r].state);
     if(twobtn) DrawBasicButton(half, Ctrl[r].y1, Ctrl[r].x2, Ctrl[r].y2, BTN_SIDE_WIDTH, !on, ChangeBright(Ctrl[r].bc, on ? -25 : 0), Ctrl[r].state);
 
@@ -1212,7 +1212,7 @@ void DrawGauge(int r) {
             if(i == gend) SpecialDrawLine(xi2, yi2, xo2, yo2, 1, Ctrl[r].fc, Ctrl[r].state);
         }
     }
-    
+
     FloatToStr(buf, Ctrl[r].value, 0, Ctrl[r].inc, ' ');            // convert the value to a string for display
     if(strlen(buf) < GaugeS->laststrlen) {                          // erase the last text if the length of the text has shrunk
         SpecialDrawCircle(x, y, (radius * 0.75) - 2, 0, Ctrl[r].bc, Ctrl[r].bc, 1.0, Ctrl[r].state) ;
@@ -1225,7 +1225,7 @@ void DrawGauge(int r) {
     if(v > ta) c = GaugeS->c2;
     if(v > tb) c = GaugeS->c3;
     if(v > tc) c = GaugeS->c4;
-    
+
     // draw the text
     if(*Ctrl[r].s) { strcat(buf, "~"); strcat(buf, Ctrl[r].s); }    // append the units string
     SpecialPrintString(x, y, JUSTIFY_CENTER, JUSTIFY_MIDDLE, ORIENT_NORMAL, c, Ctrl[r].bc, buf, Ctrl[r].state);
@@ -1950,7 +1950,7 @@ void ProcessTouch(void) {
                     case CTRL_SWITCH:   if(!(TouchX >= Ctrl[r].min && TouchX <= Ctrl[r].max)) return;   // skip if it is not the touch sensitive area (depends on the switch state)                                        Ctrl[r].value = !Ctrl[r].value;
                                         Ctrl[r].value = !Ctrl[r].value;
                                         break;
-                    
+
                     case CTRL_BUTTON:
                     case CTRL_RADIOBTN:;
                     case CTRL_AREA:     Ctrl[r].value = 1;
@@ -2005,7 +2005,7 @@ void ProcessTouch(void) {
                                         if(GuiIntDownVector == NULL)
                                             DrawKeyboard(KEY_OPEN);                                          // initial draw of the keypad
                                         else
-                                            DelayedDrawKeyboard = true;  
+                                            DelayedDrawKeyboard = true;
                                         return;
 
                     case CTRL_FMTBOX:   strcpy(CancelValue, Ctrl[r].s);                                     // save the current value in case the user cancels

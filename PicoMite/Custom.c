@@ -4,22 +4,22 @@ PicoMite MMBasic
 custom.c
 
 <COPYRIGHT HOLDERS>  Geoff Graham, Peter Mather
-Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved. 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 
-1.	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-2.	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
+Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+1.        Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2.        Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
     in the documentation and/or other materials provided with the distribution.
-3.	The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed 
+3.        The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed
     on the console at startup (additional copyright messages may be added).
-4.	All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed 
+4.        All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed
     by the <copyright holder>.
-5.	Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software 
+5.        Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software
     without specific prior written permission.
 THIS SOFTWARE IS PROVIDED BY <COPYRIGHT HOLDERS> AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ************************************************************************************************************************/
 #include <stdio.h>
@@ -31,16 +31,16 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 /*************************************************************************************************************************
 **************************************************************************************************************************
 IMPORTANT:
-This module is empty and should be used for your special functions and commands.  In the standard distribution this file  
+This module is empty and should be used for your special functions and commands.  In the standard distribution this file
 will never be changed, so your code should be safe here.  You should avoid placing commands and functions in other files as
 they may be changed and you would then need to re insert your changes in a new release of the source.
 
 **************************************************************************************************************************
 **************************************************************************************************************************/
 extern struct s_vartbl {                               // structure of the variable table
-	unsigned char name[MAXVARLEN];                       // variable's name
-	unsigned char type;                                  // its type (T_NUM, T_INT or T_STR)
-	unsigned char level;                                 // its subroutine or function level (used to track local variables)
+        unsigned char name[MAXVARLEN];                       // variable's name
+        unsigned char type;                                  // its type (T_NUM, T_INT or T_STR)
+        unsigned char level;                                 // its subroutine or function level (used to track local variables)
     unsigned char size;                         // the number of chars to allocate for each element in a string array
     unsigned char dummy;
     int __attribute__ ((aligned (4))) dims[MAXDIM];                     // the dimensions. it is an array if the first dimension is NOT zero
@@ -62,14 +62,14 @@ extern struct s_vartbl {                               // structure of the varia
  There are 4 items of information that are setup before the command is run.
  All these are globals.
 
- int cmdtoken	This is the token number of the command (some commands can handle multiple
-				statement types and this helps them differentiate)
+ int cmdtoken        This is the token number of the command (some commands can handle multiple
+                                statement types and this helps them differentiate)
 
- unsigned char *cmdline	This is the command line terminated with a zero unsigned char and trimmed of leading
-				spaces.  It may exist anywhere in memory (or even ROM).
+ unsigned char *cmdline        This is the command line terminated with a zero unsigned char and trimmed of leading
+                                spaces.  It may exist anywhere in memory (or even ROM).
 
- unsigned char *nextstmt	This is a pointer to the next statement to be executed.  The only thing a
-				command can do with it is save it or change it to some other location.
+ unsigned char *nextstmt        This is a pointer to the next statement to be executed.  The only thing a
+                                command can do with it is save it or change it to some other location.
 
  unsigned char *CurrentLinePtr  This is read only and is set to NULL if the command is in immediate mode.
 
@@ -157,17 +157,17 @@ void cmd_pio(void){
         dd = findvar(argv[6], V_NOFIND_NULL | V_EMPTY_OK);
         if(dd == NULL) error("Invalid variable");
         if(((vartbl[VarIndex].type & T_INT) && vartbl[VarIndex].dims[0] > 0 && vartbl[VarIndex].dims[1] == 0))
-        {		// integer array
+        {                // integer array
             if( (((long long int *)dd - vartbl[VarIndex].val.ia) + nbr) > (vartbl[VarIndex].dims[0] + 1 - OptionBase) )
                 error("Insufficient array size");
         }  else  if ((vartbl[VarIndex].type & T_INT) && vartbl[VarIndex].dims[0] == 0 && nbr==1){
             // single variable
         }  else error("Invalid variable");
-        
+
         while(nbr--) {
-       	    *dd = pio_sm_get(pio, sm);
+                   *dd = pio_sm_get(pio, sm);
             if(pio->fdebug & (1<<(sm + 16)))*dd=-1;
-       	    if(nbr)dd++;
+                   if(nbr)dd++;
         }
         return;
     }
@@ -185,7 +185,7 @@ void cmd_pio(void){
         pio->instr_mem[slot]=instruction;
         return;
     }
-    
+
     tp = checkstring(cmdline, "CLEAR");
     if(tp){
         getargs(&tp,1,",");
@@ -217,10 +217,10 @@ void cmd_pio(void){
 #else
         PIO pio = (getint(argv[0],0,1) ? pio1: pio0);
 #endif
-	    void *ptr1 = findvar(argv[2], V_FIND | V_EMPTY_OK | V_NOFIND_ERR);
+            void *ptr1 = findvar(argv[2], V_FIND | V_EMPTY_OK | V_NOFIND_ERR);
         if(vartbl[VarIndex].type & T_INT) {
             if(vartbl[VarIndex].dims[1] != 0) error("Invalid variable");
-            if(vartbl[VarIndex].dims[0] <= 0) {		// Not an array
+            if(vartbl[VarIndex].dims[0] <= 0) {                // Not an array
                 error("Argument 2 must be integer array");
             }
             if((vartbl[VarIndex].dims[0] - OptionBase)!=7)error("Array size");

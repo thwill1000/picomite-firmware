@@ -4,22 +4,22 @@ PicoMite MMBasic
 commands.h
 
 <COPYRIGHT HOLDERS>  Geoff Graham, Peter Mather
-Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved. 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 
-1.	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-2.	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
+Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+1.        Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2.        Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
     in the documentation and/or other materials provided with the distribution.
-3.	The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed 
+3.        The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed
     on the console at startup (additional copyright messages may be added).
-4.	All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed 
+4.        All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed
     by the <copyright holder>.
-5.	Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software 
+5.        Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software
     without specific prior written permission.
 THIS SOFTWARE IS PROVIDED BY <COPYRIGHT HOLDERS> AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ************************************************************************************************************************/
 
@@ -94,66 +94,66 @@ void cmd_mid(void);
 **********************************************************************************/
 #ifdef INCLUDE_COMMAND_TABLE
 
-	{ (unsigned char *)"?",			T_CMD,				0, cmd_print	},
-	{ (unsigned char *)"Call",		T_CMD,				0, cmd_call	},
-	{ (unsigned char *)"Clear",		T_CMD,				0, cmd_clear	},
-	{ (unsigned char *)"Continue",           T_CMD,                          0, cmd_continue	},
-	{ (unsigned char *)"Data",		T_CMD,				0, cmd_null	},
-	{ (unsigned char *)"Dim",		T_CMD,				0, cmd_dim	},
-	{ (unsigned char *)"Do",			T_CMD,				0, cmd_do	},
-	{ (unsigned char *)"ElseIf",		T_CMD,				0, cmd_else	},
-//	{ (unsigned char *)"Else If",		T_CMD,				0, cmd_else	},
-	{ (unsigned char *)"Case Else",		T_CMD,				0, cmd_case	},
-	{ (unsigned char *)"Else",		T_CMD,				0, cmd_else	},
-	{ (unsigned char *)"Select Case",	T_CMD,				0, cmd_select	},
-	{ (unsigned char *)"End Select",		T_CMD,				0, cmd_null	},
-	{ (unsigned char *)"Case",		T_CMD,				0, cmd_case	},
-	{ (unsigned char *)"EndIf",		T_CMD,				0, cmd_null	},
-//	{ (unsigned char *)"End If",		T_CMD,				0, cmd_null	},
-	{ (unsigned char *)"End Function",       T_CMD,                          0, cmd_endfun	},      // this entry must come before END and FUNCTION
-	{ (unsigned char *)"End Sub",            T_CMD,                          0, cmd_return	},      // this entry must come before END and SUB
-	{ (unsigned char *)"End",		T_CMD,				0, cmd_end	},
-	{ (unsigned char *)"Erase",		T_CMD,				0, cmd_erase	},
-	{ (unsigned char *)"Error",		T_CMD,				0, cmd_error	},
-	{ (unsigned char *)"Exit For",           T_CMD,				0, cmd_exitfor	},      // this entry must come before EXIT and FOR
-	{ (unsigned char *)"Exit Sub",           T_CMD,				0, cmd_return	},      // this entry must come before EXIT and SUB
-	{ (unsigned char *)"Exit Function",      T_CMD,                          0, cmd_endfun	},      // this entry must come before EXIT and FUNCTION
-//	{ (unsigned char *)"Exit Do",            T_CMD,				0, cmd_exit	},
-	{ (unsigned char *)"Exit",		T_CMD,				0, cmd_exit	},
-	{ (unsigned char *)"For",		T_CMD,				0, cmd_for	},
-	{ (unsigned char *)"Function",           T_CMD,				0, cmd_subfun	},
-	{ (unsigned char *)"GoSub",		T_CMD,				0, cmd_gosub	},
-	{ (unsigned char *)"GoTo",		T_CMD,				0, cmd_goto	},
-	{ (unsigned char *)"Inc",			T_CMD,				0, cmd_inc	},
-	{ (unsigned char *)"If",			T_CMD,				0, cmd_if	},
-	{ (unsigned char *)"Line Input",         T_CMD,				0, cmd_lineinput},      // this entry must come before INPUT
-	{ (unsigned char *)"Input",		T_CMD,				0, cmd_input	},
-	{ (unsigned char *)"Let",		T_CMD,				0, cmd_let	},
-	{ (unsigned char *)"List",		T_CMD,				0, cmd_list	},
-	{ (unsigned char *)"Load",		T_CMD,				0, cmd_load		},
-	{ (unsigned char *)"Local",		T_CMD,				0, cmd_dim	},
-	{ (unsigned char *)"Loop",		T_CMD,				0, cmd_loop	},
-	{ (unsigned char *)"New",		T_CMD,				0, cmd_new	},
-	{ (unsigned char *)"Next",		T_CMD,				0, cmd_next	},
-	{ (unsigned char *)"On",			T_CMD,				0, cmd_on	},
-	{ (unsigned char *)"Print",		T_CMD,				0, cmd_print	},
-	{ (unsigned char *)"Randomize",          T_CMD,				0, cmd_randomize},
-	{ (unsigned char *)"Read",		T_CMD,				0, cmd_read	},
-	{ (unsigned char *)"Rem",		T_CMD,				0, cmd_null,	},
-	{ (unsigned char *)"Restore",            T_CMD,				0, cmd_restore	},
-	{ (unsigned char *)"Return",		T_CMD,				0, cmd_return,	},
-	{ (unsigned char *)"Run",		T_CMD,				0, cmd_run	},
-	{ (unsigned char *)"Save",		T_CMD,				0, cmd_save		},
-    { (unsigned char *)"Static",		T_CMD,				0, cmd_dim		},
-	{ (unsigned char *)"Sub",		T_CMD,				0, cmd_subfun   },
-//	{ (unsigned char *)"TROFF",		T_CMD,				0, cmd_troff	},
-//	{ (unsigned char *)"TRON",		T_CMD,				0, cmd_tron	},
-	{ (unsigned char *)"Trace",		T_CMD,				0, cmd_trace	},
-//	{ (unsigned char *)"Wend",		T_CMD,				0, cmd_loop	},
-	{ (unsigned char *)"While",		T_CMD,				0, cmd_do	},
-	{ (unsigned char *)"Const",		T_CMD,				0, cmd_const	},
-	{ (unsigned char *)"Execute",	T_CMD,				0, cmd_execute	},
-	{ (unsigned char *)"MID$(",		T_CMD | T_FUN,		0, cmd_mid      },
+        { (unsigned char *)"?",                        T_CMD,                                0, cmd_print        },
+        { (unsigned char *)"Call",                T_CMD,                                0, cmd_call        },
+        { (unsigned char *)"Clear",                T_CMD,                                0, cmd_clear        },
+        { (unsigned char *)"Continue",           T_CMD,                          0, cmd_continue        },
+        { (unsigned char *)"Data",                T_CMD,                                0, cmd_null        },
+        { (unsigned char *)"Dim",                T_CMD,                                0, cmd_dim        },
+        { (unsigned char *)"Do",                        T_CMD,                                0, cmd_do        },
+        { (unsigned char *)"ElseIf",                T_CMD,                                0, cmd_else        },
+//        { (unsigned char *)"Else If",                T_CMD,                                0, cmd_else        },
+        { (unsigned char *)"Case Else",                T_CMD,                                0, cmd_case        },
+        { (unsigned char *)"Else",                T_CMD,                                0, cmd_else        },
+        { (unsigned char *)"Select Case",        T_CMD,                                0, cmd_select        },
+        { (unsigned char *)"End Select",                T_CMD,                                0, cmd_null        },
+        { (unsigned char *)"Case",                T_CMD,                                0, cmd_case        },
+        { (unsigned char *)"EndIf",                T_CMD,                                0, cmd_null        },
+//        { (unsigned char *)"End If",                T_CMD,                                0, cmd_null        },
+        { (unsigned char *)"End Function",       T_CMD,                          0, cmd_endfun        },      // this entry must come before END and FUNCTION
+        { (unsigned char *)"End Sub",            T_CMD,                          0, cmd_return        },      // this entry must come before END and SUB
+        { (unsigned char *)"End",                T_CMD,                                0, cmd_end        },
+        { (unsigned char *)"Erase",                T_CMD,                                0, cmd_erase        },
+        { (unsigned char *)"Error",                T_CMD,                                0, cmd_error        },
+        { (unsigned char *)"Exit For",           T_CMD,                                0, cmd_exitfor        },      // this entry must come before EXIT and FOR
+        { (unsigned char *)"Exit Sub",           T_CMD,                                0, cmd_return        },      // this entry must come before EXIT and SUB
+        { (unsigned char *)"Exit Function",      T_CMD,                          0, cmd_endfun        },      // this entry must come before EXIT and FUNCTION
+//        { (unsigned char *)"Exit Do",            T_CMD,                                0, cmd_exit        },
+        { (unsigned char *)"Exit",                T_CMD,                                0, cmd_exit        },
+        { (unsigned char *)"For",                T_CMD,                                0, cmd_for        },
+        { (unsigned char *)"Function",           T_CMD,                                0, cmd_subfun        },
+        { (unsigned char *)"GoSub",                T_CMD,                                0, cmd_gosub        },
+        { (unsigned char *)"GoTo",                T_CMD,                                0, cmd_goto        },
+        { (unsigned char *)"Inc",                        T_CMD,                                0, cmd_inc        },
+        { (unsigned char *)"If",                        T_CMD,                                0, cmd_if        },
+        { (unsigned char *)"Line Input",         T_CMD,                                0, cmd_lineinput},      // this entry must come before INPUT
+        { (unsigned char *)"Input",                T_CMD,                                0, cmd_input        },
+        { (unsigned char *)"Let",                T_CMD,                                0, cmd_let        },
+        { (unsigned char *)"List",                T_CMD,                                0, cmd_list        },
+        { (unsigned char *)"Load",                T_CMD,                                0, cmd_load                },
+        { (unsigned char *)"Local",                T_CMD,                                0, cmd_dim        },
+        { (unsigned char *)"Loop",                T_CMD,                                0, cmd_loop        },
+        { (unsigned char *)"New",                T_CMD,                                0, cmd_new        },
+        { (unsigned char *)"Next",                T_CMD,                                0, cmd_next        },
+        { (unsigned char *)"On",                        T_CMD,                                0, cmd_on        },
+        { (unsigned char *)"Print",                T_CMD,                                0, cmd_print        },
+        { (unsigned char *)"Randomize",          T_CMD,                                0, cmd_randomize},
+        { (unsigned char *)"Read",                T_CMD,                                0, cmd_read        },
+        { (unsigned char *)"Rem",                T_CMD,                                0, cmd_null,        },
+        { (unsigned char *)"Restore",            T_CMD,                                0, cmd_restore        },
+        { (unsigned char *)"Return",                T_CMD,                                0, cmd_return,        },
+        { (unsigned char *)"Run",                T_CMD,                                0, cmd_run        },
+        { (unsigned char *)"Save",                T_CMD,                                0, cmd_save                },
+    { (unsigned char *)"Static",                T_CMD,                                0, cmd_dim                },
+        { (unsigned char *)"Sub",                T_CMD,                                0, cmd_subfun   },
+//        { (unsigned char *)"TROFF",                T_CMD,                                0, cmd_troff        },
+//        { (unsigned char *)"TRON",                T_CMD,                                0, cmd_tron        },
+        { (unsigned char *)"Trace",                T_CMD,                                0, cmd_trace        },
+//        { (unsigned char *)"Wend",                T_CMD,                                0, cmd_loop        },
+        { (unsigned char *)"While",                T_CMD,                                0, cmd_do        },
+        { (unsigned char *)"Const",                T_CMD,                                0, cmd_const        },
+        { (unsigned char *)"Execute",        T_CMD,                                0, cmd_execute        },
+        { (unsigned char *)"MID$(",                T_CMD | T_FUN,                0, cmd_mid      },
 
 #endif
 
@@ -163,15 +163,15 @@ void cmd_mid(void);
 **********************************************************************************/
 #ifdef INCLUDE_TOKEN_TABLE
 
-	{ (unsigned char *)"For",		T_NA,				0, op_invalid	},
-	{ (unsigned char *)"Else",		T_NA,				0, op_invalid	},
-	{ (unsigned char *)"GoSub",		T_NA,				0, op_invalid	},
-	{ (unsigned char *)"GoTo",		T_NA,				0, op_invalid	},
-	{ (unsigned char *)"Step",		T_NA,				0, op_invalid	},
-	{ (unsigned char *)"Then",		T_NA,				0, op_invalid	},
-	{ (unsigned char *)"To",			T_NA,				0, op_invalid	},
-	{ (unsigned char *)"Until",		T_NA,				0, op_invalid	},
-	{ (unsigned char *)"While",		T_NA,				0, op_invalid	},
+        { (unsigned char *)"For",                T_NA,                                0, op_invalid        },
+        { (unsigned char *)"Else",                T_NA,                                0, op_invalid        },
+        { (unsigned char *)"GoSub",                T_NA,                                0, op_invalid        },
+        { (unsigned char *)"GoTo",                T_NA,                                0, op_invalid        },
+        { (unsigned char *)"Step",                T_NA,                                0, op_invalid        },
+        { (unsigned char *)"Then",                T_NA,                                0, op_invalid        },
+        { (unsigned char *)"To",                        T_NA,                                0, op_invalid        },
+        { (unsigned char *)"Until",                T_NA,                                0, op_invalid        },
+        { (unsigned char *)"While",                T_NA,                                0, op_invalid        },
 
 #endif
 

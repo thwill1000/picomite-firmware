@@ -40,16 +40,16 @@ extern void CheckKeyboard(void);
 #define PS2BIT      1
 #define PS2PARITY   2
 #define PS2STOP     3
-#define PS2COMMAND	4
+#define PS2COMMAND        4
 #define PS2ERROR    9
 
 // definitions related to setting the keyboard type
 #define NO_KEYBOARD             0
-#define CONFIG_US		1
-#define CONFIG_FR		2
-#define CONFIG_GR		3
-#define CONFIG_IT		4
-#define CONFIG_BE		5
-#define CONFIG_UK		6
-#define CONFIG_ES		7
+#define CONFIG_US                1
+#define CONFIG_FR                2
+#define CONFIG_GR                3
+#define CONFIG_IT                4
+#define CONFIG_BE                5
+#define CONFIG_UK                6
+#define CONFIG_ES                7
 #endif /* PS2KEYBOARD_H_ */

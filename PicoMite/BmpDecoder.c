@@ -14,7 +14,7 @@
  * Software only when embedded on a Microchip microcontroller or digital
  * signal controller, which is integrated into your product or third party
  * product (pursuant to the sublicense terms in the accompanying license
- * agreement).  
+ * agreement).
  *
  * You should refer to the license agreement accompanying this Software
  * for additional information regarding your rights and obligations.
@@ -112,7 +112,7 @@ void BDEC_vResetData(BMPDECODER *pBmpDec)
     pBmpDec->blBmMarkerFlag = 0;
     pBmpDec->blCompressionType = 0;
     pBmpDec->bNumOfPlanes = 0;
-    pBmpDec->b16bit565flag = 0;    
+    pBmpDec->b16bit565flag = 0;
 }
 
 /*******************************************************************************
@@ -120,7 +120,7 @@ Function:       BYTE BDEC_bReadHeader(BMPDECODER *pBmpDec)
 
 Precondition:   None
 
-Overview:       This function reads the Bitmap file header and 
+Overview:       This function reads the Bitmap file header and
                 fills the data structure
 
 Input:          Bitmap decoder's data structure
@@ -135,7 +135,7 @@ BYTE BDEC_bReadHeader(BMPDECODER *pBmpDec, int fnbr)
         unsigned int nbr;
         FSerror = IMG_FREAD(IMG_FILE, &bByte1, 1, &nbr);  /* Marker */
         FSerror = IMG_FREAD(IMG_FILE, &bByte2, 1, &nbr);  /* Marker */
-        
+
         if(bByte1 == 'B' && bByte2 == 'M')
         {
                   pBmpDec->blBmMarkerFlag = 1;
@@ -237,7 +237,7 @@ BYTE BMP_bDecode(int x, int y, int fnbr)
         if(BmpDec.blBmMarkerFlag == 0 || BmpDec.bHeaderType < 40 || (BmpDec.blCompressionType != 0 && BmpDec.blCompressionType != 3))
         {
             return 100;
-        }    
+        }
         IMG_wImageWidth = (WORD)BmpDec.lWidth;
         IMG_wImageHeight = (WORD)BmpDec.lHeight;
         IMG_vSetboundaries();
@@ -336,7 +336,7 @@ BYTE BMP_bDecode(int x, int y, int fnbr)
                          for(wX = 0; wX < wBytesPerRow; wX++)
                          {
                                    FSerror = IMG_FREAD(IMG_FILE, &bValue, 1, &nbr);
-                                   
+
                                    for(bBits = 0; bBits < 8; bBits++)
                                    {
                                              BYTE bIndex = (bValue & (0x80 >> bBits))?1:0;
@@ -347,7 +347,7 @@ BYTE BMP_bDecode(int x, int y, int fnbr)
                          if(bAdditionalBitsPerRow > 0)
                          {
                                    FSerror = IMG_FREAD(IMG_FILE, &bValue,  1, &nbr);
-                                   
+
                                    for(bBits = 0; bBits < bAdditionalBitsPerRow; bBits++)
                                    {
                                              BYTE bIndex = (bValue & (0x80 >> bBits))?1:0;
@@ -443,7 +443,7 @@ BYTE BMP_bDecode_memory(int x, int y, int xlen, int ylen, int fnbr, char *p)
         if(BmpDec.blBmMarkerFlag == 0 || BmpDec.bHeaderType < 40 || (BmpDec.blCompressionType != 0 && BmpDec.blCompressionType != 3))
         {
             return 100;
-        }    
+        }
         IMG_wImageWidth = (WORD)BmpDec.lWidth;
         IMG_wImageHeight = (WORD)BmpDec.lHeight;
         IMG_vSetboundaries();

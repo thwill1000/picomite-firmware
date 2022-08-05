@@ -3,22 +3,22 @@ PicoMite MMBasic
 GPS.c
 
 <COPYRIGHT HOLDERS>  Geoff Graham, Peter Mather
-Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved. 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 
-1.	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-2.	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
+Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+1.        Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2.        Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
     in the documentation and/or other materials provided with the distribution.
-3.	The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed 
+3.        The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed
     on the console at startup (additional copyright messages may be added).
-4.	All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed 
+4.        All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed
     by the <copyright holder>.
-5.	Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software 
+5.        Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software
     without specific prior written permission.
 THIS SOFTWARE IS PROVIDED BY <COPYRIGHT HOLDERS> AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ************************************************************************************************************************/
 
@@ -30,7 +30,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 
 /* This section lists the other files that are included in this file.
  */
- 
+
 /* TODO:  Include other files here if needed. */
 
 #include <stdlib.h>
@@ -56,15 +56,15 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 
   @Summary
     Brief one-line summary of the data item.
-    
+
   @Description
     Full description, explaining the purpose and usage of data item.
     <p>
-    Additional description in consecutive paragraphs separated by HTML 
+    Additional description in consecutive paragraphs separated by HTML
     paragraph breaks, as necessary.
     <p>
     Type "JavaDoc" in the "How Do I?" IDE toolbar for more information on tags.
-    
+
   @Remarks
     Any additional remarks
  */
@@ -88,28 +88,28 @@ MMFLOAT GPSdop=0;
 int GPSsatellites=0;
 MMFLOAT GPSaltitude=0;
 MMFLOAT GPSgeoid=0;
-int GPSfix=0;  
+int GPSfix=0;
 int GPSadjust=0;
 void GPS_parse(char *nmea);
-#define EPOCH_ADJUSTMENT_DAYS	719468L
+#define EPOCH_ADJUSTMENT_DAYS        719468L
 /* year to which the adjustment was made */
-#define ADJUSTED_EPOCH_YEAR	0
+#define ADJUSTED_EPOCH_YEAR        0
 /* 1st March of year 0 is Wednesday */
-#define ADJUSTED_EPOCH_WDAY	3
+#define ADJUSTED_EPOCH_WDAY        3
 /* there are 97 leap years in 400-year periods. ((400 - 97) * 365 + 97 * 366) */
-#define DAYS_PER_ERA		146097L
+#define DAYS_PER_ERA                146097L
 /* there are 24 leap years in 100-year periods. ((100 - 24) * 365 + 24 * 366) */
-#define DAYS_PER_CENTURY	36524L
+#define DAYS_PER_CENTURY        36524L
 /* there is one leap year every 4 years */
-#define DAYS_PER_4_YEARS	(3 * 365 + 366)
+#define DAYS_PER_4_YEARS        (3 * 365 + 366)
 /* number of days in a non-leap year */
-#define DAYS_PER_YEAR		365
+#define DAYS_PER_YEAR                365
 /* number of days in January */
-#define DAYS_IN_JANUARY		31
+#define DAYS_IN_JANUARY                31
 /* number of days in non-leap February */
-#define DAYS_IN_FEBRUARY	28
+#define DAYS_IN_FEBRUARY        28
 /* number of years per era */
-#define YEARS_PER_ERA		400
+#define YEARS_PER_ERA                400
 #define SECSPERDAY 86400
 #define SECSPERHOUR 3600
 #define SECSPERMIN 60
@@ -117,25 +117,25 @@ void GPS_parse(char *nmea);
 #define YEAR_BASE 1900
 /* Number of days per month (except for February in leap years). */
 static const int monoff[] = {
-	0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334
+        0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334
 };
 
 static int
 is_leap_year(int year)
 {
-	return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+        return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
 }
 
 static int
 leap_days(int y1, int y2)
 {
-	--y1;
-	--y2;
-	return (y2/4 - y1/4) - (y2/100 - y1/100) + (y2/400 - y1/400);
+        --y1;
+        --y2;
+        return (y2/4 - y1/4) - (y2/100 - y1/100) + (y2/400 - y1/400);
 }
 struct tm *
 gmtime_r (const time_t *__restrict tim_p,
-	struct tm *__restrict res)
+        struct tm *__restrict res)
 {
   long days, rem;
   const time_t lcltime = *tim_p;
@@ -166,12 +166,12 @@ gmtime_r (const time_t *__restrict tim_p,
   /* for description of this algorithm see
    * http://howardhinnant.github.io/date_algorithms.html#civil_from_days */
   era = (days >= 0 ? days : days - (DAYS_PER_ERA - 1)) / DAYS_PER_ERA;
-  eraday = days - era * DAYS_PER_ERA;	/* [0, 146096] */
+  eraday = days - era * DAYS_PER_ERA;        /* [0, 146096] */
   erayear = (eraday - eraday / (DAYS_PER_4_YEARS - 1) + eraday / DAYS_PER_CENTURY -
-      eraday / (DAYS_PER_ERA - 1)) / 365;	/* [0, 399] */
-  yearday = eraday - (DAYS_PER_YEAR * erayear + erayear / 4 - erayear / 100);	/* [0, 365] */
-  month = (5 * yearday + 2) / 153;	/* [0, 11] */
-  day = yearday - (153 * month + 2) / 5 + 1;	/* [1, 31] */
+      eraday / (DAYS_PER_ERA - 1)) / 365;        /* [0, 399] */
+  yearday = eraday - (DAYS_PER_YEAR * erayear + erayear / 4 - erayear / 100);        /* [0, 365] */
+  month = (5 * yearday + 2) / 153;        /* [0, 11] */
+  day = yearday - (153 * month + 2) / 5 + 1;        /* [1, 31] */
   month += month < 10 ? 2 : -10;
   year = ADJUSTED_EPOCH_YEAR + erayear + era * YEARS_PER_ERA + (month <= 1);
 
@@ -198,25 +198,25 @@ gmtime (const time_t * tim_p)
 time_t
 timegm(const struct tm *tm)
 {
-	int year;
-	time_t days;
-	time_t hours;
-	time_t minutes;
-	time_t seconds;
+        int year;
+        time_t days;
+        time_t hours;
+        time_t minutes;
+        time_t seconds;
 
-	year = 1900 + tm->tm_year;
-	days = 365 * (year - 1970) + leap_days(1970, year);
-	days += monoff[tm->tm_mon];
+        year = 1900 + tm->tm_year;
+        days = 365 * (year - 1970) + leap_days(1970, year);
+        days += monoff[tm->tm_mon];
 
-	if (tm->tm_mon > 1 && is_leap_year(year))
-		++days;
-	days += tm->tm_mday - 1;
+        if (tm->tm_mon > 1 && is_leap_year(year))
+                ++days;
+        days += tm->tm_mday - 1;
 
-	hours = days * 24 + tm->tm_hour;
-	minutes = hours * 60 + tm->tm_min;
-	seconds = minutes * 60 + tm->tm_sec;
+        hours = days * 24 + tm->tm_hour;
+        minutes = hours * 60 + tm->tm_min;
+        seconds = minutes * 60 + tm->tm_sec;
 
-	return seconds;
+        return seconds;
 }
 
 /* ************************************************************************** */
@@ -231,9 +231,9 @@ timegm(const struct tm *tm)
 
 /* ************************************************************************** */
 
-/** 
+/**
   @Function
-    int ExampleLocalFunctionName ( int param1, int param2 ) 
+    int ExampleLocalFunctionName ( int param1, int param2 )
 
   @Summary
     Brief one-line description of the function.
@@ -241,7 +241,7 @@ timegm(const struct tm *tm)
   @Description
     Full description, explaining the purpose and usage of the function.
     <p>
-    Additional description in consecutive paragraphs separated by HTML 
+    Additional description in consecutive paragraphs separated by HTML
     paragraph breaks, as necessary.
     <p>
     Type "JavaDoc" in the "How Do I?" IDE toolbar for more information on tags.
@@ -252,7 +252,7 @@ timegm(const struct tm *tm)
 
   @Parameters
     @param param1 Describe the first parameter to the function.
-    
+
     @param param2 Describe the second parameter to the function.
 
   @Returns
@@ -292,9 +292,9 @@ timegm(const struct tm *tm)
 
 // *****************************************************************************
 
-/** 
+/**
   @Function
-    int ExampleInterfaceFunctionName ( int param1, int param2 ) 
+    int ExampleInterfaceFunctionName ( int param1, int param2 )
 
   @Summary
     Brief one-line description of the function.
@@ -310,56 +310,56 @@ void fun_GPS(void){
     if(!GPSchannel) error("GPS not activated");
     if(checkstring(ep, "LATITUDE") != NULL) {
         fret = GPSlatitude;
-        targ = T_NBR;   
+        targ = T_NBR;
     }
     else if(checkstring(ep, "LONGITUDE") != NULL) {
         fret = GPSlongitude;
-        targ = T_NBR;   
+        targ = T_NBR;
     }
     else if(checkstring(ep, "SPEED") != NULL) {
         fret = GPSspeed;
-        targ = T_NBR;   
+        targ = T_NBR;
     }
     else if(checkstring(ep, "TRACK") != NULL) {
         fret = GPStrack;
-        targ = T_NBR;   
+        targ = T_NBR;
     }
     else if(checkstring(ep, "VALID") != NULL) {
         iret = GPSvalid;
-        targ = T_INT;   
+        targ = T_INT;
     }
     else if(checkstring(ep, "TIME") != NULL) {
         sret = GPStime;
-        targ = T_STR;   
-    } 
+        targ = T_STR;
+    }
     else if(checkstring(ep, "DATE") != NULL) {
         sret = GPSdate;
-        targ = T_STR;   
-    } 
+        targ = T_STR;
+    }
     else if(checkstring(ep, "SATELLITES") != NULL) {
         iret = GPSsatellites;
-        targ = T_INT;   
-    } 
+        targ = T_INT;
+    }
     else if(checkstring(ep, "ALTITUDE") != NULL) {
         fret = GPSaltitude;
-        targ = T_NBR;   
+        targ = T_NBR;
     }
     else if(checkstring(ep, "DOP") != NULL) {
         fret = GPSdop;
-        targ = T_NBR;   
+        targ = T_NBR;
     }
     else if(checkstring(ep, "FIX") != NULL) {
         iret = GPSfix;
-        targ = T_INT;   
-    } 
+        targ = T_INT;
+    }
     else if(checkstring(ep, "GEOID") != NULL) {
         fret = GPSgeoid;
-        targ = T_NBR;   
+        targ = T_NBR;
     }
     else error("Invalid command");
 }
-  
-    
+
+
 void processgps(void){
     if(GPSTimer>2000){
         GPSvalid=0;
@@ -401,7 +401,7 @@ void GPS_parse(char *nmea) {
   struct tm tma;
   tm=&tma;
   if(gpsmonitor){
-	  MMPrintString(nmea);
+          MMPrintString(nmea);
   }
   // do checksum check
   // first look if we even have one
@@ -409,7 +409,7 @@ void GPS_parse(char *nmea) {
     uint16_t sum = parseHex(nmea[strlen(nmea)-3]) * 16;
     sum += parseHex(nmea[strlen(nmea)-2]);
     uint8_t i;
-    // check checksum 
+    // check checksum
     for (i=2; i < (strlen(nmea)-4); i++) {
       sum ^= nmea[i];
     }
@@ -453,7 +453,7 @@ void GPS_parse(char *nmea) {
       latitudeDegrees = (latitude-100*(float)((int)(latitude/100)))/60.0;
       latitudeDegrees += (float)((int)(latitude/100));
     }
-    
+
     p = strchr(p, ',')+1;
     if (',' != *p)
     {
@@ -464,7 +464,7 @@ void GPS_parse(char *nmea) {
       else return;
     }
     GPSlatitude=(MMFLOAT)latitudeDegrees;
-    
+
     // parse out longitude
     p = strchr(p, ',')+1;
     if (',' != *p)
@@ -483,7 +483,7 @@ void GPS_parse(char *nmea) {
       longitudeDegrees = (longitude-100*(float)((int)(longitude/100)))/60.0;
       longitudeDegrees += (float)((int)(longitude/100));
     }
-    
+
     p = strchr(p, ',')+1;
     if (',' != *p)
     {
@@ -494,35 +494,35 @@ void GPS_parse(char *nmea) {
       else return;
     }
     GPSlongitude=(MMFLOAT)longitudeDegrees;
-    
+
     p = strchr(p, ',')+1;
     if (',' != *p)
     {
       fixquality = atoi(p);
       GPSfix=(int)fixquality;
     }
-    
+
     p = strchr(p, ',')+1;
     if (',' != *p)
     {
       satellites = atoi(p);
       GPSsatellites=(int)satellites;
     }
-    
+
     p = strchr(p, ',')+1;
     if (',' != *p)
     {
       HDOP = atof(p);
       GPSdop=(MMFLOAT)HDOP;
     }
-    
+
     p = strchr(p, ',')+1;
     if (',' != *p)
     {
       altitude = atof(p);
       GPSaltitude=(MMFLOAT)altitude;
     }
-    
+
     p = strchr(p, ',')+1;
     p = strchr(p, ',')+1;
     if (',' != *p)
@@ -555,7 +555,7 @@ void GPS_parse(char *nmea) {
     GPStime[8]=(seconds % 10) + 48;
 
     p = strchr(p, ',')+1;
-    if (p[0] == 'A') 
+    if (p[0] == 'A')
       localGPSvalid = 1;
     else if (p[0] == 'V')
       localGPSvalid = 0;
@@ -583,7 +583,7 @@ void GPS_parse(char *nmea) {
       latitudeDegrees = (latitude-100*(float)((int)(latitude/100)))/60.0;
       latitudeDegrees += (float)((int)(latitude/100));
     }
-    
+
     p = strchr(p, ',')+1;
     if (',' != *p)
     {
@@ -594,7 +594,7 @@ void GPS_parse(char *nmea) {
       else return;
     }
     GPSlatitude=(MMFLOAT)latitudeDegrees;
-    
+
     // parse out longitude
     p = strchr(p, ',')+1;
     if (',' != *p)
@@ -613,7 +613,7 @@ void GPS_parse(char *nmea) {
       longitudeDegrees = (longitude-100*(float)((int)(longitude/100)))/60.0;
       longitudeDegrees += (float)((int)(longitude/100));
     }
-    
+
     p = strchr(p, ',')+1;
     if (',' != *p)
     {
@@ -631,7 +631,7 @@ void GPS_parse(char *nmea) {
       speed = atof(p);
       GPSspeed=(MMFLOAT)speed;
     }
-    
+
     // angle
     p = strchr(p, ',')+1;
     if (',' != *p)
@@ -639,7 +639,7 @@ void GPS_parse(char *nmea) {
       angle = atof(p);
       GPStrack=(MMFLOAT)angle;
     }
-    
+
     p = strchr(p, ',')+1;
     if (',' != *p && p[6]==',')
     {

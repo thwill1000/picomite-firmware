@@ -4,22 +4,22 @@ PicoMite MMBasic
 SPI-LCD.h.c
 
 <COPYRIGHT HOLDERS>  Geoff Graham, Peter Mather
-Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved. 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 
-1.	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-2.	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
+Copyright (c) 2021, <COPYRIGHT HOLDERS> All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+1.        Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2.        Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
     in the documentation and/or other materials provided with the distribution.
-3.	The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed 
+3.        The name MMBasic be used when referring to the interpreter in any documentation and promotional material and the original copyright message be displayed
     on the console at startup (additional copyright messages may be added).
-4.	All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed 
+4.        All advertising materials mentioning features or use of this software must display the following acknowledgement: This product includes software developed
     by the <copyright holder>.
-5.	Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software 
+5.        Neither the name of the <copyright holder> nor the names of its contributors may be used to endorse or promote products derived from this software
     without specific prior written permission.
 THIS SOFTWARE IS PROVIDED BY <COPYRIGHT HOLDERS> AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDERS> BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ************************************************************************************************************************/
 #ifndef SPI_LCD_HEADER
@@ -45,35 +45,35 @@ extern void spi_write_cd(unsigned char command, int data, ...);
 extern void spi_write_data(unsigned char data);
 extern void set_cs(void);
 #define SSD1331_COLORORDER_RGB
-#define SSD1331_CMD_DRAWLINE 		0x21
-#define SSD1331_CMD_DRAWRECT 		0x22
-#define SSD1331_CMD_FILL 			0x26
-#define SSD1331_CMD_SETCOLUMN 		0x15
-#define SSD1331_CMD_SETROW    		0x75
-#define SSD1331_CMD_CONTRASTA 		0x81
-#define SSD1331_CMD_CONTRASTB 		0x82
-#define SSD1331_CMD_CONTRASTC		0x83
-#define SSD1331_CMD_MASTERCURRENT 	0x87
-#define SSD1331_CMD_SETREMAP 		0xA0
-#define SSD1331_CMD_STARTLINE 		0xA1
-#define SSD1331_CMD_DISPLAYOFFSET 	0xA2
-#define SSD1331_CMD_NORMALDISPLAY 	0xA4
-#define SSD1331_CMD_DISPLAYALLON  	0xA5
-#define SSD1331_CMD_DISPLAYALLOFF 	0xA6
-#define SSD1331_CMD_INVERTDISPLAY 	0xA7
-#define SSD1331_CMD_SETMULTIPLEX  	0xA8
-#define SSD1331_CMD_SETMASTER 		0xAD
-#define SSD1331_CMD_DISPLAYDIM 		0xAC
-#define SSD1331_CMD_DISPLAYOFF 		0xAE
-#define SSD1331_CMD_DISPLAYON     	0xAF
-#define SSD1331_CMD_POWERMODE 		0xB0
-#define SSD1331_CMD_PRECHARGE 		0xB1
-#define SSD1331_CMD_CLOCKDIV 		0xB3
-#define SSD1331_CMD_PRECHARGEA 		0x8A
-#define SSD1331_CMD_PRECHARGEB 		0x8B
-#define SSD1331_CMD_PRECHARGEC 		0x8C
-#define SSD1331_CMD_PRECHARGELEVEL 	0xBB
-#define SSD1331_CMD_VCOMH 			0xBE
+#define SSD1331_CMD_DRAWLINE                 0x21
+#define SSD1331_CMD_DRAWRECT                 0x22
+#define SSD1331_CMD_FILL                         0x26
+#define SSD1331_CMD_SETCOLUMN                 0x15
+#define SSD1331_CMD_SETROW                    0x75
+#define SSD1331_CMD_CONTRASTA                 0x81
+#define SSD1331_CMD_CONTRASTB                 0x82
+#define SSD1331_CMD_CONTRASTC                0x83
+#define SSD1331_CMD_MASTERCURRENT         0x87
+#define SSD1331_CMD_SETREMAP                 0xA0
+#define SSD1331_CMD_STARTLINE                 0xA1
+#define SSD1331_CMD_DISPLAYOFFSET         0xA2
+#define SSD1331_CMD_NORMALDISPLAY         0xA4
+#define SSD1331_CMD_DISPLAYALLON          0xA5
+#define SSD1331_CMD_DISPLAYALLOFF         0xA6
+#define SSD1331_CMD_INVERTDISPLAY         0xA7
+#define SSD1331_CMD_SETMULTIPLEX          0xA8
+#define SSD1331_CMD_SETMASTER                 0xAD
+#define SSD1331_CMD_DISPLAYDIM                 0xAC
+#define SSD1331_CMD_DISPLAYOFF                 0xAE
+#define SSD1331_CMD_DISPLAYON             0xAF
+#define SSD1331_CMD_POWERMODE                 0xB0
+#define SSD1331_CMD_PRECHARGE                 0xB1
+#define SSD1331_CMD_CLOCKDIV                 0xB3
+#define SSD1331_CMD_PRECHARGEA                 0x8A
+#define SSD1331_CMD_PRECHARGEB                 0x8B
+#define SSD1331_CMD_PRECHARGEC                 0x8C
+#define SSD1331_CMD_PRECHARGELEVEL         0xBB
+#define SSD1331_CMD_VCOMH                         0xBE
 
 #define ST7735_NOP              0x0
 #define ST7735_SWRESET          0x01
@@ -138,14 +138,14 @@ extern void set_cs(void);
 #define ILI9341_POWERCONTROL2   0xC1
 #define ILI9341_VCOMCONTROL1    0xC5
 #define ILI9341_VCOMCONTROL2    0xC7
-#define ILI9341_MEMCONTROL 	0x36
-#define ILI9341_MADCTL_MY  	0x80
-#define ILI9341_MADCTL_MX  	0x40
-#define ILI9341_MADCTL_MV  	0x20
-#define ILI9341_MADCTL_ML  	0x10
-#define ILI9341_MADCTL_RGB 	0x00
-#define ILI9341_MADCTL_BGR 	0x08
-#define ILI9341_MADCTL_MH  	0x04
+#define ILI9341_MEMCONTROL         0x36
+#define ILI9341_MADCTL_MY          0x80
+#define ILI9341_MADCTL_MX          0x40
+#define ILI9341_MADCTL_MV          0x20
+#define ILI9341_MADCTL_ML          0x10
+#define ILI9341_MADCTL_RGB         0x00
+#define ILI9341_MADCTL_BGR         0x08
+#define ILI9341_MADCTL_MH          0x04
 
 #define ILI9341_Portrait        ILI9341_MADCTL_MX | ILI9341_MADCTL_BGR
 #define ILI9341_Portrait180     ILI9341_MADCTL_MY | ILI9341_MADCTL_BGR
@@ -158,49 +158,49 @@ extern void set_cs(void);
 #define ILI9481_Landscape180    ILI9341_MADCTL_MX | ILI9341_MADCTL_MV | ILI9341_MADCTL_BGR
 //
 #define ILI9163_NOP             0x00//Non operation
-#define ILI9163_SWRESET 	0x01//Soft Reset
-#define ILI9163_SLPIN   	0x10//Sleep ON
-#define ILI9163_SLPOUT  	0x11//Sleep OFF
-#define ILI9163_PTLON   	0x12//Partial Mode ON
-#define ILI9163_NORML   	0x13//Normal Display ON
-#define ILI9163_DINVOF  	0x20//Display Inversion OFF
-#define ILI9163_DINVON   	0x21//Display Inversion ON
-#define ILI9163_GAMMASET 	0x26//Gamma Set (0x01[1],0x02[2],0x04[3],0x08[4])
-#define ILI9163_DISPOFF 	0x28//Display OFF
-#define ILI9163_DISPON  	0x29//Display ON
-#define ILI9163_IDLEON  	0x39//Idle Mode ON
-#define ILI9163_IDLEOF  	0x38//Idle Mode OFF
-#define ILI9163_CLMADRS   	0x2A//Column Address Set
-#define ILI9163_PGEADRS   	0x2B//Page Address Set
-#define ILI9163_RAMWR   	0x2C//Memory Write
-#define ILI9163_RAMRD   	0x2E//Memory Read
-#define ILI9163_CLRSPACE   	0x2D//Color Space : 4K/65K/262K
-#define ILI9163_PARTAREA	0x30//Partial Area
-#define ILI9163_VSCLLDEF	0x33//Vertical Scroll Definition
-#define ILI9163_TEFXLON		0x35//Tearing Effect Line ON
-#define ILI9163_TEFXLOF		0x34//Tearing Effect Line OFF
-#define ILI9163_MADCTL  	0x36//Memory Access Control
-#define ILI9163_VSSTADRS	0x37//Vertical Scrolling Start address
-#define ILI9163_PIXFMT  	0x3A//Interface Pixel Format
-#define ILI9163_FRMCTR1 	0xB1//Frame Rate Control (In normal mode/Full colors)
-#define ILI9163_FRMCTR2 	0xB2//Frame Rate Control(In Idle mode/8-colors)
-#define ILI9163_FRMCTR3 	0xB3//Frame Rate Control(In Partial mode/full colors)
-#define ILI9163_DINVCTR		0xB4//Display Inversion Control
-#define ILI9163_RGBBLK		0xB5//RGB Interface Blanking Porch setting
-#define ILI9163_DFUNCTR 	0xB6//Display Fuction set 5
-#define ILI9163_SDRVDIR 	0xB7//Source Driver Direction Control
-#define ILI9163_GDRVDIR 	0xB8//Gate Driver Direction Control
-#define ILI9163_PWCTR1  	0xC0//Power_Control1
-#define ILI9163_PWCTR2  	0xC1//Power_Control2
-#define ILI9163_PWCTR3  	0xC2//Power_Control3
-#define ILI9163_PWCTR4  	0xC3//Power_Control4
-#define ILI9163_PWCTR5  	0xC4//Power_Control5
-#define ILI9163_VCOMCTR1  	0xC5//VCOM_Control 1
-#define ILI9163_VCOMCTR2  	0xC6//VCOM_Control 2
-#define ILI9163_VCOMOFFS  	0xC7//VCOM Offset Control
-#define ILI9163_PGAMMAC		0xE0//Positive Gamma Correction Setting
-#define ILI9163_NGAMMAC		0xE1//Negative Gamma Correction Setting
-#define ILI9163_GAMRSEL		0xF2//GAM_R_SEL
+#define ILI9163_SWRESET         0x01//Soft Reset
+#define ILI9163_SLPIN           0x10//Sleep ON
+#define ILI9163_SLPOUT          0x11//Sleep OFF
+#define ILI9163_PTLON           0x12//Partial Mode ON
+#define ILI9163_NORML           0x13//Normal Display ON
+#define ILI9163_DINVOF          0x20//Display Inversion OFF
+#define ILI9163_DINVON           0x21//Display Inversion ON
+#define ILI9163_GAMMASET         0x26//Gamma Set (0x01[1],0x02[2],0x04[3],0x08[4])
+#define ILI9163_DISPOFF         0x28//Display OFF
+#define ILI9163_DISPON          0x29//Display ON
+#define ILI9163_IDLEON          0x39//Idle Mode ON
+#define ILI9163_IDLEOF          0x38//Idle Mode OFF
+#define ILI9163_CLMADRS           0x2A//Column Address Set
+#define ILI9163_PGEADRS           0x2B//Page Address Set
+#define ILI9163_RAMWR           0x2C//Memory Write
+#define ILI9163_RAMRD           0x2E//Memory Read
+#define ILI9163_CLRSPACE           0x2D//Color Space : 4K/65K/262K
+#define ILI9163_PARTAREA        0x30//Partial Area
+#define ILI9163_VSCLLDEF        0x33//Vertical Scroll Definition
+#define ILI9163_TEFXLON                0x35//Tearing Effect Line ON
+#define ILI9163_TEFXLOF                0x34//Tearing Effect Line OFF
+#define ILI9163_MADCTL          0x36//Memory Access Control
+#define ILI9163_VSSTADRS        0x37//Vertical Scrolling Start address
+#define ILI9163_PIXFMT          0x3A//Interface Pixel Format
+#define ILI9163_FRMCTR1         0xB1//Frame Rate Control (In normal mode/Full colors)
+#define ILI9163_FRMCTR2         0xB2//Frame Rate Control(In Idle mode/8-colors)
+#define ILI9163_FRMCTR3         0xB3//Frame Rate Control(In Partial mode/full colors)
+#define ILI9163_DINVCTR                0xB4//Display Inversion Control
+#define ILI9163_RGBBLK                0xB5//RGB Interface Blanking Porch setting
+#define ILI9163_DFUNCTR         0xB6//Display Fuction set 5
+#define ILI9163_SDRVDIR         0xB7//Source Driver Direction Control
+#define ILI9163_GDRVDIR         0xB8//Gate Driver Direction Control
+#define ILI9163_PWCTR1          0xC0//Power_Control1
+#define ILI9163_PWCTR2          0xC1//Power_Control2
+#define ILI9163_PWCTR3          0xC2//Power_Control3
+#define ILI9163_PWCTR4          0xC3//Power_Control4
+#define ILI9163_PWCTR5          0xC4//Power_Control5
+#define ILI9163_VCOMCTR1          0xC5//VCOM_Control 1
+#define ILI9163_VCOMCTR2          0xC6//VCOM_Control 2
+#define ILI9163_VCOMOFFS          0xC7//VCOM Offset Control
+#define ILI9163_PGAMMAC                0xE0//Positive Gamma Correction Setting
+#define ILI9163_NGAMMAC                0xE1//Negative Gamma Correction Setting
+#define ILI9163_GAMRSEL                0xF2//GAM_R_SEL
 #define ILI9163_Portrait        0b00001000
 #define ILI9163_Portrait180     0b11001000
 #define ILI9163_Landscape       0b01101000
@@ -256,7 +256,7 @@ extern void set_cs(void);
 #define ILI9341         5
 #define ST7735          6
 #define ST7735S         7
-#define SSD1331			    8
+#define SSD1331                            8
 #define ST7789          9
 #define ILI9481         10
 #define ILI9488         11
@@ -265,17 +265,17 @@ extern void set_cs(void);
 #define ILI9488W        14
 #define GC9A01          15
 #define ILI9481IPS        16
-#define N5110			17
-#define BufferedPanel	N5110
+#define N5110                        17
+#define BufferedPanel        N5110
 #define SSD1306SPI      18
-#define ST7920			19
-#define GDEH029A1		20
+#define ST7920                        19
+#define GDEH029A1                20
 #define TOUCH           21
 #define SPIReadSpeed    22
 #define ST7789RSpeed    23
 #define DISP_USER       25
 #define MONOVGA         26
-#define VGADISPLAY      MONOVGA  
+#define VGADISPLAY      MONOVGA
 #define COLOURVGA       27
 #define SSD1963_4       28
 #define SSDPANEL        SSD1963_4
@@ -368,7 +368,7 @@ extern void set_cs(void);
 #define WATCHDOG_TIMEOUT    9998                                // reset caused by the watchdog timer
 #define PIN_RESTART         9997                                // reset caused by entering 0 at the PIN prompt
 #define RESTART_NOAUTORUN   9996                                // reset required after changing the LCD or touch config
-#define SCREWUP_TIMEOUT    	9994                                // reset caused by the execute timer
+#define SCREWUP_TIMEOUT            9994                                // reset caused by the execute timer
 
 #define FLASH_SPI_SPEED 20000000
 #define LCD_SPI_SPEED   25000000                                   // the speed of the SPI bus when talking to an SPI LCD display controller
@@ -378,16 +378,16 @@ extern void set_cs(void);
 #define ST7920_SPI_SPEED 1200000
 #define SDCARD_SPI_SPEED 0
 #define NONE_SPI_DEVICE -1
-#define P_INPUT				1						// for setting the TRIS on I/O bits
-#define P_OUTPUT			0
-#define P_ON				1
-#define P_OFF				0
+#define P_INPUT                                1                                                // for setting the TRIS on I/O bits
+#define P_OUTPUT                        0
+#define P_ON                                1
+#define P_OFF                                0
 #define P_I2C_SCL            0
 #define P_I2C_SDA            1
 extern void Display_Refresh(void);
 extern void waitwhilebusy(void);
 struct Displays {
-	char name [14];
+        char name [14];
     int speed;
     int horizontal;
     int vertical;

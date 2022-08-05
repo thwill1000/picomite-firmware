@@ -3,8 +3,8 @@
 // Font size    : 32x50 pixels
 // Memory usage : 2204 bytes
 
-	#define PROGMEM
-	#define fontdatatype const unsigned char
+        #define PROGMEM
+        #define fontdatatype const unsigned char
 
 fontdatatype ArialNumFontPlus[2204] PROGMEM={
 0x20,0x32,0x30,0x0B,
