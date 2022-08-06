@@ -52,7 +52,7 @@ const struct s_tokentbl commandtbl[] = {
 
 // this is the token table that defines the other tokens in the source code
 // most of them are listed in the .h files so you should not add your own here
-// but instead add them to the appropiate .h file
+// but instead add them to the appropriate .h file
 #define INCLUDE_TOKEN_TABLE
 const struct s_tokentbl tokentbl[] = {
     #include "Functions.h"
@@ -64,67 +64,67 @@ const struct s_tokentbl tokentbl[] = {
 };
 #undef INCLUDE_TOKEN_TABLE
 struct s_vartbl {                               // structure of the variable table
-        unsigned char name[MAXVARLEN];                       // variable's name
-        unsigned char type;                                  // its type (T_NUM, T_INT or T_STR)
-        unsigned char level;                                 // its subroutine or function level (used to track local variables)
+    unsigned char name[MAXVARLEN];              // variable's name
+    unsigned char type;                         // its type (T_NUM, T_INT or T_STR)
+    unsigned char level;                        // its subroutine or function level (used to track local variables)
     unsigned char size;                         // the number of chars to allocate for each element in a string array
     unsigned char dummy;
-    int __attribute__ ((aligned (4))) dims[MAXDIM];                     // the dimensions. it is an array if the first dimension is NOT zero
+    int __attribute__ ((aligned (4))) dims[MAXDIM];  // the dimensions. it is an array if the first dimension is NOT zero
     union u_val{
         MMFLOAT f;                              // the value if it is a float
         long long int i;                        // the value if it is an integer
         MMFLOAT *fa;                            // pointer to the allocated memory if it is an array of floats
         long long int *ia;                      // pointer to the allocated memory if it is an array of integers
-        unsigned char *s;                                // pointer to the allocated memory if it is a string
+        unsigned char *s;                       // pointer to the allocated memory if it is a string
     }  __attribute__ ((aligned (8))) val;
 } __attribute__ ((aligned (8))) s_vartbl_val;
-struct s_hash {                             // structure of the token table
-        short hash;                                 // the string (eg, PRINT, FOR, ASC(, etc)
-    short level;                                  // the type returned (T_NBR, T_STR, T_INT)
+struct s_hash {                                 // structure of the token table
+    short hash;                                 // the string (eg, PRINT, FOR, ASC(, etc)
+    short level;                                // the type returned (T_NBR, T_STR, T_INT)
 };
 
 // these are initialised at startup
 int CommandTableSize, TokenTableSize;
 struct s_funtbl funtbl[MAXSUBFUN];
-struct s_vartbl *vartbl=NULL;                                            // this table stores all variables
+struct s_vartbl *vartbl=NULL;                                       // this table stores all variables
 int varcnt;                                                         // number of variables
 int VarIndex;                                                       // Global set by findvar after a variable has been created or found
-int Localvarcnt;                                                         // number of LOCAL variables
-int Globalvarcnt;                                                         // number of GLOBAL variables
+int Localvarcnt;                                                    // number of LOCAL variables
+int Globalvarcnt;                                                   // number of GLOBAL variables
 int LocalIndex;                                                     // used to track the level of local variables
-unsigned char OptionExplicit;                                                // used to force the declaration of variables before their use
-unsigned char DefaultType;                                                   // the default type if a variable is not specifically typed
+unsigned char OptionExplicit;                                       // used to force the declaration of variables before their use
+unsigned char DefaultType;                                          // the default type if a variable is not specifically typed
 int emptyarray=0;
 int TempStringClearStart;                                           // used to prevent clearing of space in an expression that called a FUNCTION
 void hashlabels(int errabort);
-unsigned char *subfun[MAXSUBFUN];                                            // table used to locate all subroutines and functions
+unsigned char *subfun[MAXSUBFUN];                                   // table used to locate all subroutines and functions
 char CurrentSubFunName[MAXVARLEN + 1];                              // the name of the current sub or fun
 char CurrentInterruptName[MAXVARLEN + 1];                           // the name of the current interrupt function
 jmp_buf jmprun;
 jmp_buf mark;                                                       // longjump to recover from an error and abort
 jmp_buf ErrNext;                                                    // longjump to recover from an error and continue
-unsigned char inpbuf[STRINGSIZE];                                            // used to store user keystrokes until we have a line
-unsigned char tknbuf[STRINGSIZE];                                            // used to store the tokenised representation of the users input line
-//unsigned char lastcmd[STRINGSIZE];                                           // used to store the last command in case it is needed by the EDIT command
-unsigned char PromptString[MAXPROMPTLEN];                                    // the prompt for input, an empty string means use the default
+unsigned char inpbuf[STRINGSIZE];                                   // used to store user keystrokes until we have a line
+unsigned char tknbuf[STRINGSIZE];                                   // used to store the tokenised representation of the users input line
+//unsigned char lastcmd[STRINGSIZE];                                // used to store the last command in case it is needed by the EDIT command
+unsigned char PromptString[MAXPROMPTLEN];                           // the prompt for input, an empty string means use the default
 int ProgramChanged;                                                 // true if the program in memory has been changed and not saved
 struct s_hash hashlist[MAXVARS/2]={0};
 int hashlistpointer=0;
 
-unsigned char *ProgMemory;                                                      // program memory, this is where the program is stored
+unsigned char *ProgMemory;                                          // program memory, this is where the program is stored
 int PSize;                                                          // the size of the program stored in ProgMemory[]
 
 int NextData;                                                       // used to track the next item to read in DATA & READ stmts
-unsigned char *NextDataLine;                                                 // used to track the next line to read in DATA & READ stmts
+unsigned char *NextDataLine;                                        // used to track the next line to read in DATA & READ stmts
 int OptionBase;                                                     // track the state of OPTION BASE
 //#if defined(MMFAMILY) || defined(DOS)
-//unsigned char *ModuleTable[MAXMODULES];                                      // list of pointers to libraries a(also called modules) loaded in memory;
-//int NbrModules;                                                     // the number of libraries/modules currently loaded
+//unsigned char *ModuleTable[MAXMODULES];                           // list of pointers to libraries a(also called modules) loaded in memory;
+//int NbrModules;                                                   // the number of libraries/modules currently loaded
 //#endif
     int  PrepareProgramExt(unsigned char *, int, unsigned char **, int);
 
 #if defined(MMFAMILY)
-unsigned char FunKey[NBRPROGKEYS][MAXKEYLEN + 1];                            // data storage for the programmable function keys
+unsigned char FunKey[NBRPROGKEYS][MAXKEYLEN + 1];                   // data storage for the programmable function keys
 #endif
 //extern unsigned char MMHeap[Option.HEAP_SIZE];
 const char namestart[256]={
@@ -221,24 +221,24 @@ const char upper[256]={
 // Global information used by operators and functions
 //
 int targ;                                                           // the type of the returned value
-MMFLOAT farg1, farg2, fret;                                           // the two float arguments and returned value
-long long int  iarg1, iarg2, iret;                                   // the two integer arguments and returned value
-unsigned char *sarg1, *sarg2, *sret;                                         // the two string arguments and returned value
+MMFLOAT farg1, farg2, fret;                                         // the two float arguments and returned value
+long long int  iarg1, iarg2, iret;                                  // the two integer arguments and returned value
+unsigned char *sarg1, *sarg2, *sret;                                // the two string arguments and returned value
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // Global information used by functions
 // functions use targ, fret and sret as defined for operators (above)
-unsigned char *ep;                                                           // pointer to the argument to the function terminated with a zero byte.
+unsigned char *ep;                                                  // pointer to the argument to the function terminated with a zero byte.
                                                                     // it is NOT trimmed of spaces
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // Global information used by commands
 //
 int cmdtoken;                                                       // Token number of the command
-unsigned char *cmdline;                                                      // Command line terminated with a zero unsigned char and trimmed of spaces
-unsigned char *nextstmt;                                                     // Pointer to the next statement to be executed.
-unsigned char *CurrentLinePtr;                                               // Pointer to the current line (used in error reporting)
-unsigned char *ContinuePoint;                                                // Where to continue from if using the continue statement
+unsigned char *cmdline;                                             // Command line terminated with a zero unsigned char and trimmed of spaces
+unsigned char *nextstmt;                                            // Pointer to the next statement to be executed.
+unsigned char *CurrentLinePtr;                                      // Pointer to the current line (used in error reporting)
+unsigned char *ContinuePoint;                                       // Where to continue from if using the continue statement
 
 extern int TraceOn;
 extern unsigned char *TraceBuff[TRACE_BUFF_SIZE];
@@ -263,7 +263,7 @@ unsigned char cmdSUB, cmdFUN, cmdCFUN, cmdCSUB, cmdIRET;
 
 
 // Initialise MMBasic
-void  InitBasic(void) {
+void InitBasic(void) {
     DefaultType = T_NBR;
     CommandTableSize =  (sizeof(commandtbl)/sizeof(struct s_tokentbl));
     TokenTableSize =  (sizeof(tokentbl)/sizeof(struct s_tokentbl));
@@ -291,20 +291,20 @@ void  InitBasic(void) {
 //    cmdELSE_IF = GetCommandValue( (unsigned char *)"Else If");
     cmdELSE    = GetCommandValue( (unsigned char *)"Else");
     cmdSELECT_CASE = GetCommandValue( (unsigned char *)"Select Case");
-    cmdCASE        = GetCommandValue( (unsigned char *)"Case");
+    cmdCASE    = GetCommandValue( (unsigned char *)"Case");
     cmdCASE_ELSE   = GetCommandValue( (unsigned char *)"Case Else");
     cmdEND_SELECT  = GetCommandValue( (unsigned char *)"End Select");
-        cmdSUB = GetCommandValue( (unsigned char *)"Sub");
-        cmdFUN = GetCommandValue( (unsigned char *)"Function");
-    cmdLOCAL = GetCommandValue( (unsigned char *)"Local");
-    cmdSTATIC = GetCommandValue( (unsigned char *)"Static");
-    cmdENDSUB= GetCommandValue( (unsigned char *)"End Sub");
+    cmdSUB     = GetCommandValue( (unsigned char *)"Sub");
+    cmdFUN     = GetCommandValue( (unsigned char *)"Function");
+    cmdLOCAL   = GetCommandValue( (unsigned char *)"Local");
+    cmdSTATIC  = GetCommandValue( (unsigned char *)"Static");
+    cmdENDSUB  = GetCommandValue( (unsigned char *)"End Sub");
     cmdENDFUNCTION = GetCommandValue( (unsigned char *)"End Function");
-    cmdDO=  GetCommandValue( (unsigned char *)"Do");
-    cmdFOR=  GetCommandValue( (unsigned char *)"For");
-    cmdNEXT= GetCommandValue( (unsigned char *)"Next");
-        cmdIRET = GetCommandValue( (unsigned char *)"IReturn");
-    cmdCSUB = GetCommandValue( (unsigned char *)"CSub");
+    cmdDO      =  GetCommandValue( (unsigned char *)"Do");
+    cmdFOR     =  GetCommandValue( (unsigned char *)"For");
+    cmdNEXT    = GetCommandValue( (unsigned char *)"Next");
+    cmdIRET    = GetCommandValue( (unsigned char *)"IReturn");
+    cmdCSUB    = GetCommandValue( (unsigned char *)"CSub");
 //    SInt(CommandTableSize);
 //    SIntComma(TokenTableSize);
 //    SSPrintString("\r\n");
@@ -319,7 +319,6 @@ void  InitBasic(void) {
 void __not_in_flash_func(ExecuteProgram)(unsigned char *p) {
     int i, SaveLocalIndex = 0;
     skipspace(p);                                                   // just in case, skip any whitespace
-
     while(1) {
         if(*p == 0) p++;                                            // step over the zero byte marking the beginning of a new element
         if(*p == T_NEWLINE) {
@@ -354,7 +353,7 @@ void __not_in_flash_func(ExecuteProgram)(unsigned char *p) {
                         targ = T_CMD;
                         commandtbl[*(char*)p - C_BASETOKEN].fptr(); // execute the command
                     } else {
-                        if(!isnamestart(*p)) error("Invalid character: @", (int)(*p));
+                        if (!isnamestart(*p)) error("Invalid character: @", (int)(*p));
                         i = FindSubFun(p, false);                   // it could be a defined command
                         if(i >= 0) {                                // >= 0 means it is a user defined command
                             DefinedSubFun(false, p, i, NULL, NULL, NULL, NULL);
@@ -366,7 +365,7 @@ void __not_in_flash_func(ExecuteProgram)(unsigned char *p) {
                     LocalIndex = SaveLocalIndex;                    // restore so that we can clean up any memory leaks
                     ClearTempMemory();
                 }
-                if(OptionErrorSkip > 0) OptionErrorSkip--;        // if OPTION ERROR SKIP decrement the count - we do not error if it is greater than zero
+                if(OptionErrorSkip > 0) OptionErrorSkip--;          // if OPTION ERROR SKIP decrement the count - we do not error if it is greater than zero
                 if(TempMemoryIsChanged) ClearTempMemory();          // at the end of each command we need to clear any temporary string vars
                 CheckAbort();
                 check_interrupt();                                  // check for an MMBasic interrupt or touch event and handle it
@@ -394,7 +393,6 @@ void  PrepareProgram(int ErrAbort) {
     for(i = FONT_BUILTIN_NBR; i < FONT_TABLE_SIZE; i++)
         FontTable[i] = NULL;                                        // clear the font table
 
-
     NbrFuncts = 0;
     CFunctionFlash = CFunctionLibrary = NULL;
     memset(funtbl,0,sizeof(struct s_funtbl)*MAXSUBFUN);
@@ -402,33 +400,33 @@ void  PrepareProgram(int ErrAbort) {
 
     // check the sub/fun table for duplicates
     for(i = 0; i < MAXSUBFUN && subfun[i] != NULL; i++) {
-            // First we will hash the function name and add it to the function table
-            // This allows for a fast check of a variable name being the same as a function name
-            // It also allows a hash look up for function name matching
-            p1 = subfun[i];
+        // First we will hash the function name and add it to the function table
+        // This allows for a fast check of a variable name being the same as a function name
+        // It also allows a hash look up for function name matching
+        p1 = subfun[i];
         p1++;
         skipspace(p1);
         p2 = printvar; namelen = 0;
         hash=FNV_offset_basis;
-            do {
+        do {
             u=mytoupper(*p1);
-                    hash ^= u;
-                    hash*=FNV_prime;
-                    *p2++ = u;
+            hash ^= u;
+            hash*=FNV_prime;
+            *p2++ = u;
             p1++;
-                    if(++namelen > MAXVARLEN){
-                            if(ErrAbort) error("Function name too long");
-                    }
+            if(++namelen > MAXVARLEN){
+                if(ErrAbort) error("Function name too long");
+            }
 
-            } while(isnamechar(*p1));
-            if(namelen!=MAXVARLEN)*p2=0;
-            hash %= MAXSUBHASH; //scale to size of table
-                while(funtbl[hash].name[0]!=0){
-                        hash++;
-                        if(hash==MAXSUBFUN)hash=0;
-                }
-                funtbl[hash].index=i;
-                memcpy(funtbl[hash].name,printvar,(namelen == MAXVARLEN ? namelen :namelen+1));
+        } while(isnamechar(*p1));
+        if(namelen!=MAXVARLEN)*p2=0;
+        hash %= MAXSUBHASH; //scale to size of table
+        while(funtbl[hash].name[0]!=0){
+            hash++;
+            if(hash==MAXSUBFUN)hash=0;
+        }
+        funtbl[hash].index=i;
+        memcpy(funtbl[hash].name,printvar,(namelen == MAXVARLEN ? namelen :namelen+1));
     }
     hashlabels(ErrAbort);
     if(!ErrAbort) return;
@@ -469,7 +467,7 @@ int  PrepareProgramExt(unsigned char *p, int i, unsigned char **CFunPtr, int Err
         if(*p == cmdSUB || *p == cmdFUN /*|| *p == cmdCFUN*/ || *p == cmdCSUB) {         // found a SUB, FUN, CFUNCTION or CSUB token
             if(i >= MAXSUBFUN) {
                 if(ErrAbort) error("Too many subroutines and functions");
-                 continue;
+                continue;
             }
             subfun[i++] = p++;                                      // save the address and step over the token
             skipspace(p);
@@ -486,6 +484,7 @@ int  PrepareProgramExt(unsigned char *p, int i, unsigned char **CFunPtr, int Err
     *CFunPtr = (unsigned char *)(((unsigned int)p + 0b11) & ~0b11); // CFunction flash (if it exists) starts on the next word address after the program in flash
     if(i < MAXSUBFUN) subfun[i] = NULL;
     CurrentLinePtr = NULL;
+
     // now, step through the CFunction area looking for fonts to add to the font table
     cfp = *(unsigned int **)CFunPtr;
     while(*cfp != 0xffffffff) {
@@ -505,39 +504,39 @@ int __not_in_flash_func(FindSubFun)(unsigned char *p, int type) {
     unsigned char name[MAXVARLEN + 1];
     int j, u, namelen;
     unsigned int hash=FNV_offset_basis;
-        unsigned char *tp, *ip;
+    unsigned char *tp, *ip;
 
-// copy the variable name into name
+    // copy the variable name into name
     s = name; namelen = 0;
-        do {
+    do {
         u=mytoupper(*p);
-                hash ^= u;
-                hash*=FNV_prime;
-                *s++ = u;
+        hash ^= u;
+        hash*=FNV_prime;
+        *s++ = u;
         p++;
-                if(++namelen > MAXVARLEN) error("Variable name too long");
-        } while(isnamechar(*p));
-        *s=0;
-        hash %= MAXSUBHASH; //scale 0-512
-//        MMPrintString("Searching for function: ");MMPrintString(name);PIntComma(hash);PRet();
-        while(funtbl[hash].name[0]!=0){
-                ip=name;
-                tp=funtbl[hash].name;
-//                MMPrintString("Testing : ");MMPrintString(tp);PRet();
-                if(*ip++ == *tp++) {                 // preliminary quick check
-                        j = namelen-1;
-                        while(j > 0 && *ip == *tp) {                              // compare each letter
-                                j--; ip++; tp++;
-                        }
-                        if(j == 0  && (*(char *)tp == 0 || namelen == MAXVARLEN) && funtbl[hash].index<MAXSUBFUN) {       // found a matching name
-//                                MMPrintString("Found : ");MMPrintString(name);MMPrintString(", hash key : ");PInt(hash);PRet();
-                                        return funtbl[hash].index;
-                                        break;
-                        }
-                }
-                hash++;
-                if(hash==MAXSUBFUN)hash=0;
+        if(++namelen > MAXVARLEN) error("Variable name too long");
+    } while(isnamechar(*p));
+    *s=0;
+    hash %= MAXSUBHASH; //scale 0-512
+//    MMPrintString("Searching for function: ");MMPrintString(name);PIntComma(hash);PRet();
+    while(funtbl[hash].name[0]!=0){
+        ip=name;
+        tp=funtbl[hash].name;
+//        MMPrintString("Testing : ");MMPrintString(tp);PRet();
+        if(*ip++ == *tp++) {                 // preliminary quick check
+            j = namelen-1;
+            while(j > 0 && *ip == *tp) {     // compare each letter
+                j--; ip++; tp++;
+            }
+            if(j == 0  && (*(char *)tp == 0 || namelen == MAXVARLEN) && funtbl[hash].index<MAXSUBFUN) {       // found a matching name
+//                MMPrintString("Found : ");MMPrintString(name);MMPrintString(", hash key : ");PInt(hash);PRet();
+                return funtbl[hash].index;
+                break;
+            }
         }
+        hash++;
+        if(hash==MAXSUBFUN)hash=0;
+    }
     return -1;
 }
 
@@ -552,20 +551,20 @@ int __not_in_flash_func(FindSubFun)(unsigned char *p, int type) {
 //   index    = index into subfun[i] which points to the definition of the sub or funct
 //   fa, i64a, sa and typ are pointers to where the return value is to be stored (used by functions only)
 void __not_in_flash_func(DefinedSubFun)(int isfun, unsigned char *cmd, int index, MMFLOAT *fa, long long int  *i64a, unsigned char **sa, int *typ) {
-        unsigned char *p, *s, *tp, *ttp, tcmdtoken;
-        unsigned char *CallersLinePtr, *SubLinePtr = NULL;
+    unsigned char *p, *s, *tp, *ttp, tcmdtoken;
+    unsigned char *CallersLinePtr, *SubLinePtr = NULL;
     unsigned char *argbuf1; unsigned char **argv1; int argc1;
     unsigned char *argbuf2; unsigned char **argv2; int argc2;
     unsigned char fun_name[MAXVARLEN + 1];
-        int i;
+    int i;
     int ArgType, FunType;
     int *argtype;
     union u_argval {
-        MMFLOAT f;                                                    // the value if it is a float
-        long long int  i;                                            // the value if it is an integer
-        MMFLOAT *fa;                                                  // pointer to the allocated memory if it is an array of floats
-        long long int  *ia;                                          // pointer to the allocated memory if it is an array of integers
-        unsigned char *s;                                                    // pointer to the allocated memory if it is a string
+        MMFLOAT f;                                                  // the value if it is a float
+        long long int  i;                                           // the value if it is an integer
+        MMFLOAT *fa;                                                // pointer to the allocated memory if it is an array of floats
+        long long int  *ia;                                         // pointer to the allocated memory if it is an array of integers
+        unsigned char *s;                                           // pointer to the allocated memory if it is a string
     } *argval;
     int *argVarIndex;
 
@@ -620,17 +619,17 @@ void __not_in_flash_func(DefinedSubFun)(int isfun, unsigned char *cmd, int index
     // p   = the argument list for the definition
     skipspace(tp); skipspace(p);
 
-     // similar if this is a CSUB
+    // similar if this is a CSUB
     if(*SubLinePtr == cmdCSUB) {
         CallCFunction(SubLinePtr, tp, p, CallersLinePtr);           // run the CSUB
         TempMemoryIsChanged = true;                                 // signal that temporary memory should be checked
         return;
     }
-   // from now on we have a user defined sub or function (not a C routine)
+    // from now on we have a user defined sub or function (not a C routine)
 
     if(gosubindex >= MAXGOSUB) error("Too many nested SUB/FUN");
     errorstack[gosubindex] = CallersLinePtr;
-        gosubstack[gosubindex++] = isfun ? NULL : nextstmt;             // NULL signifies that this is returned to by ending ExecuteProgram()
+    gosubstack[gosubindex++] = isfun ? NULL : nextstmt;             // NULL signifies that this is returned to by ending ExecuteProgram()
 
     // allocate memory for processing the arguments
     argval = GetMemory(MAX_ARG_COUNT * sizeof(union u_argval));
@@ -656,7 +655,7 @@ void __not_in_flash_func(DefinedSubFun)(int isfun, unsigned char *cmd, int index
     CurrentLinePtr = CallersLinePtr;                                // report errors at the caller
     if(argc1 > argc2 || (argc1 && (argc1 & 1) == 0)) error("Argument list");
 
-        // step through the arguments supplied by the caller and get the value supplied
+    // step through the arguments supplied by the caller and get the value supplied
     // these can be:
     //    - missing (ie, caller did not supply that parameter)
     //    - a variable, in which case we need to get a pointer to that variable's data and save its index so later we can get its type
@@ -739,8 +738,8 @@ void __not_in_flash_func(DefinedSubFun)(int isfun, unsigned char *cmd, int index
         if(argtype[i] & T_PTR) {
             // the argument supplied was a variable so we must setup the local variable as a pointer
             if((vartbl[VarIndex].type & T_STR) && vartbl[VarIndex].val.s != NULL) {
-                FreeMemorySafe((void **)&vartbl[VarIndex].val.s);                            // free up the local variable's memory if it is a pointer to a string
-                }
+                FreeMemorySafe((void **)&vartbl[VarIndex].val.s);              // free up the local variable's memory if it is a pointer to a string
+            }
             vartbl[VarIndex].val.s = argval[i].s;                              // point to the data of the variable supplied as an argument
             vartbl[VarIndex].type |= T_PTR;                                    // set the type to a pointer
             vartbl[VarIndex].size = vartbl[argVarIndex[i]].size;               // just in case it is a string copy the size
@@ -765,11 +764,16 @@ void __not_in_flash_func(DefinedSubFun)(int isfun, unsigned char *cmd, int index
 
     // temp memory used in setting up the arguments can be deleted now
     FreeMemory((unsigned char *)argval);
-    FreeMemory((unsigned char *)argtype); FreeMemory((unsigned char *)argVarIndex);
-    FreeMemory(argbuf1); FreeMemory((unsigned char *)argv1);
-    FreeMemory(argbuf2); FreeMemory((unsigned char *)argv2);
+    FreeMemory((unsigned char *)argtype);
+    FreeMemory((unsigned char *)argVarIndex);
+    FreeMemory(argbuf1);
+    FreeMemory((unsigned char *)argv1);
+    FreeMemory(argbuf2);
+    FreeMemory((unsigned char *)argv2);
 
+    // set the CurrentSubFunName which is used to create static variables
     strcpy((char *)CurrentSubFunName, (char *)fun_name);
+
     // if it is a defined command we simply point to the first statement in our command and allow ExecuteProgram() to carry on as before
     // exit from the sub is via cmd_return which will decrement LocalIndex
     if(!isfun) {
@@ -788,7 +792,7 @@ void __not_in_flash_func(DefinedSubFun)(int isfun, unsigned char *cmd, int index
     tp = findvar(fun_name, FunType | V_FUNCT);                      // declare the local variable
     FunType = vartbl[VarIndex].type;
     if(FunType & T_STR) {
-        FreeMemorySafe((void **)&vartbl[VarIndex].val.s);                         // free the memory if it is a string
+        FreeMemorySafe((void **)&vartbl[VarIndex].val.s);           // free the memory if it is a string
         vartbl[VarIndex].type |= T_PTR;
         LocalIndex--;                                               // allocate the memory at the previous level
         vartbl[VarIndex].val.s = tp = GetTempMemory(STRINGSIZE);    // and use our own memory
@@ -815,9 +819,9 @@ void __not_in_flash_func(DefinedSubFun)(int isfun, unsigned char *cmd, int index
     else
         *sa = tp;                                                   // for a string we just need to return the local memory
     *typ = FunType;                                                 // save the function type for the caller
-        ClearVars(LocalIndex--);                                        // delete any local variables
+    ClearVars(LocalIndex--);                                        // delete any local variables
     TempMemoryIsChanged = true;                                     // signal that temporary memory should be checked
-        gosubindex--;
+    gosubindex--;
 }
 
 char *strcasechr(const char *p, int ch)
@@ -912,7 +916,7 @@ void STR_REPLACE(char *target, const char *needle, const char *replacement){
 
 
 /********************************************************************************************************************************************
- take an input line and turn it into a line with tokens suitable saving into memory
+ take an input line and turn it into a line with tokens suitable for saving into memory
 ********************************************************************************************************************************************/
 
 //take an input string in inpbuf[] and copy it to tknbuf[] and:
@@ -920,7 +924,7 @@ void STR_REPLACE(char *target, const char *needle, const char *replacement){
 // - convert a label to the token format
 // - convert keywords to tokens
 // - convert the colon to a zero char
-//the result in tknbuf[] is terminated with MMFLOAT zero chars
+// the result in tknbuf[] is terminated with MMFLOAT zero chars
 // if the arg console is true then do not add a line number
 
 void  tokenise(int console) {
@@ -951,7 +955,7 @@ void  tokenise(int console) {
     tp = p;
     skipspace(tp);
     for(i = 0; i < 8; i++) if(!isxdigit(tp[i])) break;              // test if this is eight hex digits
-    if(IsDigitinline(*tp) && i < 8) {                                     // if it a digit and not an 8 digit hex number (ie, it is CFUNCTION data) then try for a line number
+    if(IsDigitinline(*tp) && i < 8) {                               // if it a digit and not an 8 digit hex number (ie, it is CFUNCTION data) then try for a line number
         i = strtol(tp, (char **)&tp, 10);
         if(!console && i > 0 && i <= MAXLINENBR) {
             *op++ = T_LINENBR;
@@ -1005,7 +1009,7 @@ void  tokenise(int console) {
         }
 
         // not whitespace or string or comment  - try a number
-        if(IsDigitinline(*p) || *p == '.') {                              // valid chars at the start of a number
+        if(IsDigitinline(*p) || *p == '.') {                        // valid chars at the start of a number
             while(IsDigitinline(*p) || *p == '.' || *p == 'E' || *p == 'e')
                 if (*p == 'E' || *p == 'e') {   // check for '+' or '-' as part of the exponent
                     *op++ = *p++;                                   // copy the number
@@ -1020,7 +1024,7 @@ void  tokenise(int console) {
         }
 
         // not whitespace or string or comment or number - see if we can find a label or a token identifier
-         if(firstnonwhite) {                                         // first entry on the line must be a command
+        if(firstnonwhite) {                                         // first entry on the line must be a command
             // these variables are only used in the search for a command code
             unsigned char *tp2, *match_p = NULL;
             int match_i = -1, match_l = 0;
@@ -1055,7 +1059,7 @@ void  tokenise(int console) {
                 // this works by scanning the entire table looking for the match with the longest command name
                 // this is needed because we need to differentiate between END and END SUB for example.
                 // without looking for the longest match we might think that we have a match when we found just END.
-            for(i = 0 ; i < CommandTableSize - 1; i++) {
+                for(i = 0 ; i < CommandTableSize - 1; i++) {
                     tp2 = p;
                     tp = (char *)commandtbl[i].name;
                     while(mytoupper(*tp2) == mytoupper(*tp) && *tp != 0) {
@@ -1122,10 +1126,10 @@ void  tokenise(int console) {
                 i += C_BASETOKEN;
                 *op++ = i;                                          // insert the token found
                 p = tp2;                                            // and step over it in the source text
-                        if(i == tokenTHEN || i == tokenELSE)
-                            firstnonwhite = true;                   // a command is valid after a THEN or ELSE
-                        else
-                            firstnonwhite = false;
+                if(i == tokenTHEN || i == tokenELSE)
+                    firstnonwhite = true;                           // a command is valid after a THEN or ELSE
+                else
+                    firstnonwhite = false;
                 continue;
             }
         }
@@ -1295,7 +1299,7 @@ unsigned char __not_in_flash_func(*getstring)(unsigned char *p) {
 // as against the MMBasic style returned by getstring()
 unsigned char __not_in_flash_func(*getCstring)(unsigned char *p) {
     unsigned char *tp;
-    tp = GetTempMemory(STRINGSIZE);                                        // this will last for the life of the command
+    tp = GetTempMemory(STRINGSIZE);                                 // this will last for the life of the command
     Mstrcpy(tp, getstring(p));                                      // get the string and save in a temp place
     MtoC(tp);                                                       // convert to a C style string
     return tp;
@@ -1371,214 +1375,231 @@ unsigned char __not_in_flash_func(*getvalue)(unsigned char *p, MMFLOAT *fa, long
     TestStackOverflow();                                            // throw an error if we have overflowed the PIC32's stack
 
     skipspace(p);
-    if(*p>=C_BASETOKEN){ //don't waste time if not a built-in function
-    // special processing for the NOT operator
-    // just get the next value and invert its logical value
-    if(tokenfunction(*p) == op_not) {
-        int ro;
-        p++; t = T_NOTYPE;
-        p = getvalue(p, &f, &i64, &s, &ro, &t);                     // get the next value
-        if(t &T_NBR)
-            f = (MMFLOAT)((f != 0)?0:1);                              // invert the value returned
-        else if(t & T_INT)
-            i64 = ((i64 != 0)?0:1);
-       else
-            error("Expected a number");
-        skipspace(p);
-        *fa = f;                                                    // save what we have
-        *ia = i64;
-        *sa = s;
-        *ta = t;
-        *oo = ro;
-        return p;                                                   // return straight away as we already have the next operator
-    }
-                if(tokenfunction(*p) == op_inv) {
-                        int ro;
-                        p++; t = T_NOTYPE;
-                        p = getvalue(p, &f, &i64, &s, &ro, &t);                     // get the next value
-                        if(t & T_NBR)
-                                i64 = FloatToInt64(f);
-                        else if(!(t & T_INT))
-                                error("Expected a number");
-                        i64 = ~i64;
-                        t = T_INT;
-                        skipspace(p);
-                        *fa = f;                                                    // save what we have
-                        *ia = i64;
-                        *sa = s;
-                        *ta = t;
-                        *oo = ro;
-                        return p;                                                   // return straight away as we already have the next operator
-                }
-
-                // special processing for the unary - operator
-    // just get the next value and negate it
-    if(tokenfunction(*p) == op_subtract) {
-        int ro;
-        p++; t = T_NOTYPE;
-        p = getvalue(p, &f, &i64, &s, &ro, &t);                     // get the next value
-        if(t & T_NBR)
-            f = -f;                                                 // negate the MMFLOAT returned
-        else if(t & T_INT)
-            i64 = -i64;                                             // negate the integer returned
-       else
-            error("Expected a number");
-        skipspace(p);
-        *fa = f;                                                    // save what we have
-        *ia = i64;
-        *sa = s;
-        *ta = t;
-        *oo = ro;
-        return p;                                                   // return straight away as we already have the next operator
-    }
-                if(tokenfunction(*p) == op_add) {
-                        int ro;
-                        p++; t = T_NOTYPE;
-                        p = getvalue(p, &f, &i64, &s, &ro, &t);                     // get the next value
-                        skipspace(p);
-                        *fa = f;                                                    // save what we have
-                        *ia = i64;
-                        *sa = s;
-                        *ta = t;
-                        *oo = ro;
-                        return p;                                                   // return straight away as we already have the next operator
-                }
-
-
-    // if a function execute it and save the result
-    if(tokentype(*p) & (T_FUN | T_FNA)) {
-        int tmp;
-        tp = p;
-        // if it is a function with arguments we need to locate the closing bracket and copy the argument to
-        // a temporary variable so that functions like getarg() will work.
-        if(tokentype(*p) & T_FUN) {
-            p1 = p + 1;
-            p = getclosebracket(p);                             // find the closing bracket
-            p2 = ep = GetTempMemory(STRINGSIZE);                           // this will last for the life of the command
-            while(p1 != p) *p2++ = *p1++;
+    if (*p >= C_BASETOKEN) { //don't waste time if not a built-in function
+        // special processing for the NOT operator
+        // just get the next value and invert its logical value
+        if (tokenfunction(*p) == op_not) {
+            int ro;
+            p++; t = T_NOTYPE;
+            p = getvalue(p, &f, &i64, &s, &ro, &t);                     // get the next value
+            if (t & T_NBR)
+                f = (MMFLOAT)((f != 0) ? 0 : 1);                        // invert the value returned
+            else if (t & T_INT)
+                i64 = ((i64 != 0) ? 0 : 1);
+            else
+                error("Expected a number");
+            skipspace(p);
+            *fa = f;                                                    // save what we have
+            *ia = i64;
+            *sa = s;
+            *ta = t;
+            *oo = ro;
+            return p;                                                   // return straight away as we already have the next operator
         }
-        p++;                                                        // point to after the function (without argument) or after the closing bracket
-        tmp = targ = TypeMask(tokentype(*tp));                      // set the type of the function (which might need to know this)
-        tokenfunction(*tp)();                                       // execute the function
-        if((tmp & targ) == 0) error("Internal fault (sorry)");      // as a safety check the function must return a type the same as set in the header
-        t = targ;                                                   // save the type of the function
-        f = fret; i64 = iret; s = sret;                             // save the result
-    }
-    } else {
-    // if it is a variable or a defined function, find it and get its value
-            if(isnamestart(*p)) {
-        // first check if it is terminated with a bracket
-        tp = p + 1;
-        while(isnamechar(*tp)) tp++;                                // search for the end of the identifier
-        if(*tp == '$' || *tp == '%' || *tp == '!') tp++;
-        i = -1;
-        if(*tp == '(') i = FindSubFun(p, 1);                        // if terminated with a bracket it could be a function
-        if(i >= 0) {                                                // >= 0 means it is a user defined function
-            unsigned char *SaveCurrentLinePtr = CurrentLinePtr;              // in case the code in DefinedSubFun messes with this
-            DefinedSubFun(true, p, i, &f, &i64, &s, &t);
-            CurrentLinePtr = SaveCurrentLinePtr;
-        } else {
-            s = (unsigned char *)findvar(p, V_FIND);                         // if it is a string then the string pointer is automatically set
-            t = TypeMask(vartbl[VarIndex].type);
-            if(t & T_NBR) f = (*(MMFLOAT *)s);
-            if(t & T_INT) i64 = (*(long long int  *)s);
+
+        if (tokenfunction(*p) == op_inv) {
+            int ro;
+            p++; t = T_NOTYPE;
+            p = getvalue(p, &f, &i64, &s, &ro, &t);                     // get the next value
+            if (t & T_NBR)
+                i64 = FloatToInt64(f);
+            else if (!(t & T_INT))
+                error("Expected a number");
+            i64 = ~i64;
+            t = T_INT;
+            skipspace(p);
+            *fa = f;                                                    // save what we have
+            *ia = i64;
+            *sa = s;
+            *ta = t;
+            *oo = ro;
+            return p;                                                   // return straight away as we already have the next operator
         }
-        p = skipvar(p, false);
-    }
-   // is it an ordinary numeric constant?  get its value if yes
-    // a leading + or - might have been converted to a token so we need to check for them also
-    else if(IsDigitinline(*p) || *p == '.') {
-                        char ts[31], *tsp;
-                        int isi64 = true;
-                        tsp = ts;
-                        int isf=true;
-                        long long int scale=0;
-                        // copy the first digit of the string to a temporary place
-                        if(*p == '.') {
-                                isi64 = false;
-                                scale=1;
-                        } else if(IsDigitinline(*p)){
-                                i64=(*p - '0');
-                        }
-                        *tsp++ = *p++;
 
-                        // now concatenate the remaining digits
-                        while((digit[(uint8_t)*p]) && (tsp - ts) < 30) {
-                                if(*p >= '0' && *p <= '9'){
-                                        i64 = i64 * 10 + (*p - '0');
-                                        if(scale)scale*=10;
-                                } else {
-                                        if((*p) == '.'){
-                                                isi64 = false;
-                                                scale =1;
-                                        } else {
-                                                if(mytoupper(*p) == 'E' || *p == '-' || *p == '+' ){
-                                                        isi64 = false;
-                                                        isf=false;
-                                                }
-                                        }
-                                }
-                                *tsp++ = *p++;                                          // copy the string to a temporary place
-                        }
-                        *tsp = 0;                                                   // terminate it
-                        if(isi64) {
-                                t = T_INT;
-                        } else if(isf && (tsp - ts) < 18) {
-                                f=(MMFLOAT)i64/(MMFLOAT)scale;
-                                t = T_NBR;
-                        } else {
-                                f = (MMFLOAT)strtod(ts, &tsp);                          // and convert to a MMFLOAT
-                                t = T_NBR;
-                        }
-    }
-
-
-   // if it is a numeric constant starting with the & character then get its base and convert to an integer
-    else if(*p == '&') {
-        p++; i64 = 0;
-        switch(mytoupper(*p++)) {
-            case 'H':   while(isxdigit(*p)) {
-                            i64 = (i64 << 4) | ((mytoupper(*p) >= 'A') ? mytoupper(*p) - 'A' + 10 : *p - '0');
-                            p++;
-                        } break;
-            case 'O':   while(*p >= '0' && *p <= '7') {
-                            i64 = (i64 << 3) | (*p++ - '0');
-                        } break;
-            case 'B':   while(*p == '0' || *p == '1') {
-                            i64 = (i64 << 1) | (*p++ - '0');
-                        } break;
-            default:    error("Type prefix");
+        // special processing for the unary - operator
+        // just get the next value and negate it
+        if (tokenfunction(*p) == op_subtract) {
+            int ro;
+            p++; t = T_NOTYPE;
+            p = getvalue(p, &f, &i64, &s, &ro, &t);                     // get the next value
+            if (t & T_NBR)
+                f = -f;                                                 // negate the MMFLOAT returned
+            else if (t & T_INT)
+                i64 = -i64;                                             // negate the integer returned
+            else
+                error("Expected a number");
+            skipspace(p);
+            *fa = f;                                                    // save what we have
+            *ia = i64;
+            *sa = s;
+            *ta = t;
+            *oo = ro;
+            return p;                                                   // return straight away as we already have the next operator
         }
-        t = T_INT;
+
+        if (tokenfunction(*p) == op_add) {
+            int ro;
+            p++; t = T_NOTYPE;
+            p = getvalue(p, &f, &i64, &s, &ro, &t);                     // get the next value
+            skipspace(p);
+            *fa = f;                                                    // save what we have
+            *ia = i64;
+            *sa = s;
+            *ta = t;
+            *oo = ro;
+            return p;                                                   // return straight away as we already have the next operator
+        }
+
+        // if a function execute it and save the result
+        if (tokentype(*p) & (T_FUN | T_FNA)) {
+            int tmp;
+            tp = p;
+            // if it is a function with arguments we need to locate the closing bracket and copy the argument to
+            // a temporary variable so that functions like getarg() will work.
+            if (tokentype(*p) & T_FUN) {
+                p1 = p + 1;
+                p = getclosebracket(p);                                 // find the closing bracket
+                p2 = GetTempMemory(STRINGSIZE);                         // this will last for the life of the command
+                ep = p2;
+                while (p1 != p) *p2++ = *p1++;
+            }
+            p++;                                                        // point to after the function (without argument) or after the closing bracket
+            targ = TypeMask(tokentype(*tp));                            // set the type of the function (which might need to know this)
+            tmp = targ;
+            tokenfunction(*tp)();                                       // execute the function
+            if ((tmp & targ) == 0) error("Internal fault (sorry)");     // as a safety check the function must return a type the same as set in the header
+            t = targ;                                                   // save the type of the function
+            f = fret; i64 = iret; s = sret;                             // save the result
+        }
     }
-                // if opening bracket then first evaluate the contents of the bracket
-            else if(*p == '(') {
-                        p++;                                                        // step over the bracket
-                        p = evaluate(p, &f, &i64, &s, &t, true);                    // recursively get the contents
-                        if(*p != ')') error("No closing bracket");
-                        ++p;                                                        // step over the closing bracket
+    else {
+        // if it is a variable or a defined function, find it and get its value
+        if (isnamestart(*p)) {
+            // first check if it is terminated with a bracket
+            tp = p + 1;
+            while (isnamechar(*tp)) tp++;                               // search for the end of the identifier
+            if (*tp == '$' || *tp == '%' || *tp == '!') tp++;
+            i = -1;
+            if (*tp == '(') i = FindSubFun(p, 1);                       // if terminated with a bracket it could be a function
+            if (i >= 0) {                                               // >= 0 means it is a user defined function
+                unsigned char *SaveCurrentLinePtr = CurrentLinePtr;     // in case the code in DefinedSubFun messes with this
+                DefinedSubFun(true, p, i, &f, &i64, &s, &t);
+                CurrentLinePtr = SaveCurrentLinePtr;
+            }
+            else {
+                s = (unsigned char *)findvar(p, V_FIND);                // if it is a string then the string pointer is automatically set
+                t = TypeMask(vartbl[VarIndex].type);
+                if (t & T_NBR) f = (*(MMFLOAT *)s);
+                if (t & T_INT) i64 = (*(long long int  *)s);
+            }
+            p = skipvar(p, false);
+        }
+        // is it an ordinary numeric constant?  get its value if yes
+        // a leading + or - might have been converted to a token so we need to check for them also
+        else if (IsDigitinline(*p) || *p == '.') {
+            char ts[31], *tsp;
+            int isi64 = true;
+            tsp = ts;
+            int isf = true;
+            long long int scale = 0;
+            // copy the first digit of the string to a temporary place
+            if (*p == '.') {
+                isi64 = false;
+                scale = 1;
+            }
+            else if (IsDigitinline(*p)) {
+                i64 = (*p - '0');
+            }
+            *tsp++ = *p++;
+
+            // now concatenate the remaining digits
+            while ((digit[(uint8_t)*p]) && (tsp - ts) < 30) {
+                if (*p >= '0' && *p <= '9') {
+                    i64 = i64 * 10 + (*p - '0');
+                    if (scale)scale *= 10;
                 }
-                // if it is a string constant, return a pointer to that.  Note: tokenise() guarantees that strings end with a quote
-                else if(*p == '"') {
-                        p++;                                                        // step over the quote
-                        p1 = s = GetTempMemory(STRINGSIZE);                                // this will last for the life of the command
-                        tp = strchr(p, '"');
-                        while(p != tp) *p1++ = *p++;
+                else {
+                    if ((*p) == '.') {
+                        isi64 = false;
+                        scale = 1;
+                    }
+                    else {
+                        if (mytoupper(*p) == 'E' || *p == '-' || *p == '+') {
+                            isi64 = false;
+                            isf = false;
+                        }
+                    }
+                }
+                *tsp++ = *p++;                                          // copy the string to a temporary place
+            }
+            *tsp = 0;                                                   // terminate it
+            if (isi64) {
+                t = T_INT;
+            }
+            else if (isf && (tsp - ts) < 18) {
+                f = (MMFLOAT)i64 / (MMFLOAT)scale;
+                t = T_NBR;
+            }
+            else {
+                f = (MMFLOAT)strtod(ts, &tsp);                          // and convert to a MMFLOAT
+                t = T_NBR;
+            }
+        }
+
+
+        // if it is a numeric constant starting with the & character then get its base and convert to an integer
+        else if (*p == '&') {
+            p++; i64 = 0;
+            switch (mytoupper(*p++)) {
+                case 'H':
+                    while (isxdigit(*p)) {
+                        i64 = (i64 << 4) | ((mytoupper(*p) >= 'A') ? mytoupper(*p) - 'A' + 10 : *p - '0');
                         p++;
-                        CtoM(s);                                                    // convert to a MMBasic string
-                        t = T_STR;
-    }
-    else
-        error("Syntax");
+                    }
+                    break;
+                case 'O':
+                    while (*p >= '0' && *p <= '7') {
+                        i64 = (i64 << 3) | (*p++ - '0');
+                    }
+                    break;
+                case 'B':
+                    while (*p == '0' || *p == '1') {
+                        i64 = (i64 << 1) | (*p++ - '0');
+                    }
+                    break;
+                default:
+                    error("Type prefix");
+            }
+            t = T_INT;
+        }
+        // if opening bracket then first evaluate the contents of the bracket
+        else if (*p == '(') {
+            p++;                                                        // step over the bracket
+            p = evaluate(p, &f, &i64, &s, &t, true);                    // recursively get the contents
+            if (*p != ')') error("No closing bracket");
+            ++p;                                                        // step over the closing bracket
+        }
+        // if it is a string constant, return a pointer to that.  Note: tokenise() guarantees that strings end with a quote
+        else if (*p == '"') {
+            p++;                                                        // step over the quote
+            p1 = s = GetTempMemory(STRINGSIZE);                         // this will last for the life of the command
+            tp = strchr(p, '"');
+            while (p != tp) *p1++ = *p++;
+            p++;
+            CtoM(s);                                                    // convert to a MMBasic string
+            t = T_STR;
+        }
+        else
+            error("Syntax");
     }
     skipspace(p);
-    *fa = f;                                                        // save what we have
+    *fa = f;                                                            // save what we have
     *ia = i64;
     *sa = s;
     *ta = t;
 
     // get the next operator, if there is not an operator set the operator to end of expression (E_END)
-    if(tokentype(*p) & T_OPER)
+    if (tokentype(*p) & T_OPER)
         *oo = *p++ - C_BASETOKEN;
     else
         *oo = E_END;
@@ -1588,16 +1609,15 @@ unsigned char __not_in_flash_func(*getvalue)(unsigned char *p, MMFLOAT *fa, long
 
 
 
-
-
 // search through program memory looking for a line number. Stops when it has a matching or larger number
 // returns a pointer to the T_NEWLINE token or a pointer to the two zero characters representing the end of the program
 unsigned char *findline(int nbr, int mustfind) {
     unsigned char *p;
     int i;
 
-   p = ProgMemory;
-   while(1) {
+    p = ProgMemory;
+
+    while(1) {
         if(p[0] == 0 && p[1] == 0) {
             i = MAXLINENBR;
             break;
@@ -1630,6 +1650,7 @@ unsigned char *findline(int nbr, int mustfind) {
         error("Line number");
     return p;
 }
+
 void hashlabels(int ErrAbort){
     unsigned char *p = (unsigned char *)ProgMemory;
     int j, u, namelen;
@@ -1655,24 +1676,24 @@ void hashlabels(int ErrAbort){
             p++;                                                    // point to the length of the label
             hash=FNV_offset_basis;
             namelen=0;
-                for(j=1;j<=p[0];j++) {
+            for(j=1;j<=p[0];j++) {
                 u=mytoupper(p[j]);
-                        hash ^= u;
-                        hash*=FNV_prime;
-                        namelen++;
-                }
-                hash %= MAXSUBHASH; //scale to size of table
+                hash ^= u;
+                hash*=FNV_prime;
+                namelen++;
+            }
+            hash %= MAXSUBHASH; //scale to size of table
             originalhash=hash-1;
             if(originalhash<0)originalhash+=MAXSUBFUN;
-                    while(funtbl[hash].name[0]!=0 && hash!=originalhash){
-                             hash++;
-                             hash %= MAXSUBFUN;
-                    }
+            while(funtbl[hash].name[0]!=0 && hash!=originalhash){
+                 hash++;
+                 hash %= MAXSUBFUN;
+            }
             if(hash==originalhash){
                 if(ErrAbort)error("Too many labels");
                 break;
             }
-                    funtbl[hash].index=(uint32_t)lastp;
+            funtbl[hash].index=(uint32_t)lastp;
             for(j=0;j<p[0];j++)funtbl[hash].name[j]=mytoupper(p[j+1]);
             p += p[0] + 1;                                          // still looking! skip over the label
             continue;
@@ -1687,7 +1708,7 @@ void hashlabels(int ErrAbort){
 // non cached version
 unsigned char *__not_in_flash_func(findlabel)(unsigned char *labelptr) {
 //    char *p, *lastp = (char *)ProgMemory + 1;
-        unsigned char  *tp, *ip;
+    unsigned char  *tp, *ip;
     int i, u;
     uint32_t hash=FNV_offset_basis;
     char label[MAXVARLEN + 1];
@@ -1698,41 +1719,39 @@ unsigned char *__not_in_flash_func(findlabel)(unsigned char *labelptr) {
     // convert the label to the token format and load into label[]
     // this assumes that the first character has already been verified as a valid label character
     label[1] = mytoupper(*labelptr++);
-        hash ^= label[1];
-        hash*=FNV_prime;
+    hash ^= label[1];
+    hash*=FNV_prime;
     for(i = 2; ; i++) {
         if(!isnamechar(*labelptr)) break;                           // the end of the label
         if(i > MAXVARLEN ) error("Label too long");                 // too long, not a correctly formed label
         label[i]=mytoupper(*labelptr++);
-                hash ^= label[i];
-                hash*=FNV_prime;
+        hash ^= label[i];
+        hash*=FNV_prime;
     }
     label[0] = i - 1;                                               // the length byte
-        hash %= MAXSUBHASH; //scale to size of table
-        if(funtbl[hash].name[0]==0)error("Cannot find label");
-        while(funtbl[hash].name[0]!=0){
-                if(funtbl[hash].index>=(uint32_t)ProgMemory){
-                        tp=funtbl[hash].name;
-                        ip=&label[1];
-                        if(*ip++ == *tp++) {                 // preliminary quick check
-                                i = label[0]-1;
-                                while(i > 0 && *ip == *tp) {                              // compare each letter
-                                        i--; ip++; tp++;
-                                }
-                                if(i == 0  && (*(char *)tp == 0)) {       // found a matching name
-                                        return (char *)funtbl[hash].index;
-                                }
-                        }
+    hash %= MAXSUBHASH; //scale to size of table
+    if(funtbl[hash].name[0]==0)error("Cannot find label");
+    while(funtbl[hash].name[0]!=0){
+        if(funtbl[hash].index>=(uint32_t)ProgMemory){
+            tp=funtbl[hash].name;
+            ip=&label[1];
+            if(*ip++ == *tp++) {                                    // preliminary quick check
+                i = label[0]-1;
+                while(i > 0 && *ip == *tp) {                        // compare each letter
+                    i--; ip++; tp++;
                 }
-                hash++;
-                hash %= MAXSUBFUN;
+                if(i == 0  && (*(char *)tp == 0)) {                 // found a matching name
+                    return (char *)funtbl[hash].index;
+                }
+            }
         }
-        if(funtbl[hash].name[0]==0)error("Cannot find label");
-        return 0;
+        hash++;
+        hash %= MAXSUBFUN;
+    }
+    if(funtbl[hash].name[0]==0)error("Cannot find label");
+    return 0;
 
 /*
-
-
     // point to the main program memory
     p = (char *)ProgMemory;
 
@@ -1754,15 +1773,16 @@ unsigned char *__not_in_flash_func(findlabel)(unsigned char *labelptr) {
 
         if(p[0] == T_LABEL) {
             p++;                                                    // point to the length of the label
-            if(mem_equal(p, label, label[0] + 1)){                   // compare the strings including the length byte
-                    return lastp;                                       // and if successful return pointing to the beginning of the line
+            if (mem_equal(p, label, label[0] + 1)) {                // compare the strings including the length byte
+                return lastp;                                       // and if successful return pointing to the beginning of the line
             }
-                p += p[0] + 1;                                          // still looking! skip over the label
+            p += p[0] + 1;                                          // still looking! skip over the label
             continue;
         }
 
         p++;
-    }*/
+    }
+*/
 }
 
 
@@ -1788,11 +1808,11 @@ int CountLines(unsigned char *target) {
     cnt = 0;
 
     while(1) {
-        if(*p == 0xff || (p[0] == 0 && p[1] == 0))                   // end of the program
+        if(*p == 0xff || (p[0] == 0 && p[1] == 0))                  // end of the program
             return cnt;
 
         if(*p == T_NEWLINE) {
-            p++;                                                 // and step over the line number
+            p++;                                                    // and step over the line number
             cnt++;
             if(p >= target) return cnt;
             continue;
@@ -1856,7 +1876,7 @@ void __not_in_flash_func(*findvar)(unsigned char *p, int action) {
     int GlobalhashIndex, OriginalGlobalHash;
     int LocalhashIndex, OriginalLocalHash;
     uint32_t funhash, hash=FNV_offset_basis;
-        char  *tp, *ip;
+    char  *tp, *ip;
     int dim[MAXDIM]={0}, dnbr;
 //        if(__get_MSP() < (uint32_t)&stackcheck-0x5000){
 //                error("Expression is too complex at depth %",LocalIndex);
@@ -1872,17 +1892,18 @@ void __not_in_flash_func(*findvar)(unsigned char *p, int action) {
 
     // copy the variable name into name
     s = name; namelen = 0;
-        do {
-                u=mytoupper(*p++);
-                hash ^= u;
-                hash*=FNV_prime;
-                *s++ = u;
-                if(++namelen > MAXVARLEN) error("Variable name too long");
-        } while(isnamechar(*p));
+    do {
+        u=mytoupper(*p++);
+        hash ^= u;
+        hash*=FNV_prime;
+        *s++ = u;
+        if(++namelen > MAXVARLEN) error("Variable name too long");
+    } while(isnamechar(*p));
     funhash=hash % MAXSUBHASH;
-        hash %= MAXVARHASH; //scale 0-255
+    hash %= MAXVARHASH; //scale 0-255
 
-        if(namelen!=MAXVARLEN)*s=0;
+    if(namelen!=MAXVARLEN)*s=0;
+
     // check the terminating char and set the type
     if(*p == '$') {
         if((action & T_IMPLIED) && !(action & T_STR)) error("Conflicting variable type");
@@ -1905,10 +1926,11 @@ void __not_in_flash_func(*findvar)(unsigned char *p, int action) {
     if(*p == '(') {
         char *pp = p + 1;
         skipspace(pp);
-        if(action & V_EMPTY_OK && *pp == ')')  {                     // if this is an empty array.  eg  ()
-                emptyarray=1;
+        if(action & V_EMPTY_OK && *pp == ')') {                     // if this is an empty array.  eg  ()
+            emptyarray=1;
             dnbr = -1;                                              // flag this
-        }  else {                                                      // else, get the dimensions
+        }
+        else {                                                      // else, get the dimensions
             // start a new block - getargs macro must be the first executable stmt in a block
             // split the argument into individual elements
             // find the value of each dimension and store in dims[]
@@ -1941,85 +1963,85 @@ void __not_in_flash_func(*findvar)(unsigned char *p, int action) {
     GlobalhashIndex=hash+MAXVARS/2;
     OriginalGlobalHash=GlobalhashIndex-1;
     if(OriginalGlobalHash<MAXVARS/2)OriginalGlobalHash+=MAXVARS/2;
-        globalifree=-1;
-        tmp=-1;
+    globalifree=-1;
+    tmp=-1;
     if(LocalIndex){ //search
-                if(vartbl[LocalhashIndex].type == T_NOTYPE){
-                        localifree = LocalhashIndex;
-                } else {
-                        while(vartbl[LocalhashIndex].name[0]!=0){
-                                ip=name;
-                                tp=vartbl[LocalhashIndex].name;
-                                if(vartbl[LocalhashIndex].type==T_BLOCKED)tmp=LocalhashIndex;
-                                if(*ip++ == *tp++) {                 // preliminary quick check
-                                        j = namelen-1;
-                                        while(j > 0 && *ip == *tp) {                              // compare each letter
-                                                j--; ip++; tp++;
-                                        }
-                                        if(j == 0  && (*(char *)tp == 0 || namelen == MAXVARLEN)) {       // found a matching name
-                                                if(vartbl[LocalhashIndex].level == LocalIndex) break; //matching global while not in a subroutine
-                                        }
-                                }
-                                LocalhashIndex++;
-                                LocalhashIndex %= MAXVARS/2;
+        if(vartbl[LocalhashIndex].type == T_NOTYPE){
+            localifree = LocalhashIndex;
+        } else {
+            while(vartbl[LocalhashIndex].name[0]!=0){
+                ip=name;
+                tp=vartbl[LocalhashIndex].name;
+                if(vartbl[LocalhashIndex].type==T_BLOCKED)tmp=LocalhashIndex;
+                if(*ip++ == *tp++) {                 // preliminary quick check
+                    j = namelen-1;
+                    while(j > 0 && *ip == *tp) {                            // compare each letter
+                        j--; ip++; tp++;
+                    }
+                    if(j == 0  && (*(char *)tp == 0 || namelen == MAXVARLEN)) {     // found a matching name
+                        if(vartbl[LocalhashIndex].level == LocalIndex) break; //matching global while not in a subroutine
+                    }
+                }
+                LocalhashIndex++;
+                LocalhashIndex %= MAXVARS/2;
                 if(LocalhashIndex==OriginalLocalHash)error("Too many local variables");
-                        }
-                        if(vartbl[LocalhashIndex].name[0]==0){ // not found
-                                localifree=LocalhashIndex;
-                                if(tmp!=-1){
-                                        localifree=tmp;
-                                        vartbl[LocalhashIndex].type=T_NOTYPE;
-                                        vartbl[LocalhashIndex].name[0]=0;
-                                }
-                        }
+            }
+            if(vartbl[LocalhashIndex].name[0]==0){ // not found
+                localifree=LocalhashIndex;
+                if(tmp!=-1){
+                    localifree=tmp;
+                    vartbl[LocalhashIndex].type=T_NOTYPE;
+                    vartbl[LocalhashIndex].name[0]=0;
                 }
-                if(vartbl[LocalhashIndex].name[0]==0){ // not found in the local table so try the global
-                        tmp=-1;
-                        globalifree=-1;
-                        if(vartbl[GlobalhashIndex].type == T_NOTYPE){
-                                globalifree = GlobalhashIndex;
-                        } else {
-                                while(vartbl[GlobalhashIndex].name[0]!=0){
-                                        ip=name;
-                                        tp=vartbl[GlobalhashIndex].name;
-                                        if(vartbl[GlobalhashIndex].type==T_BLOCKED)tmp=GlobalhashIndex;
-                                        if(*ip++ == *tp++) {                 // preliminary quick check
-                                                j = namelen-1;
-                                                while(j > 0 && *ip == *tp) {                              // compare each letter
-                                                        j--; ip++; tp++;
-                                                }
-                                                if(j == 0  && (*(char *)tp == 0 || namelen == MAXVARLEN)) {       // found a matching name
-                                                        break; //matching global while not in a subroutine
-                                                }
-                                        }
-                                        GlobalhashIndex++;
-                                        if(GlobalhashIndex==MAXVARS)GlobalhashIndex=MAXVARS/2;
+            }
+        }
+        if(vartbl[LocalhashIndex].name[0]==0){ // not found in the local table so try the global
+            tmp=-1;
+            globalifree=-1;
+            if(vartbl[GlobalhashIndex].type == T_NOTYPE){
+                globalifree = GlobalhashIndex;
+            } else {
+                while(vartbl[GlobalhashIndex].name[0]!=0){
+                    ip=name;
+                    tp=vartbl[GlobalhashIndex].name;
+                    if(vartbl[GlobalhashIndex].type==T_BLOCKED)tmp=GlobalhashIndex;
+                    if(*ip++ == *tp++) {                 // preliminary quick check
+                        j = namelen-1;
+                        while(j > 0 && *ip == *tp) {                              // compare each letter
+                            j--; ip++; tp++;
+                        }
+                        if(j == 0  && (*(char *)tp == 0 || namelen == MAXVARLEN)) {       // found a matching name
+                            break; //matching global while not in a subroutine
+                        }
+                    }
+                    GlobalhashIndex++;
+                    if(GlobalhashIndex==MAXVARS)GlobalhashIndex=MAXVARS/2;
                     if(GlobalhashIndex==OriginalGlobalHash)error("Too many global variables");
-                                }
-                                if(vartbl[GlobalhashIndex].name[0]==0){ // not found
-                                        globalifree=GlobalhashIndex;
-                                        if(tmp!=-1){
-                                                globalifree=tmp;
-                                                vartbl[GlobalhashIndex].type=T_NOTYPE;
-                                                vartbl[GlobalhashIndex].name[0]=0;
-                                        }
-                                }
-                        }
                 }
+                if(vartbl[GlobalhashIndex].name[0]==0){ // not found
+                    globalifree=GlobalhashIndex;
+                    if(tmp!=-1){
+                        globalifree=tmp;
+                        vartbl[GlobalhashIndex].type=T_NOTYPE;
+                        vartbl[GlobalhashIndex].name[0]=0;
+                    }
+                }
+            }
+        }
     } else {
-            localifree=9999; //set a marker that a local variable is irrelevant
-                if(vartbl[GlobalhashIndex].type == T_NOTYPE){
-                        globalifree = GlobalhashIndex;
-                } else {
-                        while(vartbl[GlobalhashIndex].name[0]!=0){
-                                ip=name;
-                                tp=vartbl[GlobalhashIndex].name;
-                                if(vartbl[GlobalhashIndex].type==T_BLOCKED)tmp=GlobalhashIndex;
-                                if(*ip++ == *tp++) {                 // preliminary quick check
-                                        j = namelen-1;
-                                        while(j > 0 && *ip == *tp) {                              // compare each letter
-                                                j--; ip++; tp++;
-                                        }
+        localifree=9999; //set a marker that a local variable is irrelevant
+        if(vartbl[GlobalhashIndex].type == T_NOTYPE){
+            globalifree = GlobalhashIndex;
+        } else {
+            while(vartbl[GlobalhashIndex].name[0]!=0){
+                ip=name;
+                tp=vartbl[GlobalhashIndex].name;
+                if(vartbl[GlobalhashIndex].type==T_BLOCKED)tmp=GlobalhashIndex;
+                if(*ip++ == *tp++) {                 // preliminary quick check
+                    j = namelen-1;
+                    while(j > 0 && *ip == *tp) {     // compare each letter
+                        j--; ip++; tp++;
+                    }
                                         if(j == 0  && (*(char *)tp == 0 || namelen == MAXVARLEN)) {       // found a matching name
                                                 break; //matching global while not in a subroutine
                                         }
@@ -2039,7 +2061,7 @@ void __not_in_flash_func(*findvar)(unsigned char *p, int action) {
     }
 //        MMPrintString("search status : ");PInt(LocalIndex);PIntComma(localifree);PIntComma(LocalhashIndex);PIntComma(globalifree);PIntComma(GlobalhashIndex);
 //        MMPrintString((action & V_LOCAL ? " LOCAL" : "      "));MMPrintString((action & V_LOCAL ? " DIM" : "    "));PRet();
-        // At this point we know if a local variable has been found or if a global variable has been found
+    // At this point we know if a local variable has been found or if a global variable has been found
     if(action & V_LOCAL) {
         // if we declared the variable as LOCAL within a sub/fun and an existing local was found
         if(localifree==-1) error("$ Local variable already declared", name);
@@ -2047,18 +2069,18 @@ void __not_in_flash_func(*findvar)(unsigned char *p, int action) {
         // if are using DIM to declare a global variable and an existing global variable was found
         if(globalifree==-1 ) error("$ Global variable already declared", name);
     }
-        // we are not declaring the variable but it may need to be created
+    // we are not declaring the variable but it may need to be created
     if(action & V_LOCAL) {
-            ifree = i = localifree;
+        ifree = i = localifree;
     } else if(localifree==-1){ // can only happen when a local variable has been found so we can ignore everything global
-                ifree= -1;
-                i = LocalhashIndex;
-        } else if(globalifree==-1){ //A global variable has been found
-                ifree= -1;
-                i = GlobalhashIndex;
-        } else { //nothing has been found so we are going to create a global unless EXPLICIT is set
-                ifree = i = globalifree;
-        }
+        ifree= -1;
+        i = LocalhashIndex;
+    } else if(globalifree==-1){ //A global variable has been found
+        ifree= -1;
+        i = GlobalhashIndex;
+    } else { //nothing has been found so we are going to create a global unless EXPLICIT is set
+        ifree = i = globalifree;
+    }
 
 //    MMPrintString(name);PIntComma(i);MMPrintString((ifree==-1 ? " - found" : " - not there"));PRet();
 
@@ -2128,22 +2150,23 @@ void __not_in_flash_func(*findvar)(unsigned char *p, int action) {
         else
             vtype = DefaultType;
     }
+
     // now scan the sub/fun table to make sure that there is not a sub/fun with the same name
-    if(!(action & V_FUNCT) && (funtbl[funhash].name[0])) {                                       // don't do this if we are defining the local variable for a function name
-                while(funtbl[funhash].name[0]!=0){
-                        ip=name;
-                        tp=funtbl[funhash].name;
-                        if(*ip++ == *tp++) {                 // preliminary quick check
-                                j = namelen-1;
-                                while(j > 0 && *ip == *tp) {                              // compare each letter
-                                        j--; ip++; tp++;
-                                }
-                                if(j == 0  && (*(char *)tp == 0 || namelen == MAXVARLEN)) {       // found a matching name
-                                        if(funtbl[funhash].index<MAXSUBFUN)error("A sub/fun has the same name: $", name);
-                                }
-                        }
-                        funhash++;
-                        if(funhash==MAXSUBFUN)funhash=0;
+    if(!(action & V_FUNCT) && (funtbl[funhash].name[0])) {                   // don't do this if we are defining the local variable for a function name
+        while(funtbl[funhash].name[0]!=0){
+            ip=name;
+            tp=funtbl[funhash].name;
+            if(*ip++ == *tp++) {                                             // preliminary quick check
+                j = namelen-1;
+                while(j > 0 && *ip == *tp) {                                 // compare each letter
+                    j--; ip++; tp++;
+                }
+                if(j == 0  && (*(char *)tp == 0 || namelen == MAXVARLEN)) {  // found a matching name
+                    if(funtbl[funhash].index<MAXSUBFUN)error("A sub/fun has the same name: $", name);
+                }
+            }
+            funhash++;
+            if(funhash==MAXSUBFUN)funhash=0;
         }
     }
 
@@ -2165,7 +2188,7 @@ void __not_in_flash_func(*findvar)(unsigned char *p, int action) {
                 } while(i);
             }
             skipspace(p);
-            if((s = checkstring(p, "LENGTH")) != NULL)
+            if ((s = checkstring(p, "LENGTH")) != NULL)
                 size = getint(s, 1, MAXSTRLEN) ;
             else
                 if(!(*p == ',' || *p == 0 || tokenfunction(*p) == op_equal || tokenfunction(*p) == op_invalid)) error("Unexpected text: $", p);
@@ -2176,28 +2199,29 @@ void __not_in_flash_func(*findvar)(unsigned char *p, int action) {
     // at this point we need to create the variable
     // as a result of the previous search ifree is the index to the entry that we should use
 
- // if we are adding to the top, increment the number of vars
-        if(ifree>=MAXVARS/2){
-                Globalvarcnt++;
-                if(Globalvarcnt>=MAXVARS/2)error("Not enough Global variable memory");
-        } else {
-                Localvarcnt++;
-                if(Localvarcnt>=MAXVARS/2)error("Not enough Local variable memory");
-        }
-        varcnt=Globalvarcnt+Localvarcnt;
+    // if we are adding to the top, increment the number of vars
+    if(ifree>=MAXVARS/2){
+        Globalvarcnt++;
+        if(Globalvarcnt>=MAXVARS/2)error("Not enough Global variable memory");
+    } else {
+        Localvarcnt++;
+        if(Localvarcnt>=MAXVARS/2)error("Not enough Local variable memory");
+    }
+    varcnt=Globalvarcnt+Localvarcnt;
     VarIndex = vindex = ifree;
 
     // initialise it: save the name, set the initial value to zero and set the type
     s = name;  x = vartbl[ifree].name; j = namelen;
     while(j--) *x++ = *s++;
-    if(namelen < MAXVARLEN)*x++ = 0;
+    if(namelen < MAXVARLEN) *x++ = 0;
     vartbl[ifree].type = vtype | (action & (T_IMPLIED | T_CONST));
     if(ifree<MAXVARS/2){
-            hashlist[hashlistpointer].level=LocalIndex;
-            hashlist[hashlistpointer++].hash=ifree;
+        hashlist[hashlistpointer].level=LocalIndex;
+        hashlist[hashlistpointer++].hash=ifree;
         vartbl[ifree].level = LocalIndex;
     } else vartbl[ifree].level = 0;
 //    cleardims(&vartbl[ifree].dims[0]);
+
     for(j = 0; j < MAXDIM; j++) vartbl[ifree].dims[j] = 0;
 //    MMPrintString("Creating variable : ");MMPrintString(vartbl[ifree].name);MMPrintString(", at depth : ");PInt(vartbl[ifree].level);MMPrintString(", hash key : ");PInt(ifree);PRet();
     // the easy request is for is a non array numeric variable, so just initialise to
@@ -2234,23 +2258,22 @@ void __not_in_flash_func(*findvar)(unsigned char *p, int action) {
     // the variable will remain not allocated
     vartbl[ifree].val.s = NULL;
     vartbl[ifree].type = T_BLOCKED;
-    i = *vartbl[ifree].name;   *vartbl[ifree].name = 0;
-        j = vartbl[ifree].dims[0]; vartbl[ifree].dims[0] = 0;
+    i = *vartbl[ifree].name; *vartbl[ifree].name = 0;
+    j = vartbl[ifree].dims[0]; vartbl[ifree].dims[0] = 0;
 
 
-        // Now, grab the memory
+    // Now, grab the memory
     if(vtype & (T_NBR | T_INT)) {
-            tmp=(nbr * sizeof(MMFLOAT));
+        tmp=(nbr * sizeof(MMFLOAT));
         if(tmp<=256)mptr = GetMemory(STRINGSIZE);
         else mptr = GetMemory(tmp);
-    }  else {
-            tmp=(nbr * (size + 1));
-            if(tmp<=16 && j==0)mptr = (void *)&vartbl[ifree].dims[1];
-            else if(tmp<=12 && vartbl[ifree].dims[1]==0)mptr = (void *)&vartbl[ifree].dims[2];
-            else if(tmp<=256)mptr = GetMemory(STRINGSIZE);
+    } else {
+        tmp=(nbr * (size + 1));
+        if(tmp<=16 && j==0)mptr = (void *)&vartbl[ifree].dims[1];
+        else if(tmp<=12 && vartbl[ifree].dims[1]==0)mptr = (void *)&vartbl[ifree].dims[2];
+        else if(tmp<=256)mptr = GetMemory(STRINGSIZE);
         else mptr = GetMemory(tmp);
     }
-
 
     // If we reached here the memory request was successful, so restore the details of
     // the variable that were saved previously and set the variables pointer to the
@@ -2285,7 +2308,7 @@ void __not_in_flash_func(*findvar)(unsigned char *p, int action) {
 //   pointer to an array of strings that will contain (after the function has returned) the values of each argument
 //   pointer to an integer that will contain (after the function has returned) the number of arguments found
 //   pointer to a string that contains the characters to be used in spliting up the line.  If the first unsigned char of that
-//       string is an opening bracket '(' this function will expect the arg list to be enclosed in brackets.
+//   string is an opening bracket '(' this function will expect the arg list to be enclosed in brackets.
 void __not_in_flash_func(makeargs)(unsigned char **p, int maxargs, unsigned char *argbuf, unsigned char *argv[], int *argc, unsigned char *delim) {
     unsigned char *op;
     int inarg, expect_cmd, expect_bracket, then_tkn, else_tkn;
@@ -2411,7 +2434,7 @@ void error(char *msg, ...) {
 
     // first build the error message in the global string MMErrMsg
     if(MMerrno == 0) MMerrno = 16;                                  // indicate an error
-    memset(tstr, 0, STRINGSIZE * 2);                                 // clear any previous string
+    memset(tstr, 0, STRINGSIZE * 2);                                // clear any previous string
     if(*msg) {
         va_start(ap, msg);
         while(*msg) {
@@ -2432,7 +2455,7 @@ void error(char *msg, ...) {
     for(p = MMErrMsg, tp = tstr; *tp < 127 && (tp - tstr) < MAXERRMSG - 1; ) *p++ = *tp++;
     *p = 0;
 
-    if(OptionErrorSkip) longjmp(ErrNext, 1);                       // if OPTION ERROR SKIP/IGNORE is in force
+    if(OptionErrorSkip) longjmp(ErrNext, 1);                        // if OPTION ERROR SKIP/IGNORE is in force
 
     LoadOptions();                                                  // make sure that the option struct is in a clean state
 
@@ -2440,7 +2463,7 @@ void error(char *msg, ...) {
         SetFont(PromptFont);
         gui_fcolour = PromptFC;
         gui_bcolour = PromptBC;
-        if(CurrentX != 0) MMPrintString("\r\n");                   // error message should be on a new line
+        if(CurrentX != 0) MMPrintString("\r\n");                    // error message should be on a new line
     }
     if(MMCharPos > 1) MMPrintString("\r\n");
     if(CurrentLinePtr) {
@@ -2450,16 +2473,16 @@ void error(char *msg, ...) {
             // so we have to search for the start of the line and set CurrentLinePtr to that
           while(*p != 0xff) {
               while(*p) p++;                                        // look for the zero marking the start of an element
-              if(p >= (char *)CurrentLinePtr || p[1] == 0) {                // the previous line was the one that we wanted
+              if(p >= (char *)CurrentLinePtr || p[1] == 0) {        // the previous line was the one that we wanted
                   CurrentLinePtr = tp;
                   break;
                 }
               if(p[1] == T_NEWLINE) {
                   tp = ++p;                                         // save because it might be the line we want
               }
-                         p++;                                                // step over the zero marking the start of the element
-                        skipspace(p);
-                        if(p[0] == T_LABEL) p += p[1] + 2;                                        // skip over the label
+              p++;                                                  // step over the zero marking the start of the element
+              skipspace(p);
+              if(p[0] == T_LABEL) p += p[1] + 2;                    // skip over the label
             }
         }
 
@@ -2488,7 +2511,6 @@ void error(char *msg, ...) {
     memset(inpbuf,0,STRINGSIZE);
     longjmp(mark, 1);
 }
-
 
 
 /**********************************************************************************************
@@ -2546,31 +2568,30 @@ void IntToStr(char *strr, long long int nbr, unsigned int base) {
 // Special case (used by FloatToStr() only):
 //     if padch is negative and nbr is zero prefix the number with the - sign
 void IntToStrPad(char *p, long long int nbr, signed char padch, int maxch, int radix) {
-    int j;
-    char sign, buf[IntToStrBufSize];
-
-    sign = 0;
-    if ((nbr < 0 && radix == 10 && nbr!=0x8000000000000000) || padch < 0) {                      // if the number is negative or we are forced to use a - symbol
+    char sign = 0;
+    if ((nbr < 0 && radix == 10 && nbr!=0x8000000000000000) || padch < 0) {  // if the number is negative or we are forced to use a - symbol
         sign = '-';                                                 // set the sign
         nbr *= -1;                                                  // convert to a positive nbr
         padch = abs(padch);
-    } else {
-        if(nbr >= 0 && maxch < 0 && radix == 10)                    // should we display the + sign?
+    }
+    else {
+        if (nbr >= 0 && maxch < 0 && radix == 10)                   // should we display the + sign?
             sign = '+';
     }
 
+    char buf[IntToStrBufSize];
     IntToStr(buf, nbr, radix);
-    j = abs(maxch) - strlen(buf);                                   // calc padding required
-    if(j <= 0)j = 0;
-    else memset(p, padch, abs(maxch));                               // fill the buffer with the padding char
-        if(sign != 0) {                                                 // if we need a sign
-                if(j == 0) j = 1;                                           // make space if necessary
-            if(padch == '0')
-                p[0] = sign;                                            // for 0 padding the sign is before the padding
-            else
-                p[j - 1] = sign;                                        // for anything else the padding is before the sign
-         }
-    strcpy(&p[j], buf) ;
+    int j = abs(maxch) - strlen(buf);                               // calc padding required
+    if (j <= 0) j = 0;
+    else memset(p, padch, abs(maxch));                              // fill the buffer with the padding char
+    if (sign != 0) {                                                // if we need a sign
+        if (j == 0) j = 1;                                          // make space if necessary
+        if (padch == '0')
+            p[0] = sign;                                            // for 0 padding the sign is before the padding
+        else
+            p[j - 1] = sign;                                        // for anything else the padding is before the sign
+    }
+    strcpy(&p[j], buf);
 }
 
 
@@ -2591,10 +2612,10 @@ void FloatToStr(char *p, MMFLOAT f, int m, int n, unsigned char ch) {
     if(f == 0)
         exp = 0;
     else
-        exp = floor(log10(fabs(f)));                             // get the exponent part
+        exp = floor(log10(fabs(f)));                                // get the exponent part
     if(((fabs(f) < 0.0001 || fabs(f) >= 1000000) && f != 0 && n == STR_AUTO_PRECISION) || n < 0) {
         // we must use scientific notation
-        f /= pow(10, exp);                                         // scale the number to 1.2345
+        f /= pow(10, exp);                                          // scale the number to 1.2345
         if(f >= 10) { f /= 10; exp++; }
         if(n < 0) n = -n;                                           // negative indicates always use exponantial format
         FloatToStr(p, f, m, n, ch);                                 // recursively call ourself to convert that to a string
@@ -2638,10 +2659,10 @@ void FloatToStr(char *p, MMFLOAT f, int m, int n, unsigned char ch) {
         if(f < 0) f = -f;                                           // make the number positive
         if(n > 0) {                                                 // if we need to have a decimal point and following digits
             *pp++ = '.';                                            // add the decimal point
-            f -= floor(f);                                         // get just the fractional part
+            f -= floor(f);                                          // get just the fractional part
             while(n--) {
                 f *= 10;
-                digit = floor(f);                                  // get the next digit for the string
+                digit = floor(f);                                   // get the next digit for the string
                 f -= digit;
                 *pp++ = digit + '0';
             }
@@ -2668,43 +2689,44 @@ Various routines to clear memory or the interpreter's state
 // if level is not zero it will only delete local variables at that level or greater
 // if level is zero to will delete all variables and reset global settings
 void __not_in_flash_func(ClearVars)(int level) {
-   int i, newhashpointer,hashcurrent,hashnext;
+    int i, newhashpointer,hashcurrent,hashnext;
 
     // first step through the variable table and delete local variables at that level or greater
-        if(level){
-                newhashpointer=hashlistpointer; //save the current number of stored values
-                for(i=hashlistpointer-1;i>=0;i--){ //delete in reverse order of creation
-                        if(hashlist[i].level>= level){
-                                hashnext = hashcurrent = hashlist[i].hash;
-                                hashnext++;
-                                hashnext %= MAXVARS/2;
-                                if(((vartbl[hashcurrent].type & T_STR) || vartbl[hashcurrent].dims[0] != 0) && !(vartbl[hashcurrent].type & T_PTR) && ((uint32_t)vartbl[hashcurrent].val.s<(uint32_t)MMHeap + HEAP_MEMORY_SIZE)&& ((uint32_t)vartbl[hashcurrent].val.s>(uint32_t)MMHeap)) {
-                                        FreeMemorySafe((void **)&vartbl[hashcurrent].val.s);
-                                        // free any memory (if allocated)
-                                }
-//                                MMPrintString("Deleting ");MMPrintString(vartbl[hashlist[i].hash].name);PIntComma(hashlist[i].level);PIntComma(hashlist[i].hash);PRet();
-                                hashlist[i].level=-1;
-                                newhashpointer=i; //set the new highest index
-                                memset(&vartbl[hashcurrent],0,sizeof(struct s_vartbl));
-                                if(vartbl[hashnext].type){
-                                        vartbl[hashcurrent].type = T_BLOCKED ;                                // block slot
-                                        vartbl[hashcurrent].name[0] = '~';                                      // safety precaution
-                                }
-                                Localvarcnt--;
-                        }
+    if(level){
+        newhashpointer=hashlistpointer; //save the current number of stored values
+        for(i=hashlistpointer-1;i>=0;i--){ //delete in reverse order of creation
+            if(hashlist[i].level>= level){
+                hashnext = hashcurrent = hashlist[i].hash;
+                hashnext++;
+                hashnext %= MAXVARS/2;
+                if(((vartbl[hashcurrent].type & T_STR) || vartbl[hashcurrent].dims[0] != 0) && !(vartbl[hashcurrent].type & T_PTR) && ((uint32_t)vartbl[hashcurrent].val.s<(uint32_t)MMHeap + HEAP_MEMORY_SIZE)&& ((uint32_t)vartbl[hashcurrent].val.s>(uint32_t)MMHeap)) {
+                    FreeMemorySafe((void **)&vartbl[hashcurrent].val.s);
+                    // free any memory (if allocated)
                 }
-                hashlistpointer=newhashpointer;
-        } else {
-                for(i = 0; i < MAXVARS; i++) {
-                        if(((vartbl[i].type & T_STR) || vartbl[i].dims[0] != 0) && !(vartbl[i].type & T_PTR)) {
-                                if((uint32_t)vartbl[i].val.s>(uint32_t)MMHeap && (uint32_t)vartbl[i].val.s<(uint32_t)MMHeap + HEAP_MEMORY_SIZE){
+//                MMPrintString("Deleting ");MMPrintString(vartbl[hashlist[i].hash].name);PIntComma(hashlist[i].level);PIntComma(hashlist[i].hash);PRet();
+                hashlist[i].level=-1;
+                newhashpointer=i; //set the new highest index
+                memset(&vartbl[hashcurrent],0,sizeof(struct s_vartbl));
+                if(vartbl[hashnext].type){
+                    vartbl[hashcurrent].type = T_BLOCKED;  // block slot
+                    vartbl[hashcurrent].name[0] = '~';                                      // safety precaution
+                }
+                Localvarcnt--;
+            }
+        }
+        hashlistpointer=newhashpointer;
+    } else {
+        for(i = 0; i < MAXVARS; i++) {
+            if(((vartbl[i].type & T_STR) || vartbl[i].dims[0] != 0) && !(vartbl[i].type & T_PTR)) {
+                if((uint32_t)vartbl[i].val.s>(uint32_t)MMHeap && (uint32_t)vartbl[i].val.s<(uint32_t)MMHeap + HEAP_MEMORY_SIZE){
                     FreeMemorySafe((void **)&vartbl[i].val.s);                        // free any memory (if allocated)
                 }
-                        }
-                        memset(&vartbl[i],0,sizeof(struct s_vartbl));
-                }
+            }
+            memset(&vartbl[i],0,sizeof(struct s_vartbl));
         }
-   // then step through the for...next table and remove any loops at the level or greater
+    }
+
+    // then step through the for...next table and remove any loops at the level or greater
     for(i = 0; i < forindex; i++) {
         if(forstack[i].level >= level) {
             forindex = i;
@@ -2725,6 +2747,7 @@ void __not_in_flash_func(ClearVars)(int level) {
     forindex = doindex = 0;
     LocalIndex = 0;                                                 // signal that all space is to be cleared
     ClearTempMemory();                                              // clear temp string space
+
     // we can now delete all variables by zeroing the counters
     Localvarcnt = 0;
     Globalvarcnt = 0;
@@ -2738,7 +2761,7 @@ void __not_in_flash_func(ClearVars)(int level) {
 // this is done at the command prompt or at any break
 void  ClearStack(void) {
     NextData = 0;
-        NextDataLine = ProgMemory;
+    NextDataLine = ProgMemory;
     forindex = 0;
     doindex = 0;
     gosubindex = 0;
@@ -2760,10 +2783,10 @@ void ClearRuntime(void) {
     findlabel(NULL);                                                // clear the label cache
     OptionErrorSkip = 0;
     MMerrno = 0;                                                    // clear the error flags
-   *MMErrMsg = 0;
-        #if defined(MMFAMILY) || defined(DOS)
-            NbrModules = 0;
-    #endif
+    *MMErrMsg = 0;
+#if defined(MMFAMILY) || defined(DOS)
+    NbrModules = 0;
+#endif
     InitHeap();
     m_alloc(M_VAR);
     ClearVars(0);
@@ -2794,7 +2817,6 @@ void ClearProgram(void) {
     ProgramChanged = false;
     TraceOn = false;
 }
-
 
 
 
@@ -2853,7 +2875,8 @@ int GetTokenValue (unsigned char *n) {
 
 // skip to the end of a variable
 unsigned char __not_in_flash_func(*skipvar)(unsigned char *p, int noerror) {
-    unsigned char *pp, *tp;
+    unsigned char *pp
+    unsigned char *tp;
     int i;
     int inquote = false;
 
@@ -2985,7 +3008,7 @@ void __not_in_flash_func(checkend)(unsigned char *p) {
 
 // check if the next text in an element (a basic statement) corresponds to an alpha string
 // leading whitespace is skipped and the string must be terminated with a valid terminating
-// character. Returns a pointer to the end of the string if found or NULL is not
+// character. Returns a pointer to the end of the string if found or NULL if not
 unsigned char __not_in_flash_func(*checkstring)(unsigned char *p, unsigned char *tkn) {
     skipspace(p);                                           // skip leading spaces
     while(*tkn && (mytoupper(*tkn) == mytoupper(*p))) { tkn++; p++; }   // compare the strings
@@ -2995,12 +3018,6 @@ unsigned char __not_in_flash_func(*checkstring)(unsigned char *p, unsigned char 
     }
     return NULL;                                                    // or NULL if not
 }
-
-/********************************************************************************************************************************************
-A couple of I/O routines that do not belong anywhere else
-*********************************************************************************************************************************************/
-
-
 
 
 
@@ -3167,11 +3184,11 @@ static unsigned char charmap[] = {
 
 
 int mystrncasecmp(
-    const unsigned char *s1,         /* First string. */
-    const unsigned char *s2,         /* Second string. */
-    size_t  length)      /* Maximum number of characters to compare
-                         * (stop earlier if the end of either string
-                         * is reached). */
+    const unsigned char *s1,  /* First string. */
+    const unsigned char *s2,  /* Second string. */
+    size_t length)            /* Maximum number of characters to compare
+                               * (stop earlier if the end of either string
+                               * is reached). */
 {
     register unsigned char u1, u2;
 
