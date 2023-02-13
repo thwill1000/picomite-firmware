@@ -424,19 +424,50 @@ void ListProgram(unsigned char *p, int all) {
 
 
 void cmd_run(void) {
-	skipspace(cmdline);
-	if(*cmdline && *cmdline != '\''){
-		if(!FileLoadProgram(cmdline))return;
-	}
-	ClearRuntime();
+    // RUN [ filename$ ] [, cmd_args$ ]
+    unsigned char *filename = "", *cmd_args = "";
+    getargs(&cmdline, 3, ",");
+    switch (argc) {
+        case 0:
+            break;
+        case 1:
+            filename = getCstring(argv[0]);
+            break;
+        case 2:
+            cmd_args = getCstring(argv[1]);
+            break;
+        default:
+            filename = getCstring(argv[0]);
+            cmd_args = getCstring(argv[2]);
+            break;
+    }
+
+    // The memory allocated by getCstring() is not preserved across
+    // a call to FileLoadProgram() so we need to cache 'filename' and
+    // 'cmd_args' on the stack.
+    unsigned char buf[MAXSTRLEN + 1];
+    if (snprintf(buf, MAXSTRLEN + 1, "\"%s\",%s", filename, cmd_args) > MAXSTRLEN) {
+        error("RUN command line too long");
+    }
+    unsigned char *pcmd_args = buf + strlen(filename) + 2;
+
+    if (*filename && !FileLoadProgram(buf)) return;
+
+    ClearRuntime();
     WatchdogSet = false;
-	PrepareProgram(true);
+    PrepareProgram(true);
+
+    // Create a global constant MM.CMDLINE$ containing 'cmd_args'.
+    void *ptr = findvar("MM.CMDLINE$", V_FIND | V_DIM_VAR | T_CONST);
+    CtoM(pcmd_args);
+    memcpy(ptr, pcmd_args + 1, *pcmd_args);
+
     IgnorePIN = false;
-    if(*ProgMemory != T_NEWLINE) return;                             // no program to run
+    if(*ProgMemory != T_NEWLINE) return;                            // no program to run
 #ifdef PICOMITEWEB
-	cleanserver();
+    cleanserver();
 #endif
-	nextstmt = ProgMemory;
+    nextstmt = ProgMemory;
 }
 
 
