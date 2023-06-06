@@ -73,8 +73,9 @@ void ProcessWeb(void);
 #endif
 #ifdef PICOMITE
 #define MES_SIGNON  "\rPicoMite MMBasic Version " VERSION "\r\n"\
-					"Copyright " YEAR " Geoff Graham\r\n"\
-					"Copyright " YEAR2 " Peter Mather\r\n\r\n"
+                    "Copyright " YEAR " Geoff Graham\r\n"\
+                    "Copyright " YEAR2 " Peter Mather\r\n"\
+                    "Experimental Build by Thomas Williams\r\n\r\n"
 #endif
 
 #define KEYCHECKTIME 16
