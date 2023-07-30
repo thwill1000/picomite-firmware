@@ -25,6 +25,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
@@ -48,33 +49,20 @@ extern "C" {
 #include "class/cdc/cdc_device.h" 
 #include "hardware/pio.h"
 #include "hardware/pio_instructions.h"
-#ifdef PICOMITEWEB
-#include "lwipopts.h"
-#include "pico/cyw43_arch.h"
-#include "lwip/pbuf.h"
-#include "lwip/tcp.h"
-#include "lwip/dns.h"
-#include "lwip/pbuf.h"
-#include "lwip/udp.h"
-#endif
-#ifdef PICOMITEVGA
-#include "Include.h"
-#define MES_SIGNON  "\rPicoMiteVGA MMBasic Version " VERSION "\r\n"\
-					"Copyright " YEAR " Geoff Graham\r\n"\
-					"Copyright " YEAR2 " Peter Mather\r\n\r\n"
-#endif
-#ifdef PICOMITEWEB
-#define MES_SIGNON  "\rWebMite MMBasic Version " VERSION "\r\n"\
-					"Copyright " YEAR " Geoff Graham\r\n"\
-					"Copyright " YEAR2 " Peter Mather\r\n\r\n"
-volatile int WIFIconnected=0;
-int startupcomplete=0;
-void ProcessWeb(void);
-#endif
-#ifdef PICOMITE
-#define MES_SIGNON  "\rPicoMite MMBasic Version " VERSION "\r\n"\
-					"Copyright " YEAR " Geoff Graham\r\n"\
-					"Copyright " YEAR2 " Peter Mather\r\n\r\n"
+
+#if defined(PICOMITEWEB)
+    #include "lwipopts.h"
+    #include "pico/cyw43_arch.h"
+    #include "lwip/pbuf.h"
+    #include "lwip/tcp.h"
+    #include "lwip/dns.h"
+    #include "lwip/pbuf.h"
+    #include "lwip/udp.h"
+    volatile int WIFIconnected=0;
+    int startupcomplete=0;
+    void ProcessWeb(void);
+#elif defined(PICOMITEVGA)
+    #include "Include.h"
 #endif
 
 #define KEYCHECKTIME 16
@@ -1120,8 +1108,12 @@ void sigbus(void){
 	uSec(250000);
 	disable_interrupts();
 //	flash_range_erase(PROGSTART, MAX_PROG_SIZE);
+#if !defined(PGLCD)
+    // Do not clear OPTION AUTORUN for the PicoGAME LCD as it makes the device
+    // useless until re-enabled via the serial console.
     Option.Autorun=0;
     SaveOptions();
+#endif
 	enable_interrupts();
     memset(inpbuf,0,STRINGSIZE);
     SoftReset();

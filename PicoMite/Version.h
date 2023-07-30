@@ -32,3 +32,20 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 #endif
 #define YEAR			"2011-2023"		    // and the year
 #define YEAR2          "2016-2023"
+
+#if defined(PICOMITEWEB)
+    #define DEVICE_AND_VERSION  "WebMite MMBasic Version " VERSION
+#elif defined(PICOMITEVGA)
+    #define DEVICE_AND_VERSION  "PicoMiteVGA MMBasic Version " VERSION
+#elif defined(PGLCD)
+    #define DEVICE_AND_VERSION  "PicoMite MMBasic Version " VERSION " - PGLCD"
+    #define PGLCD_VERSION  200 // 0.2.0
+#elif defined(PICOMITE)
+    #define DEVICE_AND_VERSION  "PicoMite MMBasic Version " VERSION
+#else
+    #error "Unknown device"
+#endif
+
+#define MES_SIGNON  "\r" DEVICE_AND_VERSION "\r\n" \
+                    "Copyright " YEAR " Geoff Graham\r\n"\
+                    "Copyright " YEAR2 " Peter Mather\r\n\r\n"

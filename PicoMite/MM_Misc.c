@@ -1682,16 +1682,7 @@ void PO5Int(char *s1, int n1, int n2, int n3, int n4) {
 void printoptions(void){
 //	LoadOptions();
     int i=Option.DISPLAY_ORIENTATION;
-#ifdef PICOMITEVGA
-    MMPrintString("\rPicoMiteVGA MMBasic Version " VERSION "\r\n");
-#endif    
-#ifdef PICOMITEWEB
-    MMPrintString("\rWebMite MMBasic Version " VERSION "\r\n");    
-#endif 
-#ifdef PICOMITE
-    MMPrintString("\rPicoMite MMBasic Version " VERSION "\r\n");
-#endif     
-
+    MMPrintString("\r" DEVICE_AND_VERSION "\r\n");
     if(Option.SerialConsole){
         MMPrintString("OPTION SERIAL CONSOLE COM");
         MMputchar((Option.SerialConsole & 3)+48,1);
@@ -3040,6 +3031,24 @@ int ExistsDir(char *p, char *q, int *filesystem){
     return ireturn;
 }
 
+static void fun_info_version() {
+    char *p;
+    fret = (MMFLOAT)strtol(VERSION, &p, 10);
+    fret += (MMFLOAT)strtol(p + 1, &p, 10) / (MMFLOAT)100.0;
+    fret += (MMFLOAT)strtol(p + 1, &p, 10) / (MMFLOAT)10000.0;
+    fret += (MMFLOAT)strtol(p + 1, &p, 10) / (MMFLOAT)1000000.0;
+    targ = T_NBR;
+}
+
+static void fun_info_version_x() {
+#if defined(PGLCD)
+  iret = PGLCD_VERSION;
+  targ = T_INT;
+#else
+  fun_info_version();
+#endif
+}
+
 void fun_info(void){
     unsigned char *tp;
     sret = GetTempMemory(STRINGSIZE);                                  // this will last for the life of the command
@@ -3102,7 +3111,17 @@ void fun_info(void){
             return;
         } else error("Syntax");
     }  else if(*ep=='d' || *ep=='D'){
-        if(checkstring(ep, "DEVICE")){
+        if (checkstring(ep, "DEVICE X")){
+#if defined PGLCD
+            sret = GetTempMemory(STRINGSIZE);
+            strcpy(sret, "PicoGAME LCD");
+            CtoM(sret);
+            targ = T_STR;
+#else
+            fun_device();
+#endif
+            return;
+        } else if(checkstring(ep, "DEVICE")){
             fun_device();
             return;
         } else if(tp=checkstring(ep, "DRIVE")){
@@ -3554,13 +3573,11 @@ void fun_info(void){
             iret=(int64_t)((uint32_t)varcnt);
             targ=T_INT;
             return;
+        } else if(checkstring(ep, "VERSION X")){
+            fun_info_version_x();
+            return;
         } else if(checkstring(ep, "VERSION")){
-            char *p;
-            fret = (MMFLOAT)strtol(VERSION, &p, 10);
-            fret += (MMFLOAT)strtol(p + 1, &p, 10) / (MMFLOAT)100.0;
-            fret += (MMFLOAT)strtol(p + 1, &p, 10) / (MMFLOAT)10000.0;
-            fret += (MMFLOAT)strtol(p + 1, &p, 10) / (MMFLOAT)1000000.0;
-            targ=T_NBR;
+            fun_info_version();
             return;
         } else if(checkstring(ep, "VPOS")){
             iret = CurrentY;
