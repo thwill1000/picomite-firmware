@@ -2683,24 +2683,8 @@ void error(char *msg, ...) {
         MMPrintString(p);
         MMPrintString("\r\n");
     }
-    char *q=NULL;
-    if(*MMErrMsg=='['){
-        q=MMErrMsg;
-        while((*q)!=' ') {
-            MMputchar(*q,0);
-            q++;
-        }
-        q++;
-        MMputchar(' ',0);
-    }
     MMPrintString("Error");
-    if(q){
-        MMPrintString(" : ");
-        MMPrintString(q);
-        memmove(MMErrMsg,&MMErrMsg[(uint32_t)q-(uint32_t)MMErrMsg],strlen(q)+1);
-        StartEditPoint = SaveCurrentLinePtr;
-        StartEditChar = 0;
-    } else if(*MMErrMsg) {
+    if(*MMErrMsg) {
         MMPrintString(" : ");
         MMPrintString(MMErrMsg);
     }

@@ -1421,15 +1421,8 @@ void cmd_error(void) {
 	unsigned char *s;
 	if(*cmdline && *cmdline != '\'') {
 		s = getCstring(cmdline);
-		char *p=GetTempMemory(STRINGSIZE);
-		strcpy(p,"[");
-		int ln=CountLines(CurrentLinePtr);
-		IntToStr(&p[1],ln,10);
-		SaveCurrentLinePtr=CurrentLinePtr;
 		CurrentLinePtr = NULL;                                      // suppress printing the line that caused the issue
-		strcat(p,"] ");
-		strcat(p,s);
-		error(p);
+		error(s);
 	}
 	else
 		error("");
