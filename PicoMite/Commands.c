@@ -29,6 +29,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 #include "Hardware_Includes.h"
 #include "hardware/flash.h"
 #include "hardware/dma.h"
+#include "hardware/structs/watchdog.h"
 
 #include <math.h>
 void flist(int, int, int);
@@ -438,7 +439,7 @@ void cmd_run(void) {
     // RUN [ filename$ ] [, cmd_args$ ]
     unsigned char *filename = "", *cmd_args = "";
     getargs(&cmdline, 3, ",");
-    switch (argc) {
+	    switch (argc) {
         case 0:
             break;
         case 1:
@@ -453,9 +454,9 @@ void cmd_run(void) {
             break;
     }
 
-// The memory allocated by getCstring() is not preserved across
-   // a call to FileLoadProgram() so we need to cache 'filename' and
-   // 'cmd_args' on the stack.
+    // The memory allocated by getCstring() is not preserved across
+    // a call to FileLoadProgram() so we need to cache 'filename' and
+    // 'cmd_args' on the stack.
     unsigned char buf[MAXSTRLEN + 1];
     if (snprintf(buf, MAXSTRLEN + 1, "\"%s\",%s", filename, cmd_args) > MAXSTRLEN) {
         error("RUN command line too long");
@@ -777,6 +778,7 @@ void __not_in_flash_func(cmd_else)(void) {
 
 
 void cmd_end(void) {
+    hw_clear_bits(&watchdog_hw->ctrl, WATCHDOG_CTRL_ENABLE_BITS);
     irq_set_enabled(DMA_IRQ_1, false);
     dma_hw->abort = ((1u << dma_rx_chan2) | (1u << dma_rx_chan));
     if(dma_channel_is_busy(dma_rx_chan))dma_channel_abort(dma_rx_chan);
@@ -793,7 +795,7 @@ void cmd_end(void) {
     if(dma_channel_is_busy(ADC_dma_chan2))dma_channel_abort(ADC_dma_chan2);
 //    dma_channel_cleanup(ADC_dma_chan);
 //    dma_channel_cleanup(ADC_dma_chan2);
- 	for(int i=0; i< NBRSETTICKS;i++){
+	for(int i=0; i< NBRSETTICKS;i++){
 		TickPeriod[i]=0;
 		TickTimer[i]=0;
 		TickInt[i]=NULL;
@@ -1752,12 +1754,12 @@ void cmd_call(void){
 
 
 void cmd_restore(void) {
-	if(*cmdline == 0 || *cmdline == '\'') {
+   if(*cmdline == 0 || *cmdline == '\'') {
        if(CurrentLinePtr >= ProgMemory && CurrentLinePtr < ProgMemory + MAX_PROG_SIZE )
            NextDataLine = ProgMemory;
        else
            NextDataLine = LibMemory;
-		NextData = 0;
+       NextData = 0;
 	} else {
 		skipspace(cmdline);
 		if(*cmdline=='"') {
@@ -1765,26 +1767,26 @@ void cmd_restore(void) {
 			NextData = 0;
 		}
 		else if(isdigit(*cmdline) || *cmdline==GetTokenValue( (char *)"+") || *cmdline==GetTokenValue( (char *)"-")  || *cmdline=='.'){
-				NextDataLine = findline(getinteger(cmdline), true);		// try for a line number
-				NextData = 0;
+			NextDataLine = findline(getinteger(cmdline), true); // try for a line number
+			NextData = 0;
 		} else {
 			void *ptr=findvar(cmdline,V_NOFIND_NULL);
 			if(ptr){
 				if(vartbl[VarIndex].type & T_NBR) {
-					if(vartbl[VarIndex].dims[0] > 0) {		// Not an array
+					if(vartbl[VarIndex].dims[0] > 0) { // Not an array
 						error("Syntax");
 					}
 					NextDataLine = findline(getinteger(cmdline), true);
 				} else if(vartbl[VarIndex].type & T_INT) {
-					if(vartbl[VarIndex].dims[0] > 0) {		// Not an array
+					if(vartbl[VarIndex].dims[0] > 0) { // Not an array
 						error("Syntax");
 					}
 					NextDataLine = findline(getinteger(cmdline), true);
 				} else {
-					NextDataLine = findlabel(getCstring(cmdline));					    // must be a label
+					NextDataLine = findlabel(getCstring(cmdline));    // must be a label
 				}
 			} else if(isnamestart(*cmdline)) {
-				NextDataLine = findlabel(cmdline);					    // must be a label
+				NextDataLine = findlabel(cmdline);    // must be a label
 			}
 			NextData = 0;
 		}

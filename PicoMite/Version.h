@@ -23,15 +23,13 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 
 ************************************************************************************************************************/
 
-
-
 #ifndef PICOMITEWEB
-#define VERSION         "5.07.08b9" 			    // define the version number
+#define VERSION  "5.07.08b11"
 #else
-#define VERSION         "5.07.08b9" 			    // define the version number
+#define VERSION  "5.07.08b11"
 #endif
-#define YEAR			"2011-2023"		    // and the year
-#define YEAR2          "2016-2023"
+#define YEAR	 "2011-2023"
+#define YEAR2    "2016-2023"
 
 #if defined(PICOMITEWEB)
     #define DEVICE_AND_VERSION  "WebMite MMBasic Version " VERSION
