@@ -45,5 +45,5 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 #endif
 
 #define MES_SIGNON  "\r" DEVICE_AND_VERSION "\r\n" \
-                    "Copyright " YEAR " Geoff Graham\r\n"\
+                    "Copyright " YEAR " Geoff Graham\r\n" \
                     "Copyright " YEAR2 " Peter Mather\r\n\r\n"
