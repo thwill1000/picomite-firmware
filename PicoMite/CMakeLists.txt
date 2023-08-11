@@ -41,7 +41,8 @@ add_executable(PicoMite-pglcd
     picojpeg.c
     lfs.c
     lfs_util.c
-	hxcmod.c
+    hxcmod.c
+    pglcd.c
 )
 set_source_files_properties(mmc_stm32.c PROPERTIES COMPILE_FLAGS -O3)
 pico_define_boot_stage2(slower_boot2 ${PICO_DEFAULT_BOOT_STAGE2_FILE})

@@ -1421,7 +1421,7 @@ void cmd_error(void) {
 	unsigned char *s;
 	if(*cmdline && *cmdline != '\'') {
 		s = getCstring(cmdline);
-		CurrentLinePtr = NULL;                                      // suppress printing the line that caused the issue
+		// CurrentLinePtr = NULL;                                      // suppress printing the line that caused the issue
 		error(s);
 	}
 	else

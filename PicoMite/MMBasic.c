@@ -34,6 +34,9 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 #include "Custom.h"
 #include "Hardware_Includes.h"
 #include "hardware/flash.h"
+#if defined(PGLCD)
+    #include "pglcd.h"
+#endif
 
 // this is the command table that defines the various tokens for commands in the source code
 // most of them are listed in the .h files so you should not add your own here but instead add
@@ -2644,6 +2647,7 @@ void error(char *msg, ...) {
         if(CurrentX != 0) MMPrintString("\r\n");                   // error message should be on a new line
     }
     if(MMCharPos > 1) MMPrintString("\r\n");
+    int line_num = -2;
     if(CurrentLinePtr) {
         tp = p = ProgMemory;
         if (Option.LIBRARY_FLASH_SIZE==MAX_PROG_SIZE && CurrentLinePtr < LibMemory+MAX_PROG_SIZE)
@@ -2670,25 +2674,41 @@ void error(char *msg, ...) {
        // we now have CurrentLinePtr pointing to the start of the line
 //        dump(CurrentLinePtr, 80);
         llist(tknbuf, CurrentLinePtr);
-        p = tknbuf; skipspace(p);
-        MMPrintString(MMCharPos > 1 ? "\r\n[" : "[");
+        p = tknbuf;
+        skipspace(p);
         if(CurrentLinePtr >= ProgMemory && CurrentLinePtr < ProgMemory + MAX_PROG_SIZE ){
-            IntToStr(inpbuf, CountLines(CurrentLinePtr), 10);
-            MMPrintString(inpbuf);
+            line_num = CountLines(CurrentLinePtr);
             StartEditPoint = CurrentLinePtr;
             StartEditChar = 0;
-        } else
-            MMPrintString("LIBRARY");
-        MMPrintString("] ");
-        MMPrintString(p);
-        MMPrintString("\r\n");
+        } else {
+            line_num = -1;
+        }
     }
-    MMPrintString("Error");
-    if(*MMErrMsg) {
-        MMPrintString(" : ");
-        MMPrintString(MMErrMsg);
+
+    // Print the line.
+    if (line_num != -2) {
+        if (line_num == -1) {
+            sprintf(tstr, "[LIBRARY] %s\r\n", p);
+        } else {
+            sprintf(tstr, "[%d] %s\r\n", line_num, p);
+        }
+        MMPrintString(tstr);
     }
-    MMPrintString("\r\n");
+
+    // Print the error message.
+    if (*MMErrMsg) {
+        sprintf(tstr, "Error : %s\r\n", MMErrMsg);
+    } else {
+        sprintf(tstr, "Error");
+    }
+    MMPrintString(tstr);
+
+#if defined(PGLCD)
+    if (!Option.DISPLAY_CONSOLE) {
+        pglcd_error(line_num, p, MMErrMsg);
+    }
+#endif
+
     cmd_end();
 }
 
