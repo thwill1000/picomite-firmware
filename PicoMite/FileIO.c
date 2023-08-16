@@ -3546,7 +3546,11 @@ void ResetOptions(void)
     Option.DefaultBrightness = 100;
     Option.Baudrate = CONSOLE_BAUDRATE;
     Option.PROG_FLASH_SIZE=MAX_PROG_SIZE;
-#ifdef PICOMITEVGA
+    Option.CPU_Speed = 133000;
+    Option.KeyboardConfig = NO_KEYBOARD;
+    Option.AUDIO_SLICE = 99;
+    Option.DISPLAY_ORIENTATION = DISPLAY_LANDSCAPE;
+#if defined(PICOMITEVGA)
     Option.CPU_Speed = 126000;
     Option.DISPLAY_CONSOLE = 1;
     Option.DISPLAY_TYPE = MONOVGA;
@@ -3554,16 +3558,22 @@ void ResetOptions(void)
     Option.VGAFC = 0xFFFF;
     Option.X_TILE=80;
     Option.Y_TILE=40;
-#else
-    Option.CPU_Speed = 133000;
-    Option.KeyboardConfig = NO_KEYBOARD;
-#endif
-#ifdef PICOMITEWEB
+#elif defined(PICOMITEWEB)
     Option.ServerResponceTime=5000;
+#elif defined(PGLCD)
+    Option.CPU_Speed = 252000;
+    Option.SYSTEM_CLK  = codemap(6); // GP6
+    Option.SYSTEM_MOSI = codemap(3); // GP3
+    Option.SYSTEM_MISO = codemap(4); // GP4
+    Option.SD_CS       = codemap(22); // GP22
+    Option.AUDIO_L     = codemap(20); // GP20
+    Option.AUDIO_R     = codemap(21); // GP21
+    int checkslice(int pin1,int pin2, int ignore); // Prototype for checkslice()
+    Option.AUDIO_SLICE = checkslice(Option.AUDIO_L, Option.AUDIO_R, 0);
+    ConfigDisplaySPI("ILI9341, RLANDSCAPE, GP2, GP1, GP0");
+    ConfigTouch("GP5,GP7");
 #endif
-    Option.AUDIO_SLICE = 99;
     Option.SDspeed = 10;
-    Option.DISPLAY_ORIENTATION = DISPLAY_LANDSCAPE;
     Option.DefaultFont = 0x01;
     Option.DefaultFC = WHITE;
     Option.DefaultBC = BLACK;
@@ -3572,7 +3582,6 @@ void ResetOptions(void)
     Option.INT2pin = 10;
     Option.INT3pin = 11;
     Option.INT4pin = 12;
-    Option.DefaultBrightness = 100;
     Option.numlock = 1;
     Option.repeat = 0b101100;
     uint8_t txbuf[4] = {0x9f};
