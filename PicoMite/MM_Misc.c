@@ -3118,7 +3118,7 @@ void fun_info(void){
         if (checkstring(ep, "DEVICE X")){
 #if defined PGLCD
             sret = GetTempMemory(STRINGSIZE);
-            strcpy(sret, "PicoGAME LCD");
+            strcpy(sret, "GameMite");
             CtoM(sret);
             targ = T_STR;
 #else

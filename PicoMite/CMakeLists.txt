@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 set(PICO_BOARD pico)
 pico_sdk_init()
-add_executable(PicoMite-pglcd
+add_executable(GameMite
     PicoMite.c
     regex.c 
     MMBasic.c
@@ -47,12 +47,12 @@ add_executable(PicoMite-pglcd
 set_source_files_properties(mmc_stm32.c PROPERTIES COMPILE_FLAGS -O3)
 pico_define_boot_stage2(slower_boot2 ${PICO_DEFAULT_BOOT_STAGE2_FILE})
 target_compile_definitions(slower_boot2 PRIVATE PICO_FLASH_SPI_CLKDIV=4)
-pico_set_boot_stage2(PicoMite-pglcd slower_boot2)
-Pico_enable_stdio_usb(PicoMite-pglcd 1)
-pico_enable_stdio_uart(PicoMite-pglcd 0)
-pico_add_extra_outputs(PicoMite-pglcd)
-pico_set_printf_implementation(PicoMite-pglcd compiler)
-target_compile_options(PicoMite-pglcd PRIVATE 	-DPICOMITE 
+pico_set_boot_stage2(GameMite slower_boot2)
+Pico_enable_stdio_usb(GameMite 1)
+pico_enable_stdio_uart(GameMite 0)
+pico_add_extra_outputs(GameMite)
+pico_set_printf_implementation(GameMite compiler)
+target_compile_options(GameMite PRIVATE 	-DPICOMITE 
 	                                        -DPGLCD 
 	                                        -DNDEBUG 
 	                                        -DPICO_XOSC_STARTUP_DELAY_MULTIPLIER=64 
@@ -62,7 +62,7 @@ target_compile_options(PicoMite-pglcd PRIVATE 	-DPICOMITE
 	                                        -DPICO_CORE1_STACK_SIZE=0x0 
 	                                        -DPICO_HEAP_SIZE=0x500 
                                         	-O2)
-target_link_libraries(PicoMite-pglcd
+target_link_libraries(GameMite
     pico_stdlib
     hardware_flash
     hardware_irq
