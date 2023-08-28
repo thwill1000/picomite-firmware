@@ -256,7 +256,7 @@ unsigned char cmdSUB, cmdFUN, cmdCFUN, cmdCSUB, cmdIRET;
 
 
 // Initialise MMBasic
-void  InitBasic(void) {
+void   MIPS16 InitBasic(void) {
     DefaultType = T_NBR;
     CommandTableSize =  (sizeof(commandtbl)/sizeof(struct s_tokentbl));
     TokenTableSize =  (sizeof(tokentbl)/sizeof(struct s_tokentbl));
@@ -356,8 +356,8 @@ void __not_in_flash_func(ExecuteProgram)(unsigned char *p) {
             skipspace(cmdline);
             skipelement(nextstmt);
             if(*p && *p != '\'') {                                  // ignore a comment line
+                SaveLocalIndex = LocalIndex;                        // save this if we need to cleanup after an error
                 if(setjmp(ErrNext) == 0) {                          // return to the else leg of this if error and OPTION ERROR SKIP/IGNORE is in effect
-                    SaveLocalIndex = LocalIndex;                        // save this if we need to cleanup after an error
                     if(*(char*)p >= C_BASETOKEN && *(char*)p - C_BASETOKEN < CommandTableSize - 1 && (commandtbl[*(char*)p - C_BASETOKEN].type & T_CMD)) {
                         cmdtoken = *(char*)p;
                         targ = T_CMD;
@@ -396,7 +396,7 @@ void __not_in_flash_func(ExecuteProgram)(unsigned char *p) {
 // Scan through the program loaded in flash and build a table pointing to the definition of all user defined subroutines and functions.
 // This pre processing speeds up the program when using defined subroutines and functions
 // this routine also looks for embedded fonts and adds them to the font table
-void  PrepareProgram(int ErrAbort) {
+void   MIPS16 PrepareProgram(int ErrAbort) {
     int i, j, u, NbrFuncts, namelen;
     uint32_t hash=FNV_offset_basis;
     unsigned char *p1, *p2;
@@ -481,7 +481,7 @@ void  PrepareProgram(int ErrAbort) {
 
 // This scans one area (main program or the library area) for user defined subroutines and functions.
 // It is only used by PrepareProgram() above.
-int  PrepareProgramExt(unsigned char *p, int i, unsigned char **CFunPtr, int ErrAbort) {
+int   MIPS16 PrepareProgramExt(unsigned char *p, int i, unsigned char **CFunPtr, int ErrAbort) {
     unsigned int *cfp;
     while(*p != 0xff) {
         p = GetNextCommand(p, &CurrentLinePtr, NULL);
@@ -872,7 +872,7 @@ void __not_in_flash_func(DefinedSubFun)(int isfun, unsigned char *cmd, int index
 	gosubindex--;
 }
 
-char *strcasechr(const char *p, int ch)
+char  MIPS16 *strcasechr(const char *p, int ch)
 {
 	char c;
 
@@ -886,7 +886,7 @@ char *strcasechr(const char *p, int ch)
 	/* NOTREACHED */
 }
 
-char *fstrstr (const char *s1, const char *s2)
+char  MIPS16 *fstrstr (const char *s1, const char *s2)
 {
   const char *p = s1;
   const size_t len = strlen (s2);
@@ -899,7 +899,7 @@ char *fstrstr (const char *s1, const char *s2)
   return (0);
 }
 
-void str_replace(char *target, const char *needle, const char *replacement)
+void  MIPS16 str_replace(char *target, const char *needle, const char *replacement)
 {
     char buffer[288] = { 0 };
     char *insert_point = &buffer[0];
@@ -932,7 +932,7 @@ void str_replace(char *target, const char *needle, const char *replacement)
     strcpy(target, buffer);
 }
 
-void STR_REPLACE(char *target, const char *needle, const char *replacement){
+void  MIPS16 STR_REPLACE(char *target, const char *needle, const char *replacement){
 	char *ip=target;
 	int toggle=0;
 	while(*ip){
@@ -975,7 +975,7 @@ void STR_REPLACE(char *target, const char *needle, const char *replacement){
 //the result in tknbuf[] is terminated with MMFLOAT zero chars
 // if the arg console is true then do not add a line number
 
-void  tokenise(int console) {
+void  MIPS16 tokenise(int console) {
     unsigned char *p, *op, *tp;
     int i;
     int firstnonwhite;
@@ -1097,6 +1097,10 @@ void  tokenise(int console) {
 #ifdef PICOMITEVGA
             } else if((tp2 = checkstring(p, "BLIT")) != NULL) {
                     match_i = GetCommandValue("SPRITE") - C_BASETOKEN;
+                    match_p = p = tp2;
+#else
+            } else if((tp2 = checkstring(p, "SPRITE")) != NULL) {
+                    match_i = GetCommandValue("Blit") - C_BASETOKEN;
                     match_p = p = tp2;
 #endif
             } else if((tp2 = checkstring(p, "CAT")) != NULL) {
@@ -2968,7 +2972,7 @@ void __not_in_flash_func(ClearVars)(int level) {
 
 // clear all stack pointers (eg, FOR/NEXT stack, DO/LOOP stack, GOSUB stack, etc)
 // this is done at the command prompt or at any break
-void  ClearStack(void) {
+void  MIPS16 ClearStack(void) {
     NextData = 0;
 	NextDataLine = ProgMemory;
     forindex = 0;
@@ -2982,7 +2986,7 @@ void  ClearStack(void) {
 
 // clear the runtime (eg, variables, external I/O, etc) includes ClearStack() and ClearVars()
 // this is done before running a program
-void ClearRuntime(void) {
+void MIPS16 ClearRuntime(void) {
     int i;
 #ifdef PICOMITEWEB
     if(TCPstate){
@@ -2996,6 +3000,7 @@ void ClearRuntime(void) {
             state->to_send[i]=0;
         }
     }
+    optionsuppressstatus=0;
 #endif
     CloseAllFiles();
     ClearExternalIO();                                              // this MUST come before InitHeap()
@@ -3003,6 +3008,7 @@ void ClearRuntime(void) {
     OptionExplicit = false;
     OptionEscape = false;
     DefaultType = T_NBR;
+    ds18b20Timers = NULL;                                           // InitHeap() will recover the memory allocated to this array
     findlabel(NULL);                                                // clear the label cache
     OptionErrorSkip = 0;
 	optionangle=1.0;
@@ -3030,7 +3036,7 @@ void ClearRuntime(void) {
 
 // clear everything including program memory (includes ClearStack() and ClearRuntime())
 // this is used before loading a program
-void ClearProgram(void) {
+void MIPS16 ClearProgram(void) {
 //    InitHeap();
     initFonts();
     m_alloc(M_PROG);                                           // init the variables for program memory

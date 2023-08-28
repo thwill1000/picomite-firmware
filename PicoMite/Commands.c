@@ -47,6 +47,7 @@ int SaveNextData = 0;
 struct sa_data datastore[MAXRESTORE];
 int restorepointer = 0;
 
+extern int adcrunning;
 
 // stack to keep track of nested FOR/NEXT loops
 struct s_forstack forstack[MAXFORLOOPS + 1];
@@ -251,7 +252,7 @@ void  __not_in_flash_func(cmd_let)(void) {
 	}
 	checkend(p1);
 }
-int as_strcmpi (const char *s1, const char *s2)
+int MIPS16 as_strcmpi (const char *s1, const char *s2)
 {
   const unsigned char *p1 = (const unsigned char *) s1;
   const unsigned char *p2 = (const unsigned char *) s2;
@@ -272,7 +273,7 @@ int as_strcmpi (const char *s1, const char *s2)
   return c1 - c2;
 }
 
-void sortStrings(char **arr, int n)
+void MIPS16 sortStrings(char **arr, int n)
 {
     char temp[16];
     int i,j;
@@ -290,10 +291,8 @@ void sortStrings(char **arr, int n)
         }
     }
 }
-void ListFile(char *pp, int all) {
+void MIPS16 ListFile(char *pp, int all) {
 	char buff[STRINGSIZE];
-    FRESULT fr;
-    FILINFO fno;
     int fnbr;
     int i,ListCnt = 1;
 	fnbr = FindFreeFileNbr();
@@ -309,7 +308,7 @@ void ListFile(char *pp, int all) {
 	FileClose(fnbr);
 }
 
-void cmd_list(void) {
+void MIPS16 cmd_list(void) {
 	unsigned char *p;
 	int i,j,k,m,step;
     if((p = checkstring(cmdline, "ALL"))) {
@@ -395,7 +394,7 @@ void cmd_list(void) {
 }
 
 
-void ListNewLine(int *ListCnt, int all) {
+void MIPS16 ListNewLine(int *ListCnt, int all) {
 	MMPrintString("\r\n");
 	(*ListCnt)++;
     if(!all && *ListCnt >= Option.Height) {
@@ -407,7 +406,7 @@ void ListNewLine(int *ListCnt, int all) {
 }
 
 
-void ListProgram(unsigned char *p, int all) {
+void MIPS16 ListProgram(unsigned char *p, int all) {
 	char b[STRINGSIZE];
 	char *pp;
     int ListCnt = 1;
@@ -430,7 +429,7 @@ void ListProgram(unsigned char *p, int all) {
 
 
 
-void cmd_run(void) {
+void MIPS16 cmd_run(void) {
 /*	skipspace(cmdline);
 	if(*cmdline && *cmdline != '\''){
 		if(!FileLoadProgram(cmdline))return;
@@ -466,7 +465,6 @@ void cmd_run(void) {
     if (*filename && !FileLoadProgram(buf)) return;
 
     ClearRuntime();
-    WatchdogSet = false;
     PrepareProgram(true);
 
     // Create a global constant MM.CMDLINE$ containing 'cmd_args'.
@@ -492,7 +490,7 @@ void cmd_run(void) {
 
 
 
-void  cmd_continue(void) {
+void  MIPS16 cmd_continue(void) {
     if(*cmdline == tokenFOR) {
         if(forindex == 0) error("No FOR loop is in effect");
         nextstmt = forstack[forindex - 1].nextptr;
@@ -511,7 +509,7 @@ void  cmd_continue(void) {
 	nextstmt = ContinuePoint;
 }
 
-void cmd_new(void) {
+void MIPS16 cmd_new(void) {
 #ifdef PICOMITEVGA
 	WriteBuf=FRAMEBUFFER;
 	DisplayBuf=FRAMEBUFFER;
@@ -533,7 +531,7 @@ void cmd_new(void) {
 }
 
 
-void cmd_erase(void) {
+void MIPS16 cmd_erase(void) {
 	int i,j,k, len;
 	char p[MAXVARLEN + 1], *s, *x;
 
@@ -573,7 +571,7 @@ void cmd_erase(void) {
 		if(j == MAXVARS) error("Cannot find $", p);
 	}
 }
-void cmd_clear(void) {
+void MIPS16 cmd_clear(void) {
 	checkend(cmdline);
 	if(LocalIndex)error("Invalid in a subroutine");
 	ClearVars(0);
@@ -811,6 +809,8 @@ void cmd_end(void) {
 	LayerBuf=FRAMEBUFFER;
 	FrameBuf=FRAMEBUFFER;
 #endif
+    adcrunning=0;
+	WatchdogSet = false;
 
 	if(g_myrand)FreeMemory((void *)g_myrand);
 	g_myrand=NULL;
@@ -1032,7 +1032,7 @@ void cmd_input(void) {
 }
 
 
-void cmd_trace(void) {
+void MIPS16 cmd_trace(void) {
     if(checkstring(cmdline, (unsigned char *)"ON"))
     	TraceOn = true;
     else if(checkstring(cmdline, (unsigned char *)"OFF"))
@@ -1529,7 +1529,7 @@ void __not_in_flash_func(cmd_endfun)(void) {
 
 
 
-void cmd_read(void) {
+void MIPS16 cmd_read(void) {
     int i, j, k, len, card;
     unsigned char *p, datatoken, *lineptr = NULL, *ptr;
     int vcnt, vidx, num_to_read=0;
@@ -1746,7 +1746,7 @@ void cmd_call(void){
 
 
 
-void cmd_restore(void) {
+void MIPS16 cmd_restore(void) {
    if(*cmdline == 0 || *cmdline == '\'') {
        if(CurrentLinePtr >= ProgMemory && CurrentLinePtr < ProgMemory + MAX_PROG_SIZE )
            NextDataLine = ProgMemory;
@@ -1970,7 +1970,7 @@ unsigned char *SetValue(unsigned char *p, int t, void *v) {
 // define a variable
 // DIM [AS INTEGER|FLOAT|STRING] var[(d1 [,d2,...]] [AS INTEGER|FLOAT|STRING] [, ..., ...]
 // LOCAL also uses this function the routines only differ in that LOCAL can only be used in a sub/fun
-void cmd_dim(void) {
+void MIPS16 cmd_dim(void) {
 	int i, j, k, type, typeSave, ImpliedType = 0, VIndexSave, StaticVar = false;
     unsigned char *p, chSave, *chPosit;
     unsigned char VarName[(MAXVARLEN * 2) + 1];
@@ -2223,69 +2223,7 @@ void execute_one_command(unsigned char *p) {
 	}
 	ClearTempMemory();											    // at the end of each command we need to clear any temporary string vars
 }
-// get the file name for the RUN, LOAD, SAVE, KILL, COPY, DRIVE, FILES, FONT LOAD, LOADBMP, SAVEBMP, SPRITE LOAD and EDIT commands
-// this function allows the user to omit the quote marks around a string constant when in immediate mode
-// the first argument is a pointer to the file name (normally on the command line of the command)
-// the second argument is a pointer to the LastFile buffer.  If this pointer is NULL the LastFile buffer feature will not be used
-// This returns a temporary string to the filename
-unsigned char *GetFileName(unsigned char* CmdLinePtr, unsigned char *LastFilePtr) {
-    unsigned char *tp, *t;
 
-	if(CurrentLinePtr) return getCstring(CmdLinePtr);               // if running a program get the filename as an expression
-
-    // if we reach here we are in immediate mode
-    if(*CmdLinePtr == 0 && LastFilePtr != NULL) return LastFilePtr; // if the command line is empty and we have a pointer to the last file, return that
-
-   	if(strchr((char *)CmdLinePtr, '"') == NULL && strchr((char *)CmdLinePtr, '$') == NULL) {// quotes or a $ symbol indicate that it is an expression
-        tp = GetTempMemory(STRINGSIZE);                                  // this will last for the life of the command
-    	strcpy((char *)tp, (char *)CmdLinePtr);	                                    // save the string
-    	t = (unsigned char *)strchr((char *)tp, ' '); if(t) *t = 0;                          // trim any trailing spaces
-    	for(t = tp; *t; t++) if(*t <= ' ' || *t > 'z') error("Filename must be quoted");
-    	return tp;
-    }
-    else
-		return getCstring(CmdLinePtr);	                            // treat the command line as a string expression and get its value
-}
-// lists the program to a specified file handle
-// this decodes line numbers and tokens and outputs them in plain english
-// LISTing a program is exactly the same as listing to a file (ie, SAVE)
-void flist(int fnbr, int fromnbr, int tonbr) {
-	unsigned char *fromp  = ProgMemory + 1;
-	unsigned char b[STRINGSIZE];
-	int i;
-
-	if(fromnbr != 1) fromp = findline(fromnbr, (fromnbr == tonbr) ? true : false);	// set our pointer to the start line
-	ListCnt = 1;
-
-	while(1) {
-
-		if(*fromp == T_LINENBR) {
-			i = (((fromp[1]) << 8) | (fromp[2]));					// get the line number
-			if(i != NOLINENBR && i > tonbr) break;					// end of the listing
-			fromp = llist(b, fromp);								// otherwise expand the line
-			MMfputs((unsigned char *)CtoM(b), fnbr);									// convert to a MMBasic string and output
-//            #if defined(DOS)
-//            	MMfputs((unsigned char *)"\1\n", fnbr);								// print the terminating lf
-//            #else
-            	MMfputs((unsigned char *)"\2\r\n", fnbr);							// print the terminating cr/lf
-//            #endif
-			if(i != NOLINENBR && i >= tonbr) break;					// end of the listing
-			// check if it is more than a screenfull
-			if(fnbr == 0 && ListCnt >= VCHARS && !(fromp[0] == 0 && fromp[1] == 0)) {
-				MMPrintString((char *)"PRESS ANY KEY ...");
-				MMgetchar();
-				MMPrintString((char *)"\r                 \r");
-				ListCnt = 1;
-			}
-		}
-		//else
-		//	error("Internal error in flist()");
-
-		// finally, is it the end of the program?
-		if(fromp[0] == 0) break;
-	}
-	if(fnbr != 0) FileClose(fnbr);
-}
 void execute(char* mycmd) {
 	//    char *temp_tknbuf;
 	unsigned char* ttp;

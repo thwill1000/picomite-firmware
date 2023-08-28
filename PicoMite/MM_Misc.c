@@ -44,7 +44,8 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 #include "hardware/pio_instructions.h"
 #include <malloc.h>
 #include "xregex.h"
-
+extern int last_adc;
+extern int adcrunning;
 uint32_t getTotalHeap(void) {
    extern char __StackLimit, __bss_end__;
    
@@ -2280,6 +2281,11 @@ void cmd_option(void) {
         error("Syntax");
     }
 #ifdef PICOMITEWEB
+	tp = checkstring(cmdline, "WEB MESSAGES");
+	if(tp) {
+		if(checkstring(tp, "OFF"))	{ optionsuppressstatus=1; return; }
+		if(checkstring(tp, "ON"))	{ optionsuppressstatus=0; return; }
+	}
     tp = checkstring(cmdline, "WIFI");
     if(tp) {
         getargs(&tp,11,",");
@@ -3075,6 +3081,10 @@ void fun_info(void){
         targ=T_INT;
         return;
 #endif
+    } else if((tp=checkstring(ep, "ADC DMA"))){
+        targ=T_INT;
+        iret=adcrunning | dmarunning;
+        return;
     } else if((tp=checkstring(ep, "ADC"))){
         targ=T_INT;
         iret=((adcint==adcint1 && adcint) ? 1 : ((adcint==adcint2 && adcint) ? 2 : 0));
@@ -3603,9 +3613,11 @@ void cmd_watchdog(void) {
     if((p=checkstring(cmdline, "HW"))){
         if(checkstring(p, "OFF") != NULL) {
             hw_clear_bits(&watchdog_hw->ctrl, WATCHDOG_CTRL_ENABLE_BITS);
+            _excep_code=0;
         } else {
             i = getint(p,1,8331);
             watchdog_enable(i,1);
+            _excep_code=POSSIBLE_WATCHDOG;
         }
     
     } else if(checkstring(cmdline, "OFF") != NULL) {
@@ -4142,6 +4154,8 @@ int checkdetailinterrupts(void) {
             }
         intaddr = ADCInterrupt;                                   // get a pointer to the interrupt routine
         dmarunning=0;
+        adc_init();
+        last_adc=99;
         FreeMemory((void *)ADCbuffer);
         goto GotAnInterrupt;
         }

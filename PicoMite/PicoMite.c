@@ -521,7 +521,7 @@ void MMgetline(int filenbr, char *p) {
 // insert a string into the start of the lastcmd buffer.
 // the buffer is a sequence of strings separated by a zero byte.
 // using the up arrow usere can call up the last few commands executed.
-void InsertLastcmd(unsigned char *s) {
+void MIPS16 InsertLastcmd(unsigned char *s) {
 int i, slen;
     if(strcmp(lastcmd, s) == 0) return;                             // don't duplicate
     slen = strlen(s);
@@ -533,7 +533,7 @@ int i, slen;
     for(i = sizeof(lastcmd) - 1; lastcmd[i]; i--) lastcmd[i] = 0;             // zero the end of the buffer
 }
 
-void EditInputLine(void) {
+void MIPS16 EditInputLine(void) {
     char *p = NULL;
     char buf[MAXKEYLEN + 3];
     int lastcmd_idx, lastcmd_edit;
@@ -861,13 +861,15 @@ bool __not_in_flash_func(timer_callback)(repeating_timer_t *rt)
         if(WDTimer) {
             if(--WDTimer == 0) {
                 _excep_code = WATCHDOG_TIMEOUT;
-                SoftReset();                                            // crude way of implementing a watchdog timer.
+                watchdog_enable(1, 1);
+                while(1);
             }
         }
         if (ScrewUpTimer) {
             if (--ScrewUpTimer == 0) {
                 _excep_code = SCREWUP_TIMEOUT;
-                SoftReset();                                            // crude way of implementing a watchdog timer.
+                watchdog_enable(1, 1);
+                while(1);
             }
         }
         if(PulseActive) {
@@ -1667,7 +1669,7 @@ void __no_inline_not_in_flash_func(modclock)(uint16_t speed){
 lfs_t lfs;
 lfs_dir_t lfs_dir;
 struct lfs_info lfs_info;
-void updatebootcount(void){
+void MIPS16 updatebootcount(void){
     lfs_file_t lfs_file;
     pico_lfs_cfg.block_count = (Option.FlashSize-RoundUpK4(TOP_OF_SYSTEM_FLASH)-(Option.modbuff ? 1024*Option.modbuffsize : 0))/4096;
     int err,boot_count=0;
@@ -1700,7 +1702,7 @@ void updatebootcount(void){
  *   *foo "wom" "bat"  =>  RUN "foo", Chr$(34) + "wom" + Chr$(34) + " " + Chr$(34) + "bat" + Chr$(34)
  *   *foo --wom="bat"  =>  RUN "foo", "--wom=" + Chr$(34) + "bat" + Chr$(34)
  */
-static void transform_star_command(char *input) {
+static void MIPS16 transform_star_command(char *input) {
     char *src = input;
     while (isspace(*src)) src++; // Skip leading whitespace.
     if (*src != '*') error("Internal fault");
@@ -1822,6 +1824,7 @@ int main(){
    static int ErrorInPrompt;
     repeating_timer_t timer;
     int i;
+    char savewatchdog=false;
     LoadOptions();
     if(  Option.Baudrate == 0 ||
         !(Option.Tab==2 || Option.Tab==3 || Option.Tab==4 ||Option.Tab==8) ||
@@ -1902,7 +1905,7 @@ int main(){
 	memset(WriteBuf, 0, 38400);
 #endif
     ResetDisplay();
-    if(!(_excep_code == RESTART_NOAUTORUN || _excep_code == WATCHDOG_TIMEOUT)){
+    if(!(_excep_code == RESTART_NOAUTORUN || _excep_code == WATCHDOG_TIMEOUT || (_excep_code==POSSIBLE_WATCHDOG && watchdog_caused_reboot()))){
         if(Option.Autorun==0 ){
             if(!(_excep_code == RESET_COMMAND))MMPrintString(MES_SIGNON); //MMPrintString(b);                                 // print sign on message
         } else {
@@ -1912,11 +1915,18 @@ int main(){
             if(*ProgMemory != 0x01 ) MMPrintString(MES_SIGNON); 
         }
     }
+    WatchdogSet = false;
+
     if(_excep_code == WATCHDOG_TIMEOUT) {
         WatchdogSet = true;                                 // remember if it was a watchdog timeout
         MMPrintString("\r\n\nMMBasic Watchdog timeout\r\n");
     }
-    if(!(_excep_code==SOFT_RESET) && watchdog_caused_reboot())MMPrintString("\r\n\nHW Watchdog timeout\r\n");
+    if(_excep_code==POSSIBLE_WATCHDOG && watchdog_caused_reboot()){
+        MMPrintString("\r\n\nHW Watchdog timeout\r\n");
+        WatchdogSet = true;                                 // remember if it was a watchdog timeout
+        _excep_code=0;
+    }
+    savewatchdog=WatchdogSet;
     if(noRTC){
         noRTC=0;
         Option.RTC=0;
@@ -1941,6 +1951,7 @@ int main(){
         ContinuePoint = nextstmt;                               // in case the user wants to use the continue command
 		*tknbuf = 0;											// we do not want to run whatever is in the token buffer
 		optionangle=1.0;
+        savewatchdog = WatchdogSet = false;
     } else {
         if(*ProgMemory == 0x01 ) ClearVars(0);
         else {
@@ -1999,7 +2010,7 @@ int main(){
                 }
             }
         }
-        _excep_code = 0;
+        if(_excep_code!=POSSIBLE_WATCHDOG)_excep_code = 0;
         PrepareProgram(false);
         if(!ErrorInPrompt && FindSubFun("MM.PROMPT", 0) >= 0) {
             ErrorInPrompt = true;
@@ -2020,9 +2031,11 @@ int main(){
         if(*p=='*'){ //shortform RUN command so convert to a normal version
                 transform_star_command(inpbuf);
                 p = inpbuf;
-        }        tokenise(true);                                             // turn into executable code
+        }
+        tokenise(true);                                             // turn into executable code
 autorun:
         i=0;
+        WatchdogSet=savewatchdog;
         if(*tknbuf==GetCommandValue((char *)"RUN"))i=1;
         if (setjmp(jmprun) != 0) {
             PrepareProgram(false);
@@ -2048,7 +2061,7 @@ void stripcomment(char *p){
         q++;
     }
 }
-void testlocal(char *p, char *command, void (*func)()){
+void MIPS16 testlocal(char *p, char *command, void (*func)()){
     int len=strlen(command);
     if((strncasecmp(p,command,len)==0) && (strlen(p)==len || p[len]==' ' || p[len]=='\'')){
         p+=len;
@@ -2069,7 +2082,7 @@ void executelocal(char *p){
     testlocal(p,"AUTOSAVE",cmd_autosave);
 }
 // takes a pointer to RAM containing a program (in clear text) and writes it to memory in tokenised format
-void SaveProgramToFlash(unsigned char *pm, int msg) {
+void MIPS16 SaveProgramToFlash(unsigned char *pm, int msg) {
     unsigned char *p, endtoken, fontnbr, prevchar = 0, buf[STRINGSIZE];
     int nbr, i, j, n, SaveSizeAddr;
     uint32_t storedupdates[MAXCFUNCTION], updatecount=0, realflashsave, retvalue;
