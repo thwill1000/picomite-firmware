@@ -1,3 +1,9 @@
+# Game★Mite Firmware
+
+This branch contains the source code for a customised version of the standard PicoMite firmware for use with the [GameMite](https://github.com/thwill1000/gamemite).
+
+**Standard PicoMite README.md**
+
 Files to build the PicoMite. MMBasic running on the Raspberry Pi Pico
 
 NB: This should be built against pico-sdk version 1.5 with gpio.c and spi.h replaced with the attached.
