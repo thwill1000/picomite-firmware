@@ -3563,7 +3563,7 @@ void ResetOptions(void)
     Option.Y_TILE=40;
 #elif defined(PICOMITEWEB)
     Option.ServerResponceTime=5000;
-#elif defined(PGLCD)
+#elif defined(GAMEMITE)
     Option.CPU_Speed = 252000;
     Option.SYSTEM_CLK  = codemap(6); // GP6
     Option.SYSTEM_MOSI = codemap(3); // GP3

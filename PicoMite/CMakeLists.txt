@@ -42,7 +42,7 @@ add_executable(GameMite
     lfs.c
     lfs_util.c
     hxcmod.c
-    pglcd.c
+    gamemite.c
 )
 set_source_files_properties(mmc_stm32.c PROPERTIES COMPILE_FLAGS -O3)
 set_source_files_properties(ff.c PROPERTIES COMPILE_FLAGS -Os)
@@ -59,7 +59,7 @@ pico_enable_stdio_uart(GameMite 0)
 pico_add_extra_outputs(GameMite)
 pico_set_printf_implementation(GameMite compiler)
 target_compile_options(GameMite PRIVATE 	-DPICOMITE 
-	                                        -DPGLCD 
+	                                        -DGAMEMITE 
 	                                        -DNDEBUG 
 	                                        -DPICO_XOSC_STARTUP_DELAY_MULTIPLIER=64 
 	                                        -DPICO_FLASH_SIZE_BYTES=16777216 

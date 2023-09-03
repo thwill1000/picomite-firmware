@@ -3051,8 +3051,8 @@ static void fun_info_version() {
 }
 
 static void fun_info_version_x() {
-#if defined(PGLCD)
-  iret = PGLCD_VERSION;
+#if defined(GAMEMITE)
+  iret = GAMEMITE_VERSION;
   targ = T_INT;
 #else
   fun_info_version();
@@ -3126,7 +3126,7 @@ void fun_info(void){
         } else error("Syntax");
     }  else if(*ep=='d' || *ep=='D'){
         if (checkstring(ep, "DEVICE X")){
-#if defined PGLCD
+#if defined GAMEMITE
             sret = GetTempMemory(STRINGSIZE);
             strcpy(sret, "GameMite");
             CtoM(sret);

@@ -1,8 +1,8 @@
 /*-*****************************************************************************
 
-MMBasic for PicoGAME LCD
+MMBasic for GameMite
 
-pglcd.h
+gamemite.h
 
 Copyright 2023 Geoff Graham, Peter Mather and Thomas Hugo Williams.
 
@@ -42,9 +42,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 *******************************************************************************/
 
-#if !defined(PGLCD_H)
-#define PGLCD_H
+#if !defined(GAMEMITE_H)
+#define GAMEMITE_H
 
-void pglcd_error(int line_num, const char *line_txt, const char* error_msg);
+void gamemite_error(int line_num, const char *line_txt, const char* error_msg);
 
-#endif // #if !defined(PGLCD_H)
+#endif // #if !defined(GAMEMITE_H)

@@ -31,9 +31,9 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
     #define DEVICE_AND_VERSION  "WebMite MMBasic Version " VERSION
 #elif defined(PICOMITEVGA)
     #define DEVICE_AND_VERSION  "PicoMiteVGA MMBasic Version " VERSION
-#elif defined(PGLCD)
+#elif defined(GAMEMITE)
     #define DEVICE_AND_VERSION  "PicoMite MMBasic Version " VERSION " - GameMite"
-    #define PGLCD_VERSION  400 // 0.4.0
+    #define GAMEMITE_VERSION  400 // 0.4.0
 #elif defined(PICOMITE)
     #define DEVICE_AND_VERSION  "PicoMite MMBasic Version " VERSION
 #else

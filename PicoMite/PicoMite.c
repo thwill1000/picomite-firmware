@@ -1110,8 +1110,8 @@ void sigbus(void){
 	uSec(250000);
 	disable_interrupts();
 //	flash_range_erase(PROGSTART, MAX_PROG_SIZE);
-#if !defined(PGLCD)
-    // Do not clear OPTION AUTORUN for the PicoGAME LCD as it makes the device
+#if !defined(GAMEMITE)
+    // Do not clear OPTION AUTORUN for the GameMite as it makes the device
     // useless until re-enabled via the serial console.
     Option.Autorun=0;
     SaveOptions();

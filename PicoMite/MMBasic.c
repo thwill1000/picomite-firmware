@@ -34,8 +34,8 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 #include "Custom.h"
 #include "Hardware_Includes.h"
 #include "hardware/flash.h"
-#if defined(PGLCD)
-    #include "pglcd.h"
+#if defined(GAMEMITE)
+    #include "gamemite.h"
 #endif
 
 // this is the command table that defines the various tokens for commands in the source code
@@ -2707,9 +2707,9 @@ void error(char *msg, ...) {
     }
     MMPrintString(tstr);
 
-#if defined(PGLCD)
+#if defined(GAMEMITE)
     if (!Option.DISPLAY_CONSOLE) {
-        pglcd_error(line_num, p, MMErrMsg);
+        gamemite_error(line_num, p, MMErrMsg);
     }
 #endif
 

@@ -1,8 +1,8 @@
 /*-*****************************************************************************
 
-MMBasic for PicoGAME LCD
+MMBasic for GameMite
 
-pglcd.c
+gamemite.c
 
 Copyright 2023 Geoff Graham, Peter Mather and Thomas Hugo Williams.
 
@@ -47,7 +47,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "MMBasic_Includes.h"
 #include "Hardware_Includes.h"
-#include "pglcd.h"
+#include "gamemite.h"
 #include "Draw.h"
 
 #define min(a,b) \
@@ -94,7 +94,7 @@ static void display_string(const char *s, bool fill) {
  * @param  line_txt   The text of the line that caused the error.
  * @param  error_msg  The error message.
  */
-void pglcd_error(int line_num, const char *line_txt, const char* error_msg) {
+void gamemite_error(int line_num, const char *line_txt, const char* error_msg) {
     if (HRes == 0) return; // No display configured.
 
     // Always write error to the actual display.
