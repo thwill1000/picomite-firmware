@@ -3607,6 +3607,9 @@ void ResetOptions(void)
     Option.SD_CS       = codemap(22); // GP22
     Option.AUDIO_L     = codemap(20); // GP20
     Option.AUDIO_R     = codemap(21); // GP21
+    Option.modbuffsize = 128;
+    Option.modbuff = true;
+    // ResetFlashStorage(1); <-- Do we need this ?
     int checkslice(int pin1,int pin2, int ignore); // Prototype for checkslice()
     Option.AUDIO_SLICE = checkslice(Option.AUDIO_L, Option.AUDIO_R, 0);
     ConfigDisplaySPI((unsigned char *) "ILI9341, RLANDSCAPE, GP2, GP1, GP0");
