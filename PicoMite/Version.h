@@ -23,7 +23,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 
 ************************************************************************************************************************/
 
-#define VERSION  "5.07.08b15"
+#define VERSION  "5.07.08RC4"
 #define YEAR     "2011-2023"
 #define YEAR2    "2016-2023"
 
@@ -33,7 +33,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
     #define DEVICE_AND_VERSION  "PicoMiteVGA MMBasic Version " VERSION
 #elif defined(GAMEMITE)
     #define DEVICE_AND_VERSION  "PicoMite MMBasic Version " VERSION " - GameMite"
-    #define GAMEMITE_VERSION  10000 // 1.0.0
+    #define GAMEMITE_VERSION  101300 // 1.1.0
 #elif defined(PICOMITE)
     #define DEVICE_AND_VERSION  "PicoMite MMBasic Version " VERSION
 #else
